@@ -79,6 +79,8 @@ public class DiscordManager {
                                     new SubcommandData("staff", "Staff role beállítása")
                                             .addOption(OptionType.ROLE, "set", "Staff szerep beállítása", false)
                             ),
+                    Commands.slash("link", "Discord fiók összekötése Minecrafttal"),
+
 
                     // /link parancs (Discord → Minecraft)
                     Commands.slash("link", "Discord fiók összekötése Minecrafttal")

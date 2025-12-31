@@ -6,40 +6,47 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
 import org.respawn.omniConnect.Main;
+import org.respawn.omniConnect.link.LinkCommandDiscord;
 
 public class TicketPanelCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
 
-        // Csak a /ticket parancsot kezeljük
-        if (!event.getName().equalsIgnoreCase("ticket")) {
+        // /ticket parancs kezelése
+        if (event.getName().equalsIgnoreCase("ticket")) {
+
+            if (!event.isFromGuild()) {
+                event.reply("Ezt a parancsot csak szerveren lehet használni.")
+                        .setEphemeral(true)
+                        .queue();
+                return;
+            }
+
+            String sub = event.getSubcommandName();
+            if (sub == null) return;
+
+            switch (sub.toLowerCase()) {
+
+                case "panel":
+                    handlePanel(event);
+                    break;
+
+                case "create":
+                    handleCreate(event);
+                    break;
+
+                case "staff":
+                    handleStaff(event);
+                    break;
+            }
+
             return;
         }
 
-        if (!event.isFromGuild()) {
-            event.reply("Ezt a parancsot csak szerveren lehet használni.")
-                    .setEphemeral(true)
-                    .queue();
-            return;
-        }
-
-        String sub = event.getSubcommandName();
-        if (sub == null) return;
-
-        switch (sub.toLowerCase()) {
-
-            case "panel":
-                handlePanel(event);
-                break;
-
-            case "create":
-                handleCreate(event);
-                break;
-
-            case "staff":
-                handleStaff(event);
-                break;
+        // 🔥 /link parancs kezelése
+        if (event.getName().equalsIgnoreCase("link")) {
+            LinkCommandDiscord.handle(event);
         }
     }
 

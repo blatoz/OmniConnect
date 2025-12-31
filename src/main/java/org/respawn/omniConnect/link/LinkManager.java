@@ -73,4 +73,7 @@ public class LinkManager {
     public String getDiscordId(String mcUUID) {
         return linkedAccounts.get(mcUUID);
     }
+
+    public void addPending(String code, String discordId) {
+    }
 }
