@@ -1,0 +1,10 @@
+name: OmniConnect
+version: '1.0-SNAPSHOT'
+main: org.respawn.omniConnect.Main
+api-version: '1.16'
+author: Daniyt_th
+commands:
+  link:
+    description: Discord fiók összekötése
+  unlink:
+    description: Discord fiók leválasztása

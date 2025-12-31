@@ -1,10 +1,12 @@
 package org.respawn.omniConnect;
-import org.respawn.omniConnect.listeners.ChatListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.respawn.omniConnect.listeners.ChatListener;
 import org.respawn.omniConnect.ticket.TicketManager;
+import org.respawn.omniConnect.ticket.TicketConfig;
 
 import java.awt.*;
+
 
 /**
  * OmniConnect - Minecraft és Discord szinkronizációs plugin.
@@ -52,6 +54,9 @@ public class Main extends JavaPlugin {
                 panelChannelId
         );
 
+        // 🔥 TicketConfig betöltése
+        TicketConfig.getInstance().load(getDataFolder());
+
         // Discord bot indítása
         DiscordManager.getInstance().start();
 
@@ -65,6 +70,10 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        // 🔥 TicketConfig mentése
+        TicketConfig.getInstance().save(getDataFolder());
+
         // Log Discordra leálláskor
         LogManager.getInstance().sendEmbed(embed -> embed
                 .setTitle("Szerver leáll")
@@ -76,8 +85,9 @@ public class Main extends JavaPlugin {
     }
 
     private void registerCommands() {
-        // getCommand("link").setExecutor(new LinkCommand());
+        // Nem lesz még használva
     }
+
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
