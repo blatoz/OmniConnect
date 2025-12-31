@@ -54,7 +54,15 @@ public class LinkManager {
         pendingCodes.put(code, discordId);
     }
 
+    public void addPending(String code, String discordId) {
+        pendingCodes.put(code, discordId);
+    }
+
     public String consumeCode(String code) {
+        return pendingCodes.remove(code);
+    }
+
+    public String consume(String code) {
         return pendingCodes.remove(code);
     }
 
@@ -72,8 +80,5 @@ public class LinkManager {
 
     public String getDiscordId(String mcUUID) {
         return linkedAccounts.get(mcUUID);
-    }
-
-    public void addPending(String code, String discordId) {
     }
 }

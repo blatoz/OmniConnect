@@ -4,8 +4,10 @@ discord:
   logChannelId: "LOG_CSATORNA_ID"
   guild-id: "DISCORD_SZERVER_ID"
   ticket:
-    category-id: "Kategória_ID"
+    category-id: "KATEGÓRIA_ID"
     log-channel-id: "TICKET_LOG_CSATORNA_ID"
     panel-channel-id: "PANEL_CSATORNA_ID"
   chat:
     channel-id: "CHAT_BRIDGE_CSATORNA_ID"
+  link:
+      log-channel-id: "LOG_CSATORNA_ID"
