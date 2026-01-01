@@ -1,12 +1,12 @@
 package org.respawn.omniConnect;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.respawn.omniConnect.hooks.HookManager;
 import org.respawn.omniConnect.listeners.ChatListener;
+
+import org.bukkit.plugin.java.JavaPlugin;
 import org.respawn.omniConnect.ticket.TicketManager;
-import org.respawn.omniConnect.ticket.TicketConfig;
 
 import java.awt.*;
-
 
 /**
  * OmniConnect - Minecraft és Discord szinkronizációs plugin.
@@ -42,20 +42,16 @@ public class Main extends JavaPlugin {
         // --- Ticket rendszer inicializálása configból ---
         String guildId = getConfig().getString("discord.guild-id");
         String ticketCategoryId = getConfig().getString("discord.ticket.category-id");
-        String supportRoleId = getConfig().getString("discord.ticket.support-role-id");
         String logChannelId = getConfig().getString("discord.ticket.log-channel-id");
         String panelChannelId = getConfig().getString("discord.ticket.panel-channel-id");
 
         TicketManager.init(
                 guildId,
                 ticketCategoryId,
-                supportRoleId,
                 logChannelId,
                 panelChannelId
         );
-
-        // 🔥 TicketConfig betöltése
-        TicketConfig.getInstance().load(getDataFolder());
+        HookManager.init();
 
         // Discord bot indítása
         DiscordManager.getInstance().start();
@@ -70,10 +66,6 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
-        // 🔥 TicketConfig mentése
-        TicketConfig.getInstance().save(getDataFolder());
-
         // Log Discordra leálláskor
         LogManager.getInstance().sendEmbed(embed -> embed
                 .setTitle("Szerver leáll")
@@ -85,9 +77,8 @@ public class Main extends JavaPlugin {
     }
 
     private void registerCommands() {
-        // Nem lesz még használva
+        // getCommand("link").setExecutor(new LinkCommand());
     }
-
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new ChatListener(), this);

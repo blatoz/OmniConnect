@@ -5,12 +5,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-
 import org.bukkit.Bukkit;
-
 import org.respawn.omniConnect.discord.DiscordMessageListener;
 import org.respawn.omniConnect.ticket.TicketListener;
 import org.respawn.omniConnect.ticket.TicketPanelCommand;
@@ -19,7 +14,6 @@ import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.time.Instant;
 import java.util.EnumSet;
-
 
 /**
  * Discord bot kezelő - singleton minta alapján.
@@ -67,25 +61,6 @@ public class DiscordManager {
                             new DiscordMessageListener()
                     )
                     .build();
-
-            // 🔥 Slash parancsok regisztrálása
-            jda.updateCommands().addCommands(
-
-                    // /ticket parancs
-                    Commands.slash("ticket", "Ticket rendszer parancsai")
-                            .addSubcommands(
-                                    new SubcommandData("panel", "Ticket panel létrehozása"),
-                                    new SubcommandData("create", "Ticket létrehozása"),
-                                    new SubcommandData("staff", "Staff role beállítása")
-                                            .addOption(OptionType.ROLE, "set", "Staff szerep beállítása", false)
-                            ),
-                    Commands.slash("link", "Discord fiók összekötése Minecrafttal"),
-
-
-                    // /link parancs (Discord → Minecraft)
-                    Commands.slash("link", "Discord fiók összekötése Minecrafttal")
-
-            ).queue();
 
         } catch (LoginException e) {
             Main.getInstance().getLogger().severe("Discord bot indítási hiba: " + e.getMessage());

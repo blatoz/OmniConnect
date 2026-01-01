@@ -1,13 +1,124 @@
 discord:
-  token: "IDE_IRD_A_DISCORD_BOT_TOKENED"
-  mainChannelId: "DISCORD_CSATORNA_ID_A_CHAT_BRIDGEHEZ"
-  logChannelId: "LOG_CSATORNA_ID"
-  guild-id: "DISCORD_SZERVER_ID"
-  ticket:
-    category-id: "KATEGÓRIA_ID"
-    log-channel-id: "TICKET_LOG_CSATORNA_ID"
-    panel-channel-id: "PANEL_CSATORNA_ID"
+  token: "IDE_IRD_A_DISCORD_BOT_TOKENED" # A Discord bot tokenje
+  mainChannelId: "DISCORD_CSATORNA_ID_A_CHAT_BRIDGEHEZ" # A fő Discord csatorna ID a chat bridge számára
+  logChannelId: "LOG_CSATORNA_ID" # Opcionális: Log csatorna ID a bot eseményekhez
+  guild-id: "DISCORD_SZERVER_ID" # A Discord szerver ID, ahol a bot működik
+
   chat:
-    channel-id: "CHAT_BRIDGE_CSATORNA_ID"
-  link:
-      log-channel-id: "LOG_CSATORNA_ID"
+    channel-id: "CHAT_BRIDGE_CSATORNA_ID" # A Discord csatorna ID, ahol a chat üzenetek megjelennek
+
+# Anticheat konfigurációk
+anticheat:
+  enabled: true # Anticheat logolás engedélyezése/tiltása Értékek: true/false
+  default-log-channel: "ANTICHEAT_LOG_CSATORNA_ID" # Alapértelmezett log csatorna ID, ha nincs megadva egyedi csatorna
+
+  matrix:
+    enabled: true # Matrix anticheat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  vulcan:
+    enabled: true # Vulcan anticheat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  spartan:
+    enabled: true # Spartan anticheat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  grim:
+    enabled: true # Grim anticheat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  aac:
+    enabled: true # AAC anticheat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  ncp:
+    enabled: true # NoCheatPlus anticheat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  negativity:
+    enabled: true # Negativity anticheat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  lightac:
+    enabled: true # Lightanticheat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+    
+exploitfix:
+  enabled: true # ExploitFixeres pluginok logolás engedélyezése/tiltása Értékek: true/false
+  default-log-channel: "" # Alapértelmezett log csatorna ID, ha nincs megadva egyedi csatorna
+
+  exploitfixer:
+    enabled: true # ExploitFixer logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  lpx:
+    enabled: true # LPX logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  aef:
+    enabled: true # AdvancedExploitFixer logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+kingdoms:
+  enabled: true # Kingdoms plugin logolás engedélyezése/tiltása Értékek: true/false
+  default-log-channel: "" # Log csatorna ID a Kingdoms eseményekhez, ha üres az alapértelmezett csatornát használja
+  management:
+    log-channel: "" # Egyedi log csatorna ID a királyság menedzsment eseményekhez
+
+moderation:
+  enabled: true # Moderációs pluginok logolás engedélyezése/tiltása Értékek: true/false
+  default-log-channel: "" # Alapértelmezett log csatorna ID, ha nincs megadva egyedi csatorna
+
+  litebans:
+    enabled: true # LiteBans logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  advancedban:
+    enabled: true # AdvancedBan logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  essentials:
+    enabled: true # Essentials logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  essentialsjail:
+    enabled: true # EssentialsJail logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  cmi:
+    enabled: true # CMI logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  chatcontrol:
+    enabled: true # ChatControl Logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  chatcontrolred:
+    enabled: true # ChatControl Red Logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  staffplus:
+    enabled: true # StaffPlus logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  staffchat:
+    enabled: true # Staff Chat logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  playerreport:
+    enabled: true # PlayerReport logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  matrixreport:
+    enabled: true # MatrixReport logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  vulcanreport:
+    enabled: true # VulcanReport logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+
+  libertybans:
+    enabled: true # LibertyBans logolás engedélyezése/tiltása Értékek: true/false
+    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja

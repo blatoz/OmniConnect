@@ -8,21 +8,12 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.utils.FileUpload;
 import org.respawn.omniConnect.LogManager;
-import org.respawn.omniConnect.Main;
 
-
-import java.io.File;
 import java.awt.*;
-import java.nio.file.Files;
-import java.time.Instant;
-import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Jegy (ticket) kezelő - kezeli a ticket csatornák létrehozását és bezárását.
@@ -33,7 +24,6 @@ public class TicketManager {
 
     private final String guildId;
     private final String ticketCategoryId;
-    private final String supportRoleId;
     private final String logChannelId;
     private final String panelChannelId;
 
@@ -42,37 +32,36 @@ public class TicketManager {
      *
      * @param guildId A guild ID
      * @param ticketCategoryId A ticket csatorna kategória ID
+
      * @param logChannelId A log csatorna ID
      * @param panelChannelId A panel csatorna ID
      */
     private TicketManager(String guildId,
                           String ticketCategoryId,
-                          String supportRoleId,
                           String logChannelId,
                           String panelChannelId) {
         this.guildId = guildId;
         this.ticketCategoryId = ticketCategoryId;
-        this.supportRoleId = supportRoleId;
         this.logChannelId = logChannelId;
         this.panelChannelId = panelChannelId;
     }
+
 
     /**
      * TicketManager inicializálása.
      *
      * @param guildId A guild ID
      * @param ticketCategoryId A ticket csatorna kategória ID
-
      * @param logChannelId A log csatorna ID
      * @param panelChannelId A panel csatorna ID
      */
     public static void init(String guildId,
                             String ticketCategoryId,
-                            String supportRoleId,
                             String logChannelId,
                             String panelChannelId) {
-        instance = new TicketManager(guildId, ticketCategoryId, supportRoleId, logChannelId, panelChannelId);
+        instance = new TicketManager(guildId, ticketCategoryId, logChannelId, panelChannelId);
     }
+
 
     /**
      * Singleton getInstance metódus.
@@ -112,8 +101,14 @@ public class TicketManager {
      */
     private Role getSupportRole(JDA jda) {
         Guild guild = getGuild(jda);
-        return guild != null ? guild.getRoleById(supportRoleId) : null;
+        if (guild == null) return null;
+
+
+        String roleId = TicketConfig.getInstance().getStaffRoleId();
+        return guild.getRoleById(roleId);
     }
+
+
 
     /**
      * A log csatorna objektumának lekérése az ID alapján.
@@ -192,8 +187,7 @@ public class TicketManager {
 
             channel.getManager().setTopic(
                     "Ticket típusa: " + type.name() +
-                            " | Nyitotta: " + member.getUser().getAsTag() +
-                            " | UserID: " + member.getId()
+                            " | Nyitotta: " + member.getUser().getAsTag()
             ).queue();
 
             Guild guild = category.getGuild();
@@ -267,9 +261,10 @@ public class TicketManager {
      * @param closer A csatornát lezáró tag
      */
     public void closeTicketChannel(TextChannel channel, Member closer) {
-        if (channel == null) return;
+        if (channel == null) {
+            return;
+        }
 
-        // --- Lezárási üzenet ---
         EmbedBuilder closing = new EmbedBuilder()
                 .setTitle("Ticket lezárása")
                 .setDescription("A ticketet lezárta: " +
@@ -279,13 +274,7 @@ public class TicketManager {
         channel.sendMessageEmbeds(closing.build()).queue();
 
         Guild guild = channel.getGuild();
-        JDA jda = guild.getJDA();
-        TextChannel logChannel = getLogChannel(jda);
-
-        // --- Ticket megnyitó ID kinyerése a topic-ból ---
-        String openerUserId = extractUserIdFromTopic(channel.getTopic());
-
-        // --- Log üzenet ---
+        TextChannel logChannel = getLogChannel(guild.getJDA());
         if (logChannel != null) {
             EmbedBuilder log = new EmbedBuilder()
                     .setTitle("Ticket lezárva")
@@ -296,102 +285,13 @@ public class TicketManager {
             logChannel.sendMessageEmbeds(log.build()).queue();
         }
 
-        // --- Transcript generálás ---
-        channel.getHistory().retrievePast(1000).queue(messages -> {
+        LogManager.getInstance().sendEmbed(builder ->
+                builder.setTitle("Ticket lezárva (Discord)")
+                        .setColor(Color.RED)
+                        .addField("Csatorna", channel.getName(), true)
+                        .addField("Lezárta", closer != null ? closer.getUser().getAsTag() : "Ismeretlen", false)
+        );
 
-            // TXT transcript
-            StringBuilder txt = new StringBuilder();
-            txt.append("Transcript for ").append(channel.getName()).append("\n\n");
-
-            messages.stream()
-                    .sorted(Comparator.comparing(m -> m.getTimeCreated()))
-                    .forEach(m -> txt.append("[")
-                            .append(m.getTimeCreated())
-                            .append("] ")
-                            .append(m.getAuthor().getName())
-                            .append(": ")
-                            .append(m.getContentDisplay())
-                            .append("\n"));
-
-            // HTML transcript
-            StringBuilder html = new StringBuilder();
-            html.append("<html><body style='font-family:Arial;'>");
-            html.append("<h2>Transcript: ").append(channel.getName()).append("</h2>");
-
-            messages.stream()
-                    .sorted(Comparator.comparing(m -> m.getTimeCreated()))
-                    .forEach(m -> html.append("<p><b>")
-                            .append(m.getAuthor().getName())
-                            .append("</b>: ")
-                            .append(m.getContentDisplay())
-                            .append("</p>"));
-
-            html.append("</body></html>");
-
-            // Mentés fájlba
-            File folder = new File(Main.getInstance().getDataFolder(), "transcripts");
-            if (!folder.exists()) folder.mkdirs();
-
-            File txtFile = new File(folder, channel.getName() + ".txt");
-            File htmlFile = new File(folder, channel.getName() + ".html");
-
-            try {
-                Files.writeString(txtFile.toPath(), txt.toString());
-                Files.writeString(htmlFile.toPath(), html.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            // Küldés log csatornába
-            if (logChannel != null) {
-                logChannel.sendMessage("📄 **Transcript a(z) " + channel.getName() + " tickethez:**")
-                        .addFile(txtFile)
-                        .addFile(htmlFile)
-                        .queue();
-            }
-
-            // Küldés a ticket megnyitónak DM-ben
-            if (openerUserId != null && !openerUserId.isEmpty()) {
-                jda.retrieveUserById(openerUserId).queue(user -> {
-                    if (user != null) {
-                        EmbedBuilder dmEmbed = new EmbedBuilder()
-                                .setTitle("Ticket lezárva")
-                                .setDescription("A(z) " + channel.getName() + " ticketed lezárásra került.")
-                                .addField("Lezárta", closer != null ? closer.getUser().getAsTag() : "Ismeretlen", false)
-                                .setColor(Color.ORANGE)
-                                .setTimestamp(Instant.now());
-
-                        user.openPrivateChannel().queue(privateChannel -> {
-                            privateChannel.sendMessageEmbeds(dmEmbed.build())
-                                    .addFile(txtFile)
-                                    .addFile(htmlFile)
-                                    .queue();
-                        });
-                    }
-                });
-            }
-
-            // Csatorna törlése
-            channel.delete().queueAfter(5, TimeUnit.SECONDS);
-        });
-    }
-
-    /**
-     * Felhasználó ID kinyerése a csatorna topic-ból.
-     * A topic formátuma: "Ticket típusa: ... | Nyitotta: ... | UserID: 123456"
-     *
-     * @param topic A csatorna topic stringje
-     * @return A felhasználó ID vagy null, ha nem található
-     */
-    private String extractUserIdFromTopic(String topic) {
-        if (topic == null || !topic.contains("UserID:")) {
-            return null;
-        }
-
-        int startIndex = topic.indexOf("UserID:") + "UserID:".length();
-        String userIdPart = topic.substring(startIndex).trim();
-        String userId = userIdPart.split(" ")[0];
-
-        return userId.isEmpty() ? null : userId;
+        channel.delete().queueAfter(5, java.util.concurrent.TimeUnit.SECONDS);
     }
 }

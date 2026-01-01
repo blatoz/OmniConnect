@@ -2,58 +2,101 @@ package org.respawn.omniConnect.ticket;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.bukkit.Bukkit;
+import org.respawn.omniConnect.Main;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class TicketConfig {
 
     private static TicketConfig instance;
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    private String guildId = "";
+    private String ticketCategoryId = "";
     private String staffRoleId = "";
+    private String logChannelId = "";
+    private String panelChannelId = "";
+
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static File file;
+
+    public static void load() {
+        file = new File(Main.getInstance().getDataFolder(), "ticketconfig.json");
+
+        if (!file.exists()) {
+            saveDefault();
+        }
+
+        try (FileReader reader = new FileReader(file)) {
+            instance = gson.fromJson(reader, TicketConfig.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            saveDefault();
+        }
+    }
+
+    private static void saveDefault() {
+        instance = new TicketConfig();
+        instance.save();
+    }
+
+    public void save() {
+        try (FileWriter writer = new FileWriter(file)) {
+            gson.toJson(this, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static TicketConfig getInstance() {
-        if (instance == null) {
-            instance = new TicketConfig();
-        }
         return instance;
     }
 
-    public void load(File dataFolder) {
-        try {
-            File file = new File(dataFolder, "ticketconfig.json");
-            if (!file.exists()) {
-                save(dataFolder);
-                return;
-            }
-
-            TicketConfig loaded = gson.fromJson(new FileReader(file), TicketConfig.class);
-            this.staffRoleId = loaded.staffRoleId;
-
-        } catch (Exception e) {
-            Bukkit.getLogger().warning("Nem sikerült betölteni a ticketconfig.json-t!");
-        }
+    public String getGuildId() {
+        return guildId;
     }
 
-    public void save(File dataFolder) {
-        try {
-            File file = new File(dataFolder, "ticketconfig.json");
-            FileWriter writer = new FileWriter(file);
-            gson.toJson(this, writer);
-            writer.close();
-        } catch (Exception e) {
-            Bukkit.getLogger().warning("Nem sikerült menteni a ticketconfig.json-t!");
-        }
+    public String getTicketCategoryId() {
+        return ticketCategoryId;
     }
 
     public String getStaffRoleId() {
         return staffRoleId;
     }
 
+    public String getLogChannelId() {
+        return logChannelId;
+    }
+
+    public String getPanelChannelId() {
+        return panelChannelId;
+    }
+
+    // Setterek, ha később szerkeszteni akarod a JSON-t
+    public void setGuildId(String guildId) {
+        this.guildId = guildId;
+        save();
+    }
+
+    public void setTicketCategoryId(String ticketCategoryId) {
+        this.ticketCategoryId = ticketCategoryId;
+        save();
+    }
+
     public void setStaffRoleId(String staffRoleId) {
         this.staffRoleId = staffRoleId;
+        save();
+    }
+
+    public void setLogChannelId(String logChannelId) {
+        this.logChannelId = logChannelId;
+        save();
+    }
+
+    public void setPanelChannelId(String panelChannelId) {
+        this.panelChannelId = panelChannelId;
+        save();
     }
 }
