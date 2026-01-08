@@ -27,7 +27,7 @@ public class EssentialsJailHook implements Listener {
                     Object player = event.getClass().getMethod("getAffected").invoke(event);
                     String target = (String) player.getClass().getMethod("getName").invoke(player);
 
-                    DiscordLog.send(pluginKey, "🚨 EssentialsX Jail", "Játékos: **" + target + "**");
+                    DiscordLog.send(pluginKey, "🚨 EssentialsX Bebörtönzés", "Játékos: **" + target + "**");
                     break;
                 }
 
@@ -35,7 +35,7 @@ public class EssentialsJailHook implements Listener {
                     Object player = event.getClass().getMethod("getAffected").invoke(event);
                     String target = (String) player.getClass().getMethod("getName").invoke(player);
 
-                    DiscordLog.send(pluginKey, "🔓 EssentialsX Unjail", "Játékos: **" + target + "**");
+                    DiscordLog.send(pluginKey, "🔓 EssentialsX Bebörtönzés Törölve", "Játékos: **" + target + "**");
                     break;
                 }
 

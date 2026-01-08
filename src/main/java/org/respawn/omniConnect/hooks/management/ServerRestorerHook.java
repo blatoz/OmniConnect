@@ -33,8 +33,8 @@ public class ServerRestorerHook implements Listener {
                     String creator = (String) backup.getClass().getMethod("getCreator").invoke(backup);
 
                     DiscordLog.send(pluginKey,
-                            "📦 ServerRestorer – Backup létrehozva",
-                            "Backup neve: **" + backupName + "**\n"
+                            "📦 ServerRestorer – Biztonsági Mentés Létrehozva",
+                            "Biztonsági Mentés Neve: **" + backupName + "**\n"
                                     + "Készítette: **" + creator + "**"
                     );
                     break;
@@ -49,8 +49,8 @@ public class ServerRestorerHook implements Listener {
                     String executor = (String) event.getClass().getMethod("getExecutor").invoke(event);
 
                     DiscordLog.send(pluginKey,
-                            "♻️ ServerRestorer – Backup visszaállítva",
-                            "Backup neve: **" + backupName + "**\n"
+                            "♻️ ServerRestorer – Biztonsági Mentés Visszaállítva",
+                            "Biztonsági Mentés Neve: **" + backupName + "**\n"
                                     + "Visszaállította: **" + executor + "**"
                     );
                     break;
@@ -65,8 +65,8 @@ public class ServerRestorerHook implements Listener {
                     String executor = (String) event.getClass().getMethod("getExecutor").invoke(event);
 
                     DiscordLog.send(pluginKey,
-                            "🗑️ ServerRestorer – Backup törölve",
-                            "Backup neve: **" + backupName + "**\n"
+                            "🗑️ ServerRestorer – Biztonsági Mentés Törölve",
+                            "Biztonsági Mentés Neve: **" + backupName + "**\n"
                                     + "Törölte: **" + executor + "**"
                     );
                     break;

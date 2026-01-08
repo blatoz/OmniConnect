@@ -31,7 +31,7 @@ public class KingdomsXHook implements Listener {
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
                     DiscordLog.send(pluginKey,
-                            "🏰 Új királyság jött létre",
+                            "🏰 Új Királyság Jött Létre",
                             "Játékos: **" + playerName + "**\nKirályság: **" + kingdomName + "**"
                     );
                     break;
@@ -46,7 +46,7 @@ public class KingdomsXHook implements Listener {
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
                     DiscordLog.send(pluginKey,
-                            "💥 Királyság feloszlatva",
+                            "💥 Királyság Feloszlatva",
                             "Játékos: **" + playerName + "**\nKirályság: **" + kingdomName + "**"
                     );
                     break;
@@ -61,7 +61,7 @@ public class KingdomsXHook implements Listener {
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
                     DiscordLog.send(pluginKey,
-                            "➕ Új tag csatlakozott",
+                            "➕ Új Tag Csatlakozott",
                             "Játékos: **" + playerName + "**\nKirályság: **" + kingdomName + "**"
                     );
                     break;
@@ -76,7 +76,7 @@ public class KingdomsXHook implements Listener {
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
                     DiscordLog.send(pluginKey,
-                            "➖ Tag elhagyta a királyságot",
+                            "➖ Tag Elhagyta a Királyságot",
                             "Játékos: **" + playerName + "**\nKirályság: **" + kingdomName + "**"
                     );
                     break;
@@ -97,7 +97,7 @@ public class KingdomsXHook implements Listener {
                     String world = (String) location.getClass().getMethod("getWorld").invoke(location);
 
                     DiscordLog.send(pluginKey,
-                            "📦 Terület lefoglalva",
+                            "📦 Terület Lefoglalva",
                             "Királyság: **" + kingdomName + "**\nJátékos: **" + playerName + "**\n"
                                     + "Hely: **" + world + " @ " + x + ", " + z + "**"
                     );
@@ -119,7 +119,7 @@ public class KingdomsXHook implements Listener {
                     String world = (String) location.getClass().getMethod("getWorld").invoke(location);
 
                     DiscordLog.send(pluginKey,
-                            "📭 Terület elengedve",
+                            "📭 Terület Elengedve",
                             "Királyság: **" + kingdomName + "**\nJátékos: **" + playerName + "**\n"
                                     + "Hely: **" + world + " @ " + x + ", " + z + "**"
                     );
@@ -137,7 +137,7 @@ public class KingdomsXHook implements Listener {
                     String relation = newRel.toString();
 
                     DiscordLog.send(pluginKey,
-                            "⚖️ Diplomácia változás",
+                            "⚖️ Diplomácia Változás",
                             "Királyság: **" + kingdomName + "**\nMásik: **" + otherName + "**\n"
                                     + "Új kapcsolat: **" + relation + "**"
                     );
@@ -154,7 +154,7 @@ public class KingdomsXHook implements Listener {
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
                     DiscordLog.send(pluginKey,
-                            "💰 Bank befizetés",
+                            "💰 Bank Befizetés",
                             "Királyság: **" + kingdomName + "**\nJátékos: **" + playerName + "**\n"
                                     + "Összeg: **" + amount.toString() + "**"
                     );
@@ -171,7 +171,7 @@ public class KingdomsXHook implements Listener {
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
                     DiscordLog.send(pluginKey,
-                            "💸 Bank kivét",
+                            "💸 Bank Kivét",
                             "Királyság: **" + kingdomName + "**\nJátékos: **" + playerName + "**\n"
                                     + "Összeg: **" + amount.toString() + "**"
                     );

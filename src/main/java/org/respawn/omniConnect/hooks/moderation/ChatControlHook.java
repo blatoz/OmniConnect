@@ -33,7 +33,7 @@ public class ChatControlHook implements Listener {
                     String msg = message.toString();
 
                     DiscordLog.send(pluginKey,
-                            "🛑 ChatControl szabálytalanság",
+                            "🛑 ChatControl Szabálytalanság",
                             "Játékos: **" + playerName + "**\n"
                                     + "Szabály: **" + ruleName + "**\n"
                                     + "Üzenet: **" + msg + "**"

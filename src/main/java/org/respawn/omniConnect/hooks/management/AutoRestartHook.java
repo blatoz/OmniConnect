@@ -28,7 +28,7 @@ public class AutoRestartHook implements Listener {
 
         DiscordLog.send(
                 pluginKey,
-                "🔄 AutoRestart – Újraindítási értesítés",
+                "🔄 AutoRestart – Újraindítási Értesítés",
                 "Üzenet: `" + msg + "`"
         );
     }

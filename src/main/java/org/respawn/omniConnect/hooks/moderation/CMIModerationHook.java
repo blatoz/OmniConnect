@@ -27,7 +27,7 @@ public class CMIModerationHook implements Listener {
                     Object banned = event.getClass().getMethod("getBanned").invoke(event);
                     String target = (String) banned.getClass().getMethod("getName").invoke(banned);
 
-                    DiscordLog.send(pluginKey, "⛔ CMI Ban", "Játékos: **" + target + "**");
+                    DiscordLog.send(pluginKey, "⛔ CMI Kitiltás", "Játékos: **" + target + "**");
                     break;
                 }
 
@@ -35,7 +35,7 @@ public class CMIModerationHook implements Listener {
                     Object muted = event.getClass().getMethod("getMuted").invoke(event);
                     String target = (String) muted.getClass().getMethod("getName").invoke(muted);
 
-                    DiscordLog.send(pluginKey, "🔇 CMI Mute", "Játékos: **" + target + "**");
+                    DiscordLog.send(pluginKey, "🔇 CMI Némitás", "Játékos: **" + target + "**");
                     break;
                 }
 
@@ -43,7 +43,7 @@ public class CMIModerationHook implements Listener {
                     Object kicked = event.getClass().getMethod("getKicked").invoke(event);
                     String target = (String) kicked.getClass().getMethod("getName").invoke(kicked);
 
-                    DiscordLog.send(pluginKey, "👢 CMI Kick", "Játékos: **" + target + "**");
+                    DiscordLog.send(pluginKey, "👢 CMI Kirúgás", "Játékos: **" + target + "**");
                     break;
                 }
 
@@ -51,7 +51,7 @@ public class CMIModerationHook implements Listener {
                     Object jailed = event.getClass().getMethod("getJailed").invoke(event);
                     String target = (String) jailed.getClass().getMethod("getName").invoke(jailed);
 
-                    DiscordLog.send(pluginKey, "🚨 CMI Jail", "Játékos: **" + target + "**");
+                    DiscordLog.send(pluginKey, "🚨 CMI Bebörtönzés", "Játékos: **" + target + "**");
                     break;
                 }
 
@@ -59,7 +59,7 @@ public class CMIModerationHook implements Listener {
                     Object jailed = event.getClass().getMethod("getJailed").invoke(event);
                     String target = (String) jailed.getClass().getMethod("getName").invoke(jailed);
 
-                    DiscordLog.send(pluginKey, "🔓 CMI Unjail", "Játékos: **" + target + "**");
+                    DiscordLog.send(pluginKey, "🔓 CMI Bebörtönzés Törölve", "Játékos: **" + target + "**");
                     break;
                 }
 

@@ -29,7 +29,7 @@ public class CoreProtectHook implements Listener {
 
         DiscordLog.send(
                 pluginKey,
-                "🧩 CoreProtect – Parancs végrehajtva (játékos)",
+                "🧩 CoreProtect – Parancs Végrehajtva (Játékos)",
                 "Végrehajtó: **" + playerName + "**\n"
                         + "Parancs: `" + message + "`"
         );
@@ -44,7 +44,7 @@ public class CoreProtectHook implements Listener {
 
         DiscordLog.send(
                 pluginKey,
-                "🧩 CoreProtect – Parancs végrehajtva (konzol)",
+                "🧩 CoreProtect – Parancs Végrehajtva (Konzol)",
                 "Végrehajtó: **CONSOLE**\n"
                         + "Parancs: `/" + command + "`"
         );

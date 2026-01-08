@@ -42,12 +42,12 @@ public class TABHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🏷️ TAB – Prefix/Suffix módosítva",
+                        "🏷️ TAB – Prefix/Suffix Módosítva",
                         "Játékos: **" + playerName + "**\n"
-                                + "Régi prefix: `" + oldPrefix + "`\n"
-                                + "Új prefix: `" + newPrefix + "`\n"
-                                + "Régi suffix: `" + oldSuffix + "`\n"
-                                + "Új suffix: `" + newSuffix + "`"
+                                + "Régi Prefix: `" + oldPrefix + "`\n"
+                                + "Új Prefix: `" + newPrefix + "`\n"
+                                + "Régi Suffix: `" + oldSuffix + "`\n"
+                                + "Új Suffix: `" + newSuffix + "`"
                 );
             }
 

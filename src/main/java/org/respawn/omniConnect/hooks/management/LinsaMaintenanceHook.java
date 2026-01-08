@@ -31,7 +31,7 @@ public class LinsaMaintenanceHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        enabled ? "🛠️ LinsaFTW Maintenance bekapcsolva" : "🟢 LinsaFTW Maintenance kikapcsolva",
+                        enabled ? "🛠️ LinsaFTW Maintenance Kekapcsolva" : "🟢 LinsaFTW Maintenance Kikapcsolva",
                         "Végrehajtotta: **" + executor + "**"
                 );
             }

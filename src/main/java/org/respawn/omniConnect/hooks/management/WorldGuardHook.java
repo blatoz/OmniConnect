@@ -37,7 +37,7 @@ public class WorldGuardHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "📐 WorldGuard – Régió létrehozva",
+                        "📐 WorldGuard – Régió Létrehozva",
                         "Régió: **" + id + "**\n"
                                 + "Létrehozta: **" + executor + "**"
                 );
@@ -56,7 +56,7 @@ public class WorldGuardHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🗑️ WorldGuard – Régió törölve",
+                        "🗑️ WorldGuard – Régió Törölve",
                         "Régió: **" + id + "**\n"
                                 + "Törölte: **" + executor + "**"
                 );
@@ -76,7 +76,7 @@ public class WorldGuardHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "✏️ WorldGuard – Régió módosítva",
+                        "✏️ WorldGuard – Régió Módosítva",
                         "Régió: **" + id + "**\n"
                                 + "Módosította: **" + executor + "**"
                 );
@@ -100,11 +100,11 @@ public class WorldGuardHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🚩 WorldGuard – Flag módosítva",
+                        "🚩 WorldGuard – Flag Módosítva",
                         "Régió: **" + id + "**\n"
                                 + "Flag: **" + flag + "**\n"
-                                + "Régi érték: **" + oldVal + "**\n"
-                                + "Új érték: **" + newVal + "**\n"
+                                + "Régi Érték: **" + oldVal + "**\n"
+                                + "Új Érték: **" + newVal + "**\n"
                                 + "Módosította: **" + executor + "**"
                 );
             }

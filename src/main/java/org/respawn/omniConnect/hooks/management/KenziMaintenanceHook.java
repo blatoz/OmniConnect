@@ -32,7 +32,7 @@ public class KenziMaintenanceHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🛠️ Kenzi’s Maintenance bekapcsolva",
+                        "🛠️ Kenzi’s Maintenance Bekapcsolva",
                         "Végrehajtotta: **" + executor + "**"
                 );
             }
@@ -47,7 +47,7 @@ public class KenziMaintenanceHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🟢 Kenzi’s Maintenance kikapcsolva",
+                        "🟢 Kenzi’s Maintenance Kikapcsolva",
                         "Végrehajtotta: **" + executor + "**"
                 );
             }

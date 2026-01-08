@@ -217,7 +217,7 @@ public class TicketManager {
                     .queue();
 
             EmbedBuilder openEmbed = new EmbedBuilder()
-                    .setTitle("Ticket megnyitva – " + type.getButtonLabel())
+                    .setTitle("Ticket Megnyitva – " + type.getButtonLabel())
                     .setDescription(
                             "Üdv, " + member.getAsMention() + "!\n\n" +
                                     type.getDescription() + "\n\n" +
@@ -227,14 +227,14 @@ public class TicketManager {
 
             channel.sendMessageEmbeds(openEmbed.build())
                     .setActionRow(
-                            Button.danger("ticket:close", "🔒 Ticket lezárása")
+                            Button.danger("ticket:close", "🔒 Ticket Lezárása")
                     )
                     .queue();
 
             TextChannel logChannel = getLogChannel(jda);
             if (logChannel != null) {
                 EmbedBuilder log = new EmbedBuilder()
-                        .setTitle("Ticket nyitva")
+                        .setTitle("Ticket Nyitva")
                         .setColor(Color.GREEN)
                         .addField("Típus", type.name(), true)
                         .addField("Felhasználó", member.getUser().getAsTag(), true)
@@ -245,7 +245,7 @@ public class TicketManager {
             }
 
             LogManager.getInstance().sendEmbed(builder ->
-                    builder.setTitle("Ticket nyitva (Discord)")
+                    builder.setTitle("Ticket Nyitva (Discord)")
                             .setColor(Color.GREEN)
                             .addField("Típus", type.name(), true)
                             .addField("Felhasználó", member.getUser().getAsTag(), true)
@@ -266,7 +266,7 @@ public class TicketManager {
         }
 
         EmbedBuilder closing = new EmbedBuilder()
-                .setTitle("Ticket lezárása")
+                .setTitle("Ticket Lezárása")
                 .setDescription("A ticketet lezárta: " +
                         (closer != null ? closer.getUser().getAsTag() : "Ismeretlen"))
                 .setColor(Color.ORANGE);
@@ -277,7 +277,7 @@ public class TicketManager {
         TextChannel logChannel = getLogChannel(guild.getJDA());
         if (logChannel != null) {
             EmbedBuilder log = new EmbedBuilder()
-                    .setTitle("Ticket lezárva")
+                    .setTitle("Ticket Lezárva")
                     .setColor(Color.RED)
                     .addField("Csatorna", channel.getName(), true)
                     .addField("Csatorna ID", channel.getId(), true)
@@ -286,7 +286,7 @@ public class TicketManager {
         }
 
         LogManager.getInstance().sendEmbed(builder ->
-                builder.setTitle("Ticket lezárva (Discord)")
+                builder.setTitle("Ticket Lezárva (Discord)")
                         .setColor(Color.RED)
                         .addField("Csatorna", channel.getName(), true)
                         .addField("Lezárta", closer != null ? closer.getUser().getAsTag() : "Ismeretlen", false)

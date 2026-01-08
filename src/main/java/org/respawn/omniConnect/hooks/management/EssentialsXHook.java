@@ -30,7 +30,7 @@ public class EssentialsXHook implements Listener {
 
         DiscordLog.send(
                 pluginKey,
-                "📘 EssentialsX – Parancs végrehajtva (játékos)",
+                "📘 EssentialsX – Parancs Végrehajtva (Játékos)",
                 "Játékos: **" + player + "**\n"
                         + "Parancs: `" + msg + "`"
         );
@@ -46,7 +46,7 @@ public class EssentialsXHook implements Listener {
 
         DiscordLog.send(
                 pluginKey,
-                "📘 EssentialsX – Parancs végrehajtva (konzol)",
+                "📘 EssentialsX – Parancs Végrehajtva (Konzol)",
                 "Játékos: **CONSOLE**\n"
                         + "Parancs: `" + msg + "`"
         );

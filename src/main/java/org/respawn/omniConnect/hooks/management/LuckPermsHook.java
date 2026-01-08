@@ -35,7 +35,7 @@ public class LuckPermsHook implements Listener {
                     String nodeStr = node.toString();
 
                     DiscordLog.send(pluginKey,
-                            "🔑 LuckPerms – Jog hozzáadva",
+                            "🔑 LuckPerms – Jog Hozzáadva",
                             "Cél: **" + targetName + "**\n"
                                     + "Jog: **" + nodeStr + "**"
                     );
@@ -53,7 +53,7 @@ public class LuckPermsHook implements Listener {
                     String nodeStr = node.toString();
 
                     DiscordLog.send(pluginKey,
-                            "🗑️ LuckPerms – Jog eltávolítva",
+                            "🗑️ LuckPerms – Jog Eltávolítva",
                             "Cél: **" + targetName + "**\n"
                                     + "Jog: **" + nodeStr + "**"
                     );
@@ -68,7 +68,7 @@ public class LuckPermsHook implements Listener {
                     String username = (String) user.getClass().getMethod("getUsername").invoke(user);
 
                     DiscordLog.send(pluginKey,
-                            "♻️ LuckPerms – User adat újraszámolva",
+                            "♻️ LuckPerms – Felhasználó Adat Újraszámolva",
                             "Felhasználó: **" + username + "**"
                     );
                     break;
@@ -82,7 +82,7 @@ public class LuckPermsHook implements Listener {
                     String groupName = (String) group.getClass().getMethod("getName").invoke(group);
 
                     DiscordLog.send(pluginKey,
-                            "📁 LuckPerms – Csoport létrehozva",
+                            "📁 LuckPerms – Csoport Létrehozva",
                             "Csoport: **" + groupName + "**"
                     );
                     break;
@@ -96,7 +96,7 @@ public class LuckPermsHook implements Listener {
                     String groupName = (String) group.getClass().getMethod("getName").invoke(group);
 
                     DiscordLog.send(pluginKey,
-                            "🗑️ LuckPerms – Csoport törölve",
+                            "🗑️ LuckPerms – Csoport Törölve",
                             "Csoport: **" + groupName + "**"
                     );
                     break;

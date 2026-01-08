@@ -32,7 +32,7 @@ public class FlectoneMaintenanceHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🛠️ Flectone Maintenance bekapcsolva",
+                        "🛠️ Flectone Maintenance Bekapcsolva",
                         "Végrehajtotta: **" + executor + "**"
                 );
             }
@@ -47,7 +47,7 @@ public class FlectoneMaintenanceHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🟢 Flectone Maintenance kikapcsolva",
+                        "🟢 Flectone Maintenance Kikapcsolva",
                         "Végrehajtotta: **" + executor + "**"
                 );
             }
