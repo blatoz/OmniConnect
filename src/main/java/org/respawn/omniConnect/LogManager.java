@@ -65,6 +65,11 @@ public class LogManager {
         }
 
         try {
+            if (!DiscordManager.ready) {
+                Main.getInstance().getLogger().warning("Discord bot nem áll rendelkezésre, log csatorna nem elérhető.");
+                return null;
+            }
+
             return DiscordManager.getInstance().getJDA().getTextChannelById(channelId);
         } catch (IllegalStateException e) {
             Main.getInstance().getLogger().warning("Discord JDA nem elérhető, nem lehet log csatornát lekérni: " + e.getMessage());

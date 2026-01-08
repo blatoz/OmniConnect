@@ -59,22 +59,44 @@ public class Main extends JavaPlugin {
         // Discord bot indítása
         DiscordManager.getInstance().start();
 
-        // Log Discordra induláskor
-        LogManager.getInstance().sendEmbed(embed -> embed
-                .setTitle("Szerver elindult")
-                .setColor(Color.GREEN)
-                .addField("Státusz", "A Minecraft szerver elindult és az OmniConnect aktív.", false)
-        );
+        // Log Discordra induláskor (csak ha a bot készen áll)
+        if (DiscordManager.ready) {
+            try {
+                String botName = DiscordManager.getInstance().getJDA().getSelfUser().getName();
+                String botAvatar = DiscordManager.getInstance().getJDA().getSelfUser().getAvatarUrl();
+
+                LogManager.getInstance().sendEmbed(embed -> embed
+                        .setAuthor(botName, null, botAvatar)
+                        .setTitle("Szerver elindult")
+                        .setColor(Color.GREEN)
+                        .addField("Státusz", "A Minecraft szerver elindult és az OmniConnect aktív.\nA plugin sikeresen újratöltött.", false)
+                );
+            } catch (Exception e) {
+                getLogger().warning("Nem sikerült az embed küldése: " + e.getMessage());
+            }
+        } else {
+            getLogger().warning("A Discord bot nem áll rendelkezésre, az indulási üzenet nem került elküldésre.");
+        }
     }
 
     @Override
     public void onDisable() {
-        // Log Discordra leálláskor
-        LogManager.getInstance().sendEmbed(embed -> embed
-                .setTitle("Szerver leáll")
-                .setColor(Color.RED)
-                .addField("Státusz", "A Minecraft szerver leállt vagy újraindul.", false)
-        );
+        // Log Discordra leálláskor (csak ha a bot még elérhető)
+        if (DiscordManager.ready) {
+            try {
+                String botName = DiscordManager.getInstance().getJDA().getSelfUser().getName();
+                String botAvatar = DiscordManager.getInstance().getJDA().getSelfUser().getAvatarUrl();
+
+                LogManager.getInstance().sendEmbed(embed -> embed
+                        .setAuthor(botName, null, botAvatar)
+                        .setTitle("Szerver leáll")
+                        .setColor(Color.RED)
+                        .addField("Státusz", "A Minecraft szerver leállt vagy újraindul.\nVagy a plugint újratöltik.", false)
+                );
+            } catch (Exception e) {
+                getLogger().warning("Nem sikerült a leállási üzenet küldése: " + e.getMessage());
+            }
+        }
 
         DiscordManager.getInstance().shutdown();
     }

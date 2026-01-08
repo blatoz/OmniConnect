@@ -152,12 +152,9 @@ public class DiscordManager {
     /**
      * A JDA instancia lekérése.
      *
-     * Ez a metódus soha nem ad vissza null-t. Ha a JDA még nincs inicializálva,
-     * megpróbálja elindítani a botot a configból olvasott tokennel és blokkol addig,
-     * amíg a bot készen áll. Ha nincs token vagy a startup sikertelen, IllegalStateException-t dob.
+     * Ez a metódus null-t ad vissza, ha a JDA még nincs inicializálva vagy nincs token.
      *
-     * @return JDA instancia (soha nem null)
-     * @throws IllegalStateException ha a JDA nem inicializálható
+     * @return JDA instancia vagy null, ha nem elérhető
      */
     public synchronized JDA getJDA() {
         if (jda == null) {
@@ -167,14 +164,16 @@ public class DiscordManager {
                 token = Main.getInstance().getConfig().getString("discord.bot-token");
             }
             if (token == null || token.isEmpty()) {
-                throw new IllegalStateException("Discord bot token nincs megadva a config.yml-ben, így a JDA nem inicializálható.");
+                Bukkit.getLogger().warning("[OmniConnect] Discord bot token nincs megadva a config.yml-ben, így a JDA nem inicializálható.");
+                return null;
             }
 
             // Attempt to start synchronously
             start();
 
             if (jda == null) {
-                throw new IllegalStateException("A JDA inicializálása sikertelen volt.");
+                Bukkit.getLogger().warning("[OmniConnect] A JDA inicializálása sikertelen volt.");
+                return null;
             }
         }
         return jda;
@@ -189,7 +188,10 @@ public class DiscordManager {
      */
     public void sendMinecraftChat(String playerName, String message, String rank) {
         try {
-            JDA currentJda = getJDA(); // will throw if unavailable
+            JDA currentJda = getJDA();
+            if (currentJda == null) {
+                return; // Bot nem elérhető, ne küldünk üzenetet
+            }
 
             // Prefer the actual keys from config.yml: discord.chat-bridge.channel-id or discord.channels.main
             String channelId = Main.getInstance().getConfig().getString("discord.chat-bridge.channel-id");
@@ -226,9 +228,6 @@ public class DiscordManager {
                     .setTimestamp(Instant.now());
 
             channel.sendMessageEmbeds(embed.build()).queue();
-        } catch (IllegalStateException e) {
-            // JDA nem elérhető
-            Bukkit.getLogger().warning("[OmniConnect] Nem lehet üzenetet küldeni Discordra: " + e.getMessage());
         } catch (Exception e) {
             Bukkit.getLogger().severe("[OmniConnect] Hiba történt a Discord üzenetküldés során: " + e.getMessage());
         }
