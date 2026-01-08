@@ -30,8 +30,8 @@ public class LightAntiCheatHook implements Listener {
             String checkName = check.toString();
 
             DiscordLog.send(pluginKey,
-                    "⚠️ LightAntiCheat riasztás",
-                    "Játékos: **" + playerName + "**\nCheck: **" + checkName + "**\nVL: **" + vl + "**"
+                    "⚠️ LightAntiCheat Riasztás",
+                    "Játékos: **" + playerName + "**\nHack Típus: **" + checkName + "**\nVL(Szabálysértés): **" + vl + "**"
             );
 
         } catch (Exception ignored) {}

@@ -28,8 +28,8 @@ public class GrimHook implements Listener {
             String checkName = (String) check.getClass().getMethod("getName").invoke(check);
 
             DiscordLog.send(pluginKey,
-                    "⚠️ GrimAC riasztás",
-                    "Játékos: **" + playerName + "**\nCheck: **" + checkName + "**\nVL: **" + vl + "**"
+                    "⚠️ GrimAC Riasztás",
+                    "Játékos: **" + playerName + "**\nHack Típus: **" + checkName + "**\nVL(Szabálysértés): **" + vl + "**"
             );
         } catch (Exception ignored) {}
     }

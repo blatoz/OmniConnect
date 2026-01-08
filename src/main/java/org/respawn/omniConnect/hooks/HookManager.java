@@ -136,6 +136,107 @@ public class HookManager {
         );
 
     }
+    private static void initEconomyHooks() {
+        FileConfiguration cfg = Main.getInstance().getConfig();
+
+        if (!cfg.getBoolean("economy.enabled")) {
+            Bukkit.getLogger().info("[OmniConnect] Gazdasági hookok letiltva.");
+            return;
+        }
+        hook("playerpoints",
+                "com.playerpoints.api.events.PlayerPointsChangeEvent",
+                org.respawn.omniConnect.hooks.economy.PlayerPointsHook.class
+        );
+        hook("coinmanager",
+                "me.coinmanager.api.events.CoinChangeEvent",
+                org.respawn.omniConnect.hooks.economy.CoinManagerHook.class
+        );
+        hook("azrovaeconomy",
+                "com.azrodev.economy.api.events.EconomyChangeEvent",
+                org.respawn.omniConnect.hooks.economy.AzrovaEconomyHook.class
+        );
+        hook("essentialseconomy",
+                "com.earth2me.essentials.api.events.EconomyChangeEvent",
+                org.respawn.omniConnect.hooks.economy.EssentialsEconomyHook.class
+        );
+        hook("dzeconomy",
+                "com.drexelcraft.dzeconomy.api.events.EconomyChangeEvent",
+                org.respawn.omniConnect.hooks.economy.DZEconomyHook.class
+        );
+        hook("ezeconomy",
+                "com.ezeconomy.api.events.EconomyChangeEvent",
+                org.respawn.omniConnect.hooks.economy.EzEconomyHook.class
+        );
+        hook("xconomy",
+                "com.xconomy.api.events.EconomyChangeEvent",
+                org.respawn.omniConnect.hooks.economy.XConomyHook.class
+        );
+    }
+    private static void initManagementHooks() {
+        FileConfiguration cfg = Main.getInstance().getConfig();
+
+        if (!cfg.getBoolean("management.enabled")) {
+            Bukkit.getLogger().info("[OmniConnect] Menedzsment hookok letiltva.");
+            return;
+        }
+        hook("autorestart",
+                "com.autorestart.api.events.ServerRestartEvent",
+                org.respawn.omniConnect.hooks.management.AutoRestartHook.class
+        );
+        hook("coreprotect",
+                "com.coreprotect.api.events.BlockRollbackEvent",
+                org.respawn.omniConnect.hooks.management.CoreProtectHook.class
+        );
+        hook("essentialsx",
+                "com.earth2me.essentials.events.EssentialsRestartEvent",
+                org.respawn.omniConnect.hooks.management.EssentialsXHook.class
+        );
+        hook("luckperms",
+                "net.luckperms.api.event.user.UserDataRecalculateEvent",
+                org.respawn.omniConnect.hooks.management.LuckPermsHook.class
+        );
+        hook("tab",
+                "me.neznamy.tab.api.event.TabPlayerLoadEvent",
+                org.respawn.omniConnect.hooks.management.TABHook.class
+        );
+        hook("flectonemaintenance",
+                "com.flectonemaintenance.api.events.ServerMaintenanceEvent",
+                org.respawn.omniConnect.hooks.management.FlectoneMaintenanceHook.class
+        );
+        hook("linsamaintenance",
+                "com.linsama.maintenance.api.events.ServerMaintenanceEvent",
+                org.respawn.omniConnect.hooks.management.LinsaMaintenanceHook.class
+        );
+        hook("kenzimaintenance",
+                "com.kenzimaintenance.api.events.ServerMaintenanceEvent",
+                org.respawn.omniConnect.hooks.management.KenziMaintenanceHook.class
+        );
+        hook("plugmanx",
+                "com.plugmanx.api.events.PluginEnableEvent",
+                org.respawn.omniConnect.hooks.management.PlugManXHook.class
+        );
+        hook("nametagedit",
+                "me.clip.nametagedit.api.event.NametagEditEvent",
+                org.respawn.omniConnect.hooks.management.NametagEditHook.class
+        );
+        hook("worldedit",
+                "com.sk89q.worldedit.event.platform.CommandEvent",
+                org.respawn.omniConnect.hooks.management.WorldEditHook.class
+        );
+        hook("worldguard",
+                "com.sk89q.worldguard.bukkit.event.RegionEnterEvent",
+                org.respawn.omniConnect.hooks.management.WorldGuardHook.class
+        );
+        hook("serverrestorer",
+                "com.serverrestorer.api.events.ServerRestoreEvent",
+                org.respawn.omniConnect.hooks.management.ServerRestorerHook.class
+        );
+        hook("kennytvmaintenance",
+                "eu.kennytv.maintenance.api.event.MaintenanceEnableEvent",
+                org.respawn.omniConnect.hooks.management.KennyTVMaintenanceHook.class
+        );
+
+    }
 
 
     private static void hook(String key, String className, Class<?> hookClass) {

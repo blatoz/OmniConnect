@@ -1,124 +1,251 @@
+# ═══════════════════════════════════════════════════════════════
+# OmniConnect v1.0
+#
+# Leírás:
+#   Discord ↔ Minecraft integráció logolással, chat bridge-el
+#   és több plugin (Anticheat / Moderation / Kingdoms) támogatással.
+#
+# Nyelv: Magyar (HU)
+# Szerző: Daniyt_th (discord: .daniyt_th.)
+#
+# Megjegyzés:
+#   • A log-channel mezők üresen hagyva az alapértelmezett csatornát használják
+#   • enabled: False / false
+#
+# ═══════════════════════════════════════════════════════════════
+
+
+# ──────────────────────────────────────────────────────────────
+# DISCORD BEÁLLÍTÁSOK
+# ──────────────────────────────────────────────────────────────
 discord:
-  token: "IDE_IRD_A_DISCORD_BOT_TOKENED" # A Discord bot tokenje
-  mainChannelId: "DISCORD_CSATORNA_ID_A_CHAT_BRIDGEHEZ" # A fő Discord csatorna ID a chat bridge számára
-  logChannelId: "LOG_CSATORNA_ID" # Opcionális: Log csatorna ID a bot eseményekhez
-  guild-id: "DISCORD_SZERVER_ID" # A Discord szerver ID, ahol a bot működik
+  token: "IDE_IRD_A_DISCORD_BOT_TOKENED"         # Discord bot token
+  guild-id: "DISCORD_SZERVER_ID"                 # Discord szerver ID
 
-  chat:
-    channel-id: "CHAT_BRIDGE_CSATORNA_ID" # A Discord csatorna ID, ahol a chat üzenetek megjelennek
+  channels:
+    main: "DISCORD_CSATORNA_ID"                  # Fő Discord csatorna
+    log: "LOG_CSATORNA_ID"                       # Bot log csatorna
 
-# Anticheat konfigurációk
+  chat-bridge:
+    channel-id: "CHAT_BRIDGE_CSATORNA_ID"        # Chat bridge célcsatorna
+
+
+# ──────────────────────────────────────────────────────────────
+# ANTICHEAT LOGOLÁS
+# Megjegyzés: Itt a híresebbek vannak itt, ha nincsen amit keresel akkor csatlakozz a discord szerverünk be: https://discord.gg/zr2bamrwyZ
+# ──────────────────────────────────────────────────────────────
 anticheat:
-  enabled: true # Anticheat logolás engedélyezése/tiltása Értékek: true/false
-  default-log-channel: "ANTICHEAT_LOG_CSATORNA_ID" # Alapértelmezett log csatorna ID, ha nincs megadva egyedi csatorna
+  enabled: False # Értékek: False/false
+  default-log-channel: "ALAP_ANTICHEAT_LOG_CSATORNA_ID"
 
   matrix:
-    enabled: true # Matrix anticheat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   vulcan:
-    enabled: true # Vulcan anticheat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   spartan:
-    enabled: true # Spartan anticheat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   grim:
-    enabled: true # Grim anticheat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
-  aac:
-    enabled: true # AAC anticheat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
 
-  ncp:
-    enabled: true # NoCheatPlus anticheat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
-
-  negativity:
-    enabled: true # Negativity anticheat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
-
-  lightac:
-    enabled: true # Lightanticheat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
-
-    
+# ──────────────────────────────────────────────────────────────
+# EXPLOIT ELLENI VÉDELEM
+# Megjegyzés: Itt a híresebbek vannak itt, ha nincsen amit keresel akkor csatlakozz a discord szerverünk be: htttps://discord.gg/zr2bamrwyZ
+# ──────────────────────────────────────────────────────────────
 exploitfix:
-  enabled: true # ExploitFixeres pluginok logolás engedélyezése/tiltása Értékek: true/false
-  default-log-channel: "" # Alapértelmezett log csatorna ID, ha nincs megadva egyedi csatorna
+  enabled: False # Értékek: False/false
+  default-log-channel: ""
 
   exploitfixer:
-    enabled: true # ExploitFixer logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   lpx:
-    enabled: true # LPX logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   aef:
-    enabled: true # AdvancedExploitFixer logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
+
+# ──────────────────────────────────────────────────────────────
+# KINGDOMS
+# ──────────────────────────────────────────────────────────────
 kingdoms:
-  enabled: true # Kingdoms plugin logolás engedélyezése/tiltása Értékek: true/false
-  default-log-channel: "" # Log csatorna ID a Kingdoms eseményekhez, ha üres az alapértelmezett csatornát használja
-  management:
-    log-channel: "" # Egyedi log csatorna ID a királyság menedzsment eseményekhez
+  enabled: False # Értékek: False/false
+  default-log-channel: ""
 
+  management:
+    log-channel: ""
+
+
+# ──────────────────────────────────────────────────────────────
+# MODERÁCIÓS PLUGINOK
+# Itt bűntetéseket adnak ki pluginok vannak itt, ha nincsen amit keresel akkor csatlakozz a discord szerverünk be: htttps://discord.gg/zr2bamrwyZ
+# ──────────────────────────────────────────────────────────────
 moderation:
-  enabled: true # Moderációs pluginok logolás engedélyezése/tiltása Értékek: true/false
-  default-log-channel: "" # Alapértelmezett log csatorna ID, ha nincs megadva egyedi csatorna
+  enabled: False # Értékek: False/false
+  default-log-channel: ""
 
   litebans:
-    enabled: true # LiteBans logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   advancedban:
-    enabled: true # AdvancedBan logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   essentials:
-    enabled: true # Essentials logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   essentialsjail:
-    enabled: true # EssentialsJail logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   cmi:
-    enabled: true # CMI logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   chatcontrol:
-    enabled: true # ChatControl Logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   chatcontrolred:
-    enabled: true # ChatControl Red Logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   staffplus:
-    enabled: true # StaffPlus logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   staffchat:
-    enabled: true # Staff Chat logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   playerreport:
-    enabled: true # PlayerReport logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   matrixreport:
-    enabled: true # MatrixReport logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   vulcanreport:
-    enabled: true # VulcanReport logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
 
   libertybans:
-    enabled: true # LibertyBans logolás engedélyezése/tiltása Értékek: true/false
-    log-channel: "" # Egyedi log csatorna ID, ha üres az alapértelmezett csatornát használja
+    enabled: False # Értékek: False/false
+    log-channel: ""
+
+# ──────────────────────────────────────────────────────────────
+# ECONOMY PLUGINOK
+# Itt az economy pluginok vannak, ha nincsen amit keresel akkor csatlakozz a discord szerverünk be: htttps://discord.gg/zr2bamrwyZ
+# ──────────────────────────────────────────────────────────────
+
+economy:
+    enabled: False # Értékek: False/false
+    default-log-channel: ""
+
+    playerpoints:
+      enabled: False # Értékek: False/false
+      log-channel: ""
+
+    coinmanager:
+      enabled: False # Értékek: False/false
+      log-channel: ""
+
+    azrovaeconomy:
+      enabled: False # Értékek: False/false
+      log-channel: ""
+
+    dzeconomy:
+      enabled: False # Értékek: False/false
+      log-channel: ""
+
+    essentialsxeco:
+      enabled: False # Értékek: False/false
+      log-channel: ""
+
+    ezeconomy:
+      enabled: False # Értékek: False/false
+      log-channel: ""
+
+    xconomy:
+      enabled: False # Értékek: False/false
+      log-channel: ""
+
+# ──────────────────────────────────────────────────────────────
+# MANAGEMENT PLUGINOK
+# Itt az admin, karbantartás, utility és logoló pluginok hookjai vannak
+# ──────────────────────────────────────────────────────────────
+management:
+    enabled: False # Értékek: False/false
+    default-log-channel: ""
+
+    autorestart:
+      enabled: False # Értékek: False/false
+      log-channel: ""
+
+    coreprotect:
+      enabled: False
+      log-channel: ""
+
+    essentialsx:
+      enabled: False
+      log-channel: ""
+
+    flectonemaintenance:
+      enabled: False
+      log-channel: ""
+
+    kennytvmaintenance:
+      enabled: False
+      log-channel: ""
+
+    kenzimaintenance:
+      enabled: False
+      log-channel: ""
+
+    linsamaintenance:
+      enabled: False
+      log-channel: ""
+
+    luckperms:
+      enabled: False
+      log-channel: ""
+
+    nametagedit:
+      enabled: False
+      log-channel: ""
+
+    plugmanx:
+      enabled: False
+      log-channel: ""
+
+    serverrestorer:
+      enabled: False
+      log-channel: ""
+
+    tab:
+      enabled: False
+      log-channel: ""
+
+    worldedit:
+      enabled: False
+      log-channel: ""
+
+    worldguard:
+      enabled: False
+      log-channel: ""
+
+

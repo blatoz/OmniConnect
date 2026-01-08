@@ -28,8 +28,8 @@ public class VulcanHook implements Listener {
             int vl = (int) check.getClass().getMethod("getVl").invoke(check);
 
             DiscordLog.send(pluginKey,
-                    "⚠️ Vulcan riasztás",
-                    "Játékos: **" + playerName + "**\nCheck: **" + checkName + "**\nVL: **" + vl + "**"
+                    "⚠️ Vulcan Riasztás",
+                    "Játékos: **" + playerName + "**\nCheck: **" + checkName + "**\nVL(Szabálysértés): **" + vl + "**"
             );
         } catch (Exception ignored) {}
     }

@@ -28,8 +28,8 @@ public class NegativityHook implements Listener {
             String cheatName = (String) cheat.getClass().getMethod("getName").invoke(cheat);
 
             DiscordLog.send(pluginKey,
-                    "⚠️ Negativity riasztás",
-                    "Játékos: **" + playerName + "**\nCheat: **" + cheatName + "**\nReliability: **" + reliability + "**"
+                    "⚠️ Negativity Riasztás",
+                    "Játékos: **" + playerName + "**\nCsalás Típus: **" + cheatName + "**\nReliability: **" + reliability + "**"
             );
         } catch (Exception ignored) {}
     }

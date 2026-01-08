@@ -27,8 +27,8 @@ public class AACHook implements Listener {
             String playerName = (String) player.getClass().getMethod("getName").invoke(player);
 
             DiscordLog.send(pluginKey,
-                    "⚠️ AAC riasztás",
-                    "Játékos: **" + playerName + "**\nCheck: **" + hackType.toString() + "**\nVL: **" + vl + "**"
+                    "⚠️ AAC Riasztás",
+                    "Játékos: **" + playerName + "**\nHack Típus: **" + hackType.toString() + "**\nVL(Szabálysértés): **" + vl + "**"
             );
         } catch (Exception ignored) {}
     }

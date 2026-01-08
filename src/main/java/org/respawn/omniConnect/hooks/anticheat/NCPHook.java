@@ -27,8 +27,8 @@ public class NCPHook implements Listener {
             String playerName = (String) player.getClass().getMethod("getName").invoke(player);
 
             DiscordLog.send(pluginKey,
-                    "⚠️ NoCheatPlus riasztás",
-                    "Játékos: **" + playerName + "**\nCheck: **" + type.toString() + "**\nVL: **" + vl + "**"
+                    "⚠️ NoCheatPlus Riasztás",
+                    "Játékos: **" + playerName + "**\nHack Típus: **" + type.toString() + "**\nVL(Szabálysértés): **" + vl + "**"
             );
         } catch (Exception ignored) {}
     }

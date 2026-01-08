@@ -27,8 +27,8 @@ public class MatrixHook implements Listener {
             String playerName = (String) player.getClass().getMethod("getName").invoke(player);
 
             DiscordLog.send(pluginKey,
-                    "⚠️ Matrix riasztás",
-                    "Játékos: **" + playerName + "**\nHack: **" + hackType.toString() + "**"
+                    "⚠️ Matrix Riasztás",
+                    "Játékos: **" + playerName + "**\nHack Típus: **" + hackType.toString() + "**"
             );
         } catch (Exception ignored) {}
     }

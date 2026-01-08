@@ -52,6 +52,9 @@ public class Main extends JavaPlugin {
                 panelChannelId
         );
         HookManager.init();
+        HookManager.initExploitFixHooks();
+        HookManager.initKingdomsHooks();
+        HookManager.initModerationHooks();
 
         // Discord bot indítása
         DiscordManager.getInstance().start();

@@ -50,12 +50,25 @@ public class LogManager {
      * @return TextChannel instancia vagy null, ha nem létezik
      */
     private TextChannel getLogChannel() {
-        String channelId = Main.getInstance().getConfig().getString("discord.logChannelId");
+        // Prefer config keys present in config.yml
+        String channelId = Main.getInstance().getConfig().getString("discord.channels.log");
         if (channelId == null || channelId.isEmpty()) {
-            Main.getInstance().getLogger().warning("Nincs logChannelId beállítva a config.yml-ben!");
+            channelId = Main.getInstance().getConfig().getString("discord.channels.main");
+        }
+        if (channelId == null || channelId.isEmpty()) {
+            channelId = Main.getInstance().getConfig().getString("discord.chat-bridge.channel-id");
+        }
+
+        if (channelId == null || channelId.isEmpty()) {
+            Main.getInstance().getLogger().warning("Nincs log csatorna beállítva a config.yml-ben!");
             return null;
         }
 
-        return DiscordManager.getInstance().getJDA().getTextChannelById(channelId);
+        try {
+            return DiscordManager.getInstance().getJDA().getTextChannelById(channelId);
+        } catch (IllegalStateException e) {
+            Main.getInstance().getLogger().warning("Discord JDA nem elérhető, nem lehet log csatornát lekérni: " + e.getMessage());
+            return null;
+        }
     }
 }

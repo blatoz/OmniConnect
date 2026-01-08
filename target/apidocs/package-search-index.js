@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.respawn.omniConnect"},{"l":"org.respawn.omniConnect.discord"},{"l":"org.respawn.omniConnect.listeners"},{"l":"org.respawn.omniConnect.ticket"},{"l":"org.respawn.omniConnect.util"}];updateSearchResults();
