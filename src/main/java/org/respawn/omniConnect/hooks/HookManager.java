@@ -136,7 +136,7 @@ public class HookManager {
         );
 
     }
-    private static void initEconomyHooks() {
+    public static void initEconomyHooks() {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("economy.enabled")) {
@@ -172,7 +172,7 @@ public class HookManager {
                 org.respawn.omniConnect.hooks.economy.XConomyHook.class
         );
     }
-    private static void initManagementHooks() {
+    public static void initManagementHooks() {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("management.enabled")) {

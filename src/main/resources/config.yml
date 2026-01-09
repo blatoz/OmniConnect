@@ -19,15 +19,41 @@
 # DISCORD BEÁLLÍTÁSOK
 # ──────────────────────────────────────────────────────────────
 discord:
-  token: "IDE_IRD_A_DISCORD_BOT_TOKENED"         # Discord bot token
-  guild-id: "DISCORD_SZERVER_ID"                 # Discord szerver ID
+  discordmoderation:
+    enabled: true
+    log-channel: "DISCORD_MOD_LOG_CHANNEL_ID"
 
   channels:
-    main: "DISCORD_CSATORNA_ID"                  # Fő Discord csatorna
-    log: "LOG_CSATORNA_ID"                       # Bot log csatorna
+    discord-moderation: "DISCORD_MOD_LOG_CHANNEL_ID"
+    links: "LINK_COMMAND_LOG_CHANNEL_ID"
 
-  chat-bridge:
-    channel-id: "CHAT_BRIDGE_CSATORNA_ID"        # Chat bridge célcsatorna
+linking:
+  enabled: true
+  storage: "yaml"
+
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "omniconnect"
+    username: "root"
+    password: "password"
+
+links:
+  enabled: true
+
+  discord: "https://discord.gg/IDE"
+  store: "https://store.szerver.hu"
+  rules: "https://szerver.hu/szabalyzat"
+  website: "https://szerver.hu"
+  vote: "https://szerver.hu/vote"
+  map: "https://map.szerver.hu"
+  wiki: "https://wiki.szerver.hu"
+
+  log-channel: "LINK_COMMAND_LOG_CHANNEL_ID"
+
+syncmoderation:
+  execute-from-discord: true
+      # Chat bridge célcsatorna
 
 
 # ──────────────────────────────────────────────────────────────

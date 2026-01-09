@@ -3,3 +3,36 @@ version: '1.0-SNAPSHOT'
 main: org.respawn.omniConnect.Main
 api-version: '1.16'
 author: Daniyt_th
+commands:
+  link:
+    description: Minecraft ↔ Discord fiók összekötése
+    usage: /link
+
+  discord:
+    description: Discord szerver link megjelenítése
+    usage: /discord
+
+  store:
+    description: Webshop link megjelenítése
+    usage: /store
+
+  rules:
+    description: Szabályzat link megjelenítése
+    usage: /rules
+
+  website:
+    description: Weboldal link megjelenítése
+    usage: /website
+
+  vote:
+    description: Szavazóoldal link megjelenítése
+    usage: /vote
+
+  map:
+    description: Térkép (Dynmap) link megjelenítése
+    usage: /map
+
+  wiki:
+    description: Wiki / dokumentáció link megjelenítése
+    usage: /wiki
+
