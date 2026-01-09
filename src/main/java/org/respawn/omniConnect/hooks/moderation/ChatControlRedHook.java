@@ -29,7 +29,7 @@ public class ChatControlRedHook implements Listener {
             String playerName = (String) player.getClass().getMethod("getName").invoke(player);
 
             DiscordLog.send(pluginKey,
-                    "🛑 ChatControl Red szabálytalanság",
+                    "🛑 ChatControl Red Szabálytalanság",
                     "Játékos: **" + playerName + "**\n"
                             + "Szabály: **" + rule.toString() + "**\n"
                             + "Üzenet: **" + message.toString() + "**"

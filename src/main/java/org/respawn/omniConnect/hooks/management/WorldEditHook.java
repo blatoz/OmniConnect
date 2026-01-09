@@ -32,7 +32,7 @@ public class WorldEditHook implements Listener {
 
         DiscordLog.send(
                 pluginKey,
-                "🧱 WorldEdit – Parancs végrehajtva",
+                "🧱 WorldEdit – Parancs Végrehajtva",
                 "Játékos: **" + playerName + "**\n"
                         + "Parancs: `" + msg + "`"
         );
@@ -69,7 +69,7 @@ public class WorldEditHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🧱 WorldEdit – EditSession létrehozva",
+                        "🧱 WorldEdit – EditSession Létrehozva",
                         "Végrehajtó: **" + executor + "**\n"
                                 + "Világ: **" + worldName + "**"
                 );

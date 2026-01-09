@@ -28,7 +28,7 @@ public class EssentialsXModerationHook implements Listener {
                     String target = (String) player.getClass().getMethod("getName").invoke(player);
 
                     DiscordLog.send(pluginKey,
-                            "⛔ EssentialsX Ban",
+                            "⛔ EssentialsX Kitiltás",
                             "Játékos: **" + target + "**"
                     );
                     break;
@@ -39,7 +39,7 @@ public class EssentialsXModerationHook implements Listener {
                     String target = (String) ban.getClass().getMethod("getName").invoke(ban);
 
                     DiscordLog.send(pluginKey,
-                            "⏳ EssentialsX TempBan",
+                            "⏳ EssentialsX Ideiglenes Kitiltás",
                             "Játékos: **" + target + "**"
                     );
                     break;
@@ -50,7 +50,7 @@ public class EssentialsXModerationHook implements Listener {
                     String target = (String) mute.getClass().getMethod("getName").invoke(mute);
 
                     DiscordLog.send(pluginKey,
-                            "🔇 EssentialsX Mute",
+                            "🔇 EssentialsX Némitás",
                             "Játékos: **" + target + "**"
                     );
                     break;
@@ -61,7 +61,7 @@ public class EssentialsXModerationHook implements Listener {
                     String target = (String) mute.getClass().getMethod("getName").invoke(mute);
 
                     DiscordLog.send(pluginKey,
-                            "🔊 EssentialsX Unmute",
+                            "🔊 EssentialsX Némitás Feoldva",
                             "Játékos: **" + target + "**"
                     );
                     break;
@@ -72,7 +72,7 @@ public class EssentialsXModerationHook implements Listener {
                     String target = (String) kicked.getClass().getMethod("getName").invoke(kicked);
 
                     DiscordLog.send(pluginKey,
-                            "👢 EssentialsX Kick",
+                            "👢 EssentialsX Kirúgása",
                             "Játékos: **" + target + "**"
                     );
                     break;

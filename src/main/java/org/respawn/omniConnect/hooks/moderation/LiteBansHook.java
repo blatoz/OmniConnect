@@ -30,7 +30,7 @@ public class LiteBansHook implements Listener {
             String reason = (String) punishment.getClass().getMethod("getReason").invoke(punishment);
 
             DiscordLog.send(pluginKey,
-                    "🔨 LiteBans büntetés",
+                    "🔨 LiteBans Büntetés",
                     "Típus: **" + type + "**\n"
                             + "Játékos: **" + target + "**\n"
                             + "Staff: **" + executor + "**\n"

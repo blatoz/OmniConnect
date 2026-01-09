@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
 
-public class AdvancedBanHook implements Listener {
+public class  AdvancedBanHook implements Listener {
 
     private final String pluginKey;
 
@@ -30,7 +30,7 @@ public class AdvancedBanHook implements Listener {
             String reason = (String) punishment.getClass().getMethod("getReason").invoke(punishment);
 
             DiscordLog.send(pluginKey,
-                    "⚖️ AdvancedBan büntetés",
+                    "⚖️ AdvancedBan Büntetés",
                     "Típus: **" + type + "**\n"
                             + "Játékos: **" + target + "**\n"
                             + "Staff: **" + operator + "**\n"

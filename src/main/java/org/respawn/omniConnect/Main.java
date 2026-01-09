@@ -67,7 +67,7 @@ public class Main extends JavaPlugin {
 
                 LogManager.getInstance().sendEmbed(embed -> embed
                         .setAuthor(botName, null, botAvatar)
-                        .setTitle("Szerver elindult")
+                        .setTitle("Szerver Elindult")
                         .setColor(Color.GREEN)
                         .addField("Státusz", "A Minecraft szerver elindult és az OmniConnect aktív.\nA plugin sikeresen újratöltött.", false)
                 );
@@ -89,7 +89,7 @@ public class Main extends JavaPlugin {
 
                 LogManager.getInstance().sendEmbed(embed -> embed
                         .setAuthor(botName, null, botAvatar)
-                        .setTitle("Szerver leáll")
+                        .setTitle("Szerver Leáll")
                         .setColor(Color.RED)
                         .addField("Státusz", "A Minecraft szerver leállt vagy újraindul.\nVagy a plugint újratöltik.", false)
                 );

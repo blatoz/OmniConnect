@@ -32,7 +32,7 @@ public class KennyTVMaintenanceHook implements Listener {
                 DiscordLog.send(
                         pluginKey,
                         "🛠️ KennyTV Maintenance – Bekapcsolva",
-                        "A szerver karbantartási módba lépett."
+                        "A szerver karbantartási módba lépett, a MOTD meg lett változtatva a karbantartás idejére."
                 );
             }
 
@@ -45,7 +45,7 @@ public class KennyTVMaintenanceHook implements Listener {
                 DiscordLog.send(
                         pluginKey,
                         "🛠️ KennyTV Maintenance – Kikapcsolva",
-                        "A szerver kilépett a karbantartási módból."
+                        "A szerver kilépett a karbantartási módból, a MOTD vissza lett változtatva az eredeti MOTD-ra."
                 );
             }
 
@@ -60,7 +60,7 @@ public class KennyTVMaintenanceHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🛠️ KennyTV Maintenance – Whitelist hozzáadva",
+                        "🛠️ KennyTV Maintenance – Whitelist Hozzáadva",
                         "Játékos: **" + playerName + "**"
                 );
             }
@@ -76,7 +76,7 @@ public class KennyTVMaintenanceHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🛠️ KennyTV Maintenance – Whitelist eltávolítva",
+                        "🛠️ KennyTV Maintenance – Whitelist Eltávolítva",
                         "Játékos: **" + playerName + "**"
                 );
             }
@@ -92,7 +92,7 @@ public class KennyTVMaintenanceHook implements Listener {
 
                 DiscordLog.send(
                         pluginKey,
-                        "🛠️ KennyTV Maintenance – Játékos kirúgva",
+                        "🛠️ KennyTV Maintenance – Játékos Kirúgva",
                         "Játékos: **" + playerName + "**\n"
                                 + "Indok: Karbantartási mód"
                 );

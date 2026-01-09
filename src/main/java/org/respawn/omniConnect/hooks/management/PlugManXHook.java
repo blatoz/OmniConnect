@@ -32,7 +32,7 @@ public class PlugManXHook implements Listener {
                     String pluginName = (String) plugin.getClass().getMethod("getName").invoke(plugin);
 
                     DiscordLog.send(pluginKey,
-                            "🟢 PlugManX – Plugin engedélyezve",
+                            "🟢 PlugManX – Plugin Engedélyezve",
                             "Plugin: **" + pluginName + "**"
                     );
                     break;
@@ -46,7 +46,7 @@ public class PlugManXHook implements Listener {
                     String pluginName = (String) plugin.getClass().getMethod("getName").invoke(plugin);
 
                     DiscordLog.send(pluginKey,
-                            "🔴 PlugManX – Plugin letiltva",
+                            "🔴 PlugManX – Plugin Letiltva",
                             "Plugin: **" + pluginName + "**"
                     );
                     break;
@@ -60,7 +60,7 @@ public class PlugManXHook implements Listener {
                     String pluginName = (String) plugin.getClass().getMethod("getName").invoke(plugin);
 
                     DiscordLog.send(pluginKey,
-                            "🔄 PlugManX – Plugin újratöltve",
+                            "🔄 PlugManX – Plugin Újratöltve",
                             "Plugin: **" + pluginName + "**"
                     );
                     break;
