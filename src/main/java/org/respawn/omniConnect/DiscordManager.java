@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.Bukkit;
+import org.respawn.omniConnect.commands.DiscordModerationCommands;
+import org.respawn.omniConnect.discord.DiscordLinkVerifyListener;
 import org.respawn.omniConnect.discord.DiscordMessageListener;
 import org.respawn.omniConnect.ticket.TicketListener;
 import org.respawn.omniConnect.ticket.TicketPanelCommand;
@@ -118,7 +120,9 @@ public class DiscordManager {
                             new DiscordListener(),
                             new TicketListener(),
                             new TicketPanelCommand(),
-                            new DiscordMessageListener()
+                            new DiscordMessageListener(),
+                            new DiscordModerationCommands(),
+                            new DiscordLinkVerifyListener()
                     )
                     .build();
 

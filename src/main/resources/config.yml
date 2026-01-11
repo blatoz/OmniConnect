@@ -1,36 +1,89 @@
 # ═══════════════════════════════════════════════════════════════
 # OmniConnect v1.0
 #
-# Leírás:
-#   Discord ↔ Minecraft integráció logolással, chat bridge-el
-#   és több plugin (Anticheat / Moderation / Kingdoms) támogatással.
+# Description:
+#   Discord ↔ Minecraft integration with logging and chat bridge.
+#   and more plugin (Anticheat / Moderation / Kingdoms) supported.
 #
-# Nyelv: Magyar (HU)
-# Szerző: Daniyt_th (discord: .daniyt_th.)
+# Author: Daniyt_th (discord: .daniyt_th.)
 #
-# Megjegyzés:
-#   • A log-channel mezők üresen hagyva az alapértelmezett csatornát használják
+# Note:
+#   • The log-channel fields require the Discord channel ID where logs will be sent.
+#   • To enable a specific module or plugin support, set the "enabled" field to true.
+#   • Make sure to replace placeholder values (e.g., DISCORD_BOT_TOKEN_HERE) with actual values.
 #   • enabled: False / false
 #
 # ═══════════════════════════════════════════════════════════════
 
 
 # ──────────────────────────────────────────────────────────────
-# DISCORD BEÁLLÍTÁSOK
+# GENERAL SETTINGS
+# ──────────────────────────────────────────────────────────────
+
+# Multi language support
+# Available: en, hu
+language: "en"
+
+
+# ──────────────────────────────────────────────────────────────
+# DISCORD SETTINGS
 # ──────────────────────────────────────────────────────────────
 discord:
+
+  # Discord bot token
+  token: "DISCORD_BOT_TOKEN_HERE"
+
+  # Moderation commands (warn, kick, ban, timeout)
   discordmoderation:
     enabled: true
     log-channel: "DISCORD_MOD_LOG_CHANNEL_ID"
 
+  # Csatornák
   channels:
     discord-moderation: "DISCORD_MOD_LOG_CHANNEL_ID"
     links: "LINK_COMMAND_LOG_CHANNEL_ID"
 
-linking:
-  enabled: true
-  storage: "yaml"
+  # ──────────────────────────────────────────────────────────
+  # Discord Utils commands
+  # (/ping, /avatar, /userinfo, /serverinfo, /mclink, /mcstatus)
+  # ──────────────────────────────────────────────────────────
+  utils:
+    enabled: true
 
+  # ──────────────────────────────────────────────────────────
+  # Discord Fun comamnds
+  # (/roll, /coinflip, /8ball, /joke, /cat, /dog, /hug, /slap,
+  #  /meme, /gif, /quote, /ship, /lovecalc)
+  # ──────────────────────────────────────────────────────────
+  fun:
+    enabled: true
+
+    commands:
+      roll: true
+      coinflip: true
+      8ball: true
+      joke: true
+      cat: true
+      dog: true
+      hug: true
+      slap: true
+      meme: true
+      gif: true
+      quote: true
+      ship: true
+      lovecalc: true
+
+
+# ──────────────────────────────────────────────────────────────
+# LINKING (Discord ↔ Minecraft Linking)
+# ──────────────────────────────────────────────────────────────
+linking:
+  enabled: true # Enable or disable the linking feature
+  storage: "yaml" # Options: "yaml", "mysql"
+
+
+
+  # If using MySQL, configure the database connection here
   mysql:
     host: "localhost"
     port: 3306
@@ -38,240 +91,259 @@ linking:
     username: "root"
     password: "password"
 
+
+# ──────────────────────────────────────────────────────────────
+# LINK COMMANDS ( /discord, /store, /rules, stb. )
+# ──────────────────────────────────────────────────────────────
 links:
   enabled: true
 
-  discord: "https://discord.gg/IDE"
-  store: "https://store.szerver.hu"
-  rules: "https://szerver.hu/szabalyzat"
-  website: "https://szerver.hu"
-  vote: "https://szerver.hu/vote"
-  map: "https://map.szerver.hu"
-  wiki: "https://wiki.szerver.hu"
+  discord: "Your discord invite link here"
+  store: "Your web store link"
+  rules: "Your rules link"
+  website: "Your website link"
+  vote: "Your vote link"
+  map: "Your server map link" # If the plugin running on a kingdoms server and installed dynmap.
+  wiki: "Your wiki link" # if you have wiki for your server.
 
   log-channel: "LINK_COMMAND_LOG_CHANNEL_ID"
 
-syncmoderation:
-  execute-from-discord: true
-      # Chat bridge célcsatorna
+
+# ──────────────────────────────────────────────────────────────
+# MINECRAFT STATUS ( /mcstatus )
+# ──────────────────────────────────────────────────────────────
+minecraft:
+  status:
+    host: "127.0.0.1" # Minecraft server IP or domain
+    port: 25565 # Minecraft server port
 
 
 # ──────────────────────────────────────────────────────────────
-# ANTICHEAT LOGOLÁS
-# Megjegyzés: Itt a híresebbek vannak itt, ha nincsen amit keresel akkor csatlakozz a discord szerverünk be: https://discord.gg/zr2bamrwyZ
+# ANTICHEAT LOGGING
 # ──────────────────────────────────────────────────────────────
 anticheat:
-  enabled: False # Értékek: False/false
-  default-log-channel: "ALAP_ANTICHEAT_LOG_CSATORNA_ID"
+  enabled: False # Enable or disable anticheat logging
+  default-log-channel: "DEAFULT_ANTICHEAT_LOG_CHANNEL_ID"
 
   matrix:
-    enabled: False # Értékek: False/false
+    enabled: False # Enable or disable Matrix Anticheat logging
     log-channel: ""
 
   vulcan:
-    enabled: False # Értékek: False/false
+    enabled: False # Enable or disable Vulcan anticheat logging
     log-channel: ""
 
   spartan:
-    enabled: False # Értékek: False/false
+    enabled: False # Enable or disable Spartan anticheat logging
     log-channel: ""
 
   grim:
-    enabled: False # Értékek: False/false
+    enabled: False # Enable or disable Grim anticheat logging
+    log-channel: ""
+
+  aac:
+    enabled: False # Enable or disable aac(Advanced Anti Cheat) anticheat logging
+    log-channel: ""
+
+  lightanticheat:
+      enabled: False # Enable or disable Light anticheat logging
+      log-channel: ""
+
+  negativity:
+      enabled: False # Enable or disable Negativity anticheat logging
+      log-channel: ""
+
+  ncp:
+    enabled: False # Enable or disable nocheatplus logging
     log-channel: ""
 
 
 # ──────────────────────────────────────────────────────────────
-# EXPLOIT ELLENI VÉDELEM
-# Megjegyzés: Itt a híresebbek vannak itt, ha nincsen amit keresel akkor csatlakozz a discord szerverünk be: htttps://discord.gg/zr2bamrwyZ
+# EXPLOIT FIXER LOGGING
 # ──────────────────────────────────────────────────────────────
 exploitfix:
-  enabled: False # Értékek: False/false
+  enabled: False # Enable or disable exploit fixer logging
   default-log-channel: ""
 
   exploitfixer:
-    enabled: False # Értékek: False/false
+    enabled: False # Enable or disable exploit fixer logging
     log-channel: ""
 
   lpx:
-    enabled: False # Értékek: False/false
+    enabled: False # Enable or disable LPX anti PacketExpoit logging
     log-channel: ""
 
   aef:
-    enabled: False # Értékek: False/false
+    enabled: False # Enable or disable Anarchy Exploit Fixes logging
     log-channel: ""
 
 
 # ──────────────────────────────────────────────────────────────
-# KINGDOMS
+# KINGDOMS LOGGING
 # ──────────────────────────────────────────────────────────────
 kingdoms:
-  enabled: False # Értékek: False/false
+  enabled: False # Enable or disable kingdoms logging
   default-log-channel: ""
 
   management:
-    log-channel: ""
+    log-channel: "" # Kingdoms management logs channel ID
 
 
 # ──────────────────────────────────────────────────────────────
-# MODERÁCIÓS PLUGINOK
-# Itt bűntetéseket adnak ki pluginok vannak itt, ha nincsen amit keresel akkor csatlakozz a discord szerverünk be: htttps://discord.gg/zr2bamrwyZ
+# MDOERATION LOGGING (MINECRAFT)
 # ──────────────────────────────────────────────────────────────
 moderation:
-  enabled: False # Értékek: False/false
+  enabled: False # Enable or disable moderation plugin logging
   default-log-channel: ""
 
   litebans:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   advancedban:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   essentials:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   essentialsjail:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   cmi:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   chatcontrol:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   chatcontrolred:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   staffplus:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   staffchat:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   playerreport:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   matrixreport:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   vulcanreport:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
 
   libertybans:
-    enabled: False # Értékek: False/false
+    enabled: False
     log-channel: ""
+
 
 # ──────────────────────────────────────────────────────────────
 # ECONOMY PLUGINOK
-# Itt az economy pluginok vannak, ha nincsen amit keresel akkor csatlakozz a discord szerverünk be: htttps://discord.gg/zr2bamrwyZ
 # ──────────────────────────────────────────────────────────────
-
 economy:
-    enabled: False # Értékek: False/false
-    default-log-channel: ""
+  enabled: False # Enable or disable economy plugin logging
+  default-log-channel: ""
 
-    playerpoints:
-      enabled: False # Értékek: False/false
-      log-channel: ""
+  playerpoints:
+    enabled: False
+    log-channel: ""
 
-    coinmanager:
-      enabled: False # Értékek: False/false
-      log-channel: ""
+  coinmanager:
+    enabled: False
+    log-channel: ""
 
-    azrovaeconomy:
-      enabled: False # Értékek: False/false
-      log-channel: ""
+  azrovaeconomy:
+    enabled: False
+    log-channel: ""
 
-    dzeconomy:
-      enabled: False # Értékek: False/false
-      log-channel: ""
+  dzeconomy:
+    enabled: False
+    log-channel: ""
 
-    essentialsxeco:
-      enabled: False # Értékek: False/false
-      log-channel: ""
+  essentialsxeco:
+    enabled: False
+    log-channel: ""
 
-    ezeconomy:
-      enabled: False # Értékek: False/false
-      log-channel: ""
+  ezeconomy:
+    enabled: False
+    log-channel: ""
 
-    xconomy:
-      enabled: False # Értékek: False/false
-      log-channel: ""
+  xconomy:
+    enabled: False
+    log-channel: ""
+
 
 # ──────────────────────────────────────────────────────────────
 # MANAGEMENT PLUGINOK
-# Itt az admin, karbantartás, utility és logoló pluginok hookjai vannak
 # ──────────────────────────────────────────────────────────────
 management:
-    enabled: False # Értékek: False/false
-    default-log-channel: ""
+  enabled: False # Enable or disable management plugin logging
+  default-log-channel: ""
 
-    autorestart:
-      enabled: False # Értékek: False/false
-      log-channel: ""
+  autorestart:
+    enabled: False
+    log-channel: ""
 
-    coreprotect:
-      enabled: False
-      log-channel: ""
+  coreprotect:
+    enabled: False
+    log-channel: ""
 
-    essentialsx:
-      enabled: False
-      log-channel: ""
+  essentialsx:
+    enabled: False
+    log-channel: ""
 
-    flectonemaintenance:
-      enabled: False
-      log-channel: ""
+  flectonemaintenance:
+    enabled: False
+    log-channel: ""
 
-    kennytvmaintenance:
-      enabled: False
-      log-channel: ""
+  kennytvmaintenance:
+    enabled: False
+    log-channel: ""
 
-    kenzimaintenance:
-      enabled: False
-      log-channel: ""
+  kenzimaintenance:
+    enabled: False
+    log-channel: ""
 
-    linsamaintenance:
-      enabled: False
-      log-channel: ""
+  linsamaintenance:
+    enabled: False
+    log-channel: ""
 
-    luckperms:
-      enabled: False
-      log-channel: ""
+  luckperms:
+    enabled: False
+    log-channel: ""
 
-    nametagedit:
-      enabled: False
-      log-channel: ""
+  nametagedit:
+    enabled: False
+    log-channel: ""
 
-    plugmanx:
-      enabled: False
-      log-channel: ""
+  plugmanx:
+    enabled: False
+    log-channel: ""
 
-    serverrestorer:
-      enabled: False
-      log-channel: ""
+  serverrestorer:
+    enabled: False
+    log-channel: ""
 
-    tab:
-      enabled: False
-      log-channel: ""
+  tab:
+    enabled: False
+    log-channel: ""
 
-    worldedit:
-      enabled: False
-      log-channel: ""
+  worldedit:
+    enabled: False
+    log-channel: ""
 
-    worldguard:
-      enabled: False
-      log-channel: ""
-
-
+  worldguard:
+    enabled: False
+    log-channel: ""

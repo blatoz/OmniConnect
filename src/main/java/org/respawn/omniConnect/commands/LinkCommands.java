@@ -5,11 +5,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class LinkCommands implements CommandExecutor {
-
-    private final String pluginKey = "links";
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
@@ -17,43 +17,38 @@ public class LinkCommands implements CommandExecutor {
         if (!(sender instanceof Player)) return true;
         Player p = (Player) sender;
 
-        switch (cmd.getName().toLowerCase()) {
+        String lang = LangManager.getDefaultLanguage();
+        String key = cmd.getName().toLowerCase();
 
-            case "discord":
-                p.sendMessage("§bDiscord szerverünk: §fhttps://discord.gg/VALAMI");
-                DiscordLog.send(pluginKey, "🔗 /discord parancs", "Játékos: **" + p.getName() + "**");
-                break;
-
-            case "store":
-                p.sendMessage("§bWebshop: §fhttps://store.valami.hu");
-                DiscordLog.send(pluginKey, "🔗 /store parancs", "Játékos: **" + p.getName() + "**");
-                break;
-
-            case "rules":
-                p.sendMessage("§bSzabályzat: §fhttps://valami.hu/rules");
-                DiscordLog.send(pluginKey, "🔗 /rules parancs", "Játékos: **" + p.getName() + "**");
-                break;
-
-            case "website":
-                p.sendMessage("§bWeboldal: §fhttps://valami.hu");
-                DiscordLog.send(pluginKey, "🔗 /website parancs", "Játékos: **" + p.getName() + "**");
-                break;
-
-            case "vote":
-                p.sendMessage("§bSzavazás: §fhttps://valami.hu/vote");
-                DiscordLog.send(pluginKey, "🔗 /vote parancs", "Játékos: **" + p.getName() + "**");
-                break;
-
-            case "map":
-                p.sendMessage("§bTérkép: §fhttps://map.valami.hu");
-                DiscordLog.send(pluginKey, "🔗 /map parancs", "Játékos: **" + p.getName() + "**");
-                break;
-
-            case "wiki":
-                p.sendMessage("§bWiki: §fhttps://wiki.valami.hu");
-                DiscordLog.send(pluginKey, "🔗 /wiki parancs", "Játékos: **" + p.getName() + "**");
-                break;
+        // Config: links.<command>.enabled
+        if (!Main.getInstance().getConfig().getBoolean("links." + key + ".enabled", true)) {
+            p.sendMessage(LangManager.get(lang, "minecraft.links.disabled"));
+            return true;
         }
+
+        // Config: links.<command>.url
+        String url = Main.getInstance().getConfig().getString("links." + key + ".url", "");
+        if (url.isEmpty()) {
+            p.sendMessage(LangManager.get(lang, "minecraft.links.not_set"));
+            return true;
+        }
+
+        // Minecraft üzenet
+        String msg = LangManager.get(lang, "minecraft.links." + key)
+                .replace("%url%", url);
+        p.sendMessage(msg);
+
+        // Discord embed log
+        String title = LangManager.get(lang, "discord.links." + key + ".title");
+        String desc = LangManager.get(lang, "discord.links." + key + ".description")
+                .replace("%player%", p.getName())
+                .replace("%url%", url);
+
+        DiscordLog.sendCategory(
+                "discord.links.log-channel",
+                title,
+                desc
+        );
 
         return true;
     }

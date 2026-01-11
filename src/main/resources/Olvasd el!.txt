@@ -2,11 +2,13 @@ Köszönöm hogy használód a plugint, de mielőtt be konfigolnád a plugint ez
 
 A plugin híres anticheatekre/Exploitvédelemekre/KingdomsX/Economysokra/moderációs pluginokra hookol! Ebbe még a Report pluginok is bele tartoznak.
 
-Az config.ymlben azt kell bekapcsolni ami telepítve van! A támogatott pluginok meg kell nézni a pluginokat aztán döntsd el ami van telepítve azt állítsd be egy Log Csatornába-
+Az config.ymlben azt kell bekapcsolni ami telepítve van! A támogatott pluginok meg kell nézni a pluginokat aztán döntsd el ami van telepítve azt állítsd be egy Log Csatornába.
+
+Kérdések ért csatlakoz a discord szerverünkre: https://discord.gg/zr2bamrwyZ
 
 Ha a szerveren telepítve van a pl, A vulcan anti, LPX, EssentialsX.
 
 Akkor csak azokat kell bekapcsolni de minden szervernek más a konfigurációja azt biztosra tudom venni(Daniyt_th(Készítő))!
 
 
-Plugin letöltési linkei ebben a következő fájlba található
+Plugin letöltési linkei ebben a következő fájlba található: Linkek.txt

@@ -1,219 +1,213 @@
-package org.respawn.omniConnect.discord;
+package org.respawn.omniConnect.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-import org.respawn.omniConnect.config.OmniConfig;
-import org.respawn.omniConnect.link.LinkDatabase;
-import org.respawn.omniConnect.moderation.ModerationAPIHandler;
+import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
-import java.util.UUID;
+import java.awt.*;
+import java.time.Instant;
 
 public class DiscordModerationCommands extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
 
-        // --- CONFIG ALAPÚ ENGEDÉLYEZÉS ---
-        if (!OmniConfig.getBoolean("discord.discordmoderation.enabled")) {
-            event.reply("❌ A Discord moderációs rendszer nincs engedélyezve.").setEphemeral(true).queue();
+        if (!isModerationEnabled()) {
+            String lang = LangManager.getDefaultLanguage();
+            sendErrorEmbed(event, LangManager.get(lang, "errors.moderation_disabled"));
             return;
         }
 
         switch (event.getName()) {
-            case "warn":
-                handleWarn(event);
-                break;
-            case "mute":
-                handleMute(event);
-                break;
-            case "kick":
-                handleKick(event);
-                break;
-            case "ban":
-                handleBan(event);
-                break;
-            case "timeout":
-                handleTimeout(event);
-                break;
+            case "warn":    handleWarn(event);    break;
+            case "kick":    handleKick(event);    break;
+            case "ban":     handleBan(event);     break;
+            case "timeout": handleTimeout(event); break;
         }
     }
 
-    private UUID getLinkedUUID(Member target) {
-        return LinkDatabase.getMinecraftUUID(target.getId());
+    // ---------------------------------------------------------
+    // Helper metódusok
+    // ---------------------------------------------------------
+
+    private boolean isModerationEnabled() {
+        return Main.getInstance().getConfig().getBoolean("discord.discordmoderation.enabled", true);
     }
 
-    private OfflinePlayer getOfflinePlayer(UUID uuid) {
-        return Bukkit.getOfflinePlayer(uuid);
+    private Member getMemberOption(SlashCommandInteractionEvent event, String name) {
+        if (event.getOption(name) == null) return null;
+        try { return event.getOption(name).getAsMember(); }
+        catch (Exception e) { return null; }
     }
 
-    private String getLogChannel() {
-        return OmniConfig.getString("discord.discordmoderation.log-channel");
+    private String getStringOption(SlashCommandInteractionEvent event, String name) {
+        if (event.getOption(name) == null) return null;
+        try { return event.getOption(name).getAsString(); }
+        catch (Exception e) { return null; }
     }
 
-    private Member getTarget(SlashCommandInteractionEvent event) {
-        if (event.getOption("target") == null) return null;
-        return event.getOption("target").getAsMember();
+    private boolean hasPermission(Member member, Permission perm) {
+        return member != null && member.hasPermission(perm);
     }
+
+    private void sendErrorEmbed(SlashCommandInteractionEvent event, String message) {
+        EmbedBuilder embed = new EmbedBuilder()
+                .setColor(Color.RED)
+                .setDescription(message)
+                .setTimestamp(Instant.now());
+
+        event.replyEmbeds(embed.build()).setEphemeral(true).queue();
+    }
+
+    private void sendSuccessEmbed(SlashCommandInteractionEvent event, String title, String description) {
+        EmbedBuilder embed = new EmbedBuilder()
+                .setColor(Color.GREEN)
+                .setTitle(title)
+                .setDescription(description)
+                .setTimestamp(Instant.now());
+
+        event.replyEmbeds(embed.build()).queue();
+    }
+
+    private void logModeration(String title, String description) {
+        DiscordLog.sendCategory("discord.discordmoderation.log-channel", title, description);
+    }
+
+    // ---------------------------------------------------------
+    // MODERÁCIÓS PARANCSOK
+    // ---------------------------------------------------------
 
     private void handleWarn(SlashCommandInteractionEvent event) {
-        Member target = getTarget(event);
+        String lang = LangManager.getDefaultLanguage();
+
+        if (!hasPermission(event.getMember(), Permission.MODERATE_MEMBERS)) {
+            sendErrorEmbed(event, LangManager.get(lang, "errors.no_permission"));
+            return;
+        }
+
+        Member target = getMemberOption(event, "user");
+        String reason = getStringOption(event, "reason");
+
         if (target == null) {
-            event.reply("❌ A parancs csak szerveren belüli felhasználókra használható.").setEphemeral(true).queue();
+            sendErrorEmbed(event, LangManager.get(lang, "errors.no_user"));
             return;
         }
 
-        String reason = event.getOption("reason").getAsString();
-        String moderator = event.getUser().getName();
-
-        UUID uuid = getLinkedUUID(target);
-        if (uuid == null) {
-            event.reply("❌ A felhasználó nincs összekötve Minecraft fiókkal.").setEphemeral(true).queue();
-            return;
+        if (reason == null || reason.isEmpty()) {
+            reason = LangManager.get(lang, "discord.moderation.no_reason");
         }
 
-        OfflinePlayer op = getOfflinePlayer(uuid);
-        ModerationAPIHandler.warn(op, reason, moderator);
+        String title = LangManager.get(lang, "discord.moderation.warn.title");
+        String desc = LangManager.get(lang, "discord.moderation.warn.description")
+                .replace("%user%", target.getEffectiveName())
+                .replace("%reason%", reason);
 
-        event.reply("⚠️ Warn kiadva: **" + target.getEffectiveName() + "**").queue();
-
-        DiscordLog.sendCategory(
-                getLogChannel(),
-                "⚠️ Discord Warn",
-                "Moderátor: **" + moderator + "**\n" +
-                        "Felhasználó: **" + target.getEffectiveName() + "**\n" +
-                        "Minecraft: **" + op.getName() + "**\n" +
-                        "Indok: `" + reason + "`"
-        );
-    }
-
-    private void handleMute(SlashCommandInteractionEvent event) {
-        Member target = getTarget(event);
-        if (target == null) {
-            event.reply("❌ A parancs csak szerveren belüli felhasználókra használható.").setEphemeral(true).queue();
-            return;
-        }
-
-        String reason = event.getOption("reason").getAsString();
-        String moderator = event.getUser().getName();
-
-        UUID uuid = getLinkedUUID(target);
-        if (uuid == null) {
-            event.reply("❌ A felhasználó nincs összekötve Minecraft fiókkal.").setEphemeral(true).queue();
-            return;
-        }
-
-        OfflinePlayer op = getOfflinePlayer(uuid);
-        ModerationAPIHandler.mute(op, reason, moderator);
-
-        event.reply("🔇 Mute kiadva: **" + target.getEffectiveName() + "**").queue();
-
-        DiscordLog.sendCategory(
-                getLogChannel(),
-                "🔇 Discord Mute",
-                "Moderátor: **" + moderator + "**\n" +
-                        "Felhasználó: **" + target.getEffectiveName() + "**\n" +
-                        "Minecraft: **" + op.getName() + "**\n" +
-                        "Indok: `" + reason + "`"
-        );
+        sendSuccessEmbed(event, title, desc);
+        logModeration(title, desc);
     }
 
     private void handleKick(SlashCommandInteractionEvent event) {
-        Member target = getTarget(event);
+        String lang = LangManager.getDefaultLanguage();
+
+        if (!hasPermission(event.getMember(), Permission.KICK_MEMBERS)) {
+            sendErrorEmbed(event, LangManager.get(lang, "errors.no_permission"));
+            return;
+        }
+
+        Member target = getMemberOption(event, "user");
+        String reason = getStringOption(event, "reason");
+
         if (target == null) {
-            event.reply("❌ A parancs csak szerveren belüli felhasználókra használható.").setEphemeral(true).queue();
+            sendErrorEmbed(event, LangManager.get(lang, "errors.no_user"));
             return;
         }
 
-        String reason = event.getOption("reason").getAsString();
-        String moderator = event.getUser().getName();
-
-        UUID uuid = getLinkedUUID(target);
-        if (uuid == null) {
-            event.reply("❌ A felhasználó nincs összekötve Minecraft fiókkal.").setEphemeral(true).queue();
-            return;
+        if (reason == null || reason.isEmpty()) {
+            reason = LangManager.get(lang, "discord.moderation.no_reason");
         }
 
-        OfflinePlayer op = getOfflinePlayer(uuid);
-        ModerationAPIHandler.kick(op, reason, moderator);
+        target.kick(reason).queue();
 
-        event.reply("👢 Kick kiadva: **" + target.getEffectiveName() + "**").queue();
+        String title = LangManager.get(lang, "discord.moderation.kick.title");
+        String desc = LangManager.get(lang, "discord.moderation.kick.description")
+                .replace("%user%", target.getEffectiveName())
+                .replace("%reason%", reason);
 
-        DiscordLog.sendCategory(
-                getLogChannel(),
-                "👢 Discord Kick",
-                "Moderátor: **" + moderator + "**\n" +
-                        "Felhasználó: **" + target.getEffectiveName() + "**\n" +
-                        "Minecraft: **" + op.getName() + "**\n" +
-                        "Indok: `" + reason + "`"
-        );
+        sendSuccessEmbed(event, title, desc);
+        logModeration(title, desc);
     }
 
     private void handleBan(SlashCommandInteractionEvent event) {
-        Member target = getTarget(event);
+        String lang = LangManager.getDefaultLanguage();
+
+        if (!hasPermission(event.getMember(), Permission.BAN_MEMBERS)) {
+            sendErrorEmbed(event, LangManager.get(lang, "errors.no_permission"));
+            return;
+        }
+
+        Member target = getMemberOption(event, "user");
+        String reason = getStringOption(event, "reason");
+
         if (target == null) {
-            event.reply("❌ A parancs csak szerveren belüli felhasználókra használható.").setEphemeral(true).queue();
+            sendErrorEmbed(event, LangManager.get(lang, "errors.no_user"));
             return;
         }
 
-        String reason = event.getOption("reason").getAsString();
-        String moderator = event.getUser().getName();
-
-        UUID uuid = getLinkedUUID(target);
-        if (uuid == null) {
-            event.reply("❌ A felhasználó nincs összekötve Minecraft fiókkal.").setEphemeral(true).queue();
-            return;
+        if (reason == null || reason.isEmpty()) {
+            reason = LangManager.get(lang, "discord.moderation.no_reason");
         }
 
-        OfflinePlayer op = getOfflinePlayer(uuid);
-        ModerationAPIHandler.ban(op, reason, moderator);
+        target.ban(7, reason).queue();
 
-        event.reply("⛔ Ban kiadva: **" + target.getEffectiveName() + "**").queue();
+        String title = LangManager.get(lang, "discord.moderation.ban.title");
+        String desc = LangManager.get(lang, "discord.moderation.ban.description")
+                .replace("%user%", target.getEffectiveName())
+                .replace("%reason%", reason);
 
-        DiscordLog.sendCategory(
-                getLogChannel(),
-                "⛔ Discord Ban",
-                "Moderátor: **" + moderator + "**\n" +
-                        "Felhasználó: **" + target.getEffectiveName() + "**\n" +
-                        "Minecraft: **" + op.getName() + "**\n" +
-                        "Indok: `" + reason + "`"
-        );
+        sendSuccessEmbed(event, title, desc);
+        logModeration(title, desc);
     }
 
     private void handleTimeout(SlashCommandInteractionEvent event) {
-        Member target = getTarget(event);
+        String lang = LangManager.getDefaultLanguage();
+
+        if (!hasPermission(event.getMember(), Permission.MODERATE_MEMBERS)) {
+            sendErrorEmbed(event, LangManager.get(lang, "errors.no_permission"));
+            return;
+        }
+
+        Member target = getMemberOption(event, "user");
+        int minutes = 0;
+
+        if (event.getOption("minutes") != null) {
+            try { minutes = event.getOption("minutes").getAsInt(); }
+            catch (Exception ignored) {}
+        }
+
         if (target == null) {
-            event.reply("❌ A parancs csak szerveren belüli felhasználókra használható.").setEphemeral(true).queue();
+            sendErrorEmbed(event, LangManager.get(lang, "errors.no_user"));
             return;
         }
 
-        long minutes = event.getOption("minutes").getAsLong();
-        String reason = event.getOption("reason").getAsString();
-        String moderator = event.getUser().getName();
-
-        UUID uuid = getLinkedUUID(target);
-        if (uuid == null) {
-            event.reply("❌ A felhasználó nincs összekötve Minecraft fiókkal.").setEphemeral(true).queue();
+        if (minutes <= 0) {
+            sendErrorEmbed(event, LangManager.get(lang, "errors.invalid_number"));
             return;
         }
 
-        OfflinePlayer op = getOfflinePlayer(uuid);
-        ModerationAPIHandler.tempMute(op, minutes, reason, moderator);
+        target.timeoutFor(java.time.Duration.ofMinutes(minutes)).queue();
 
-        event.reply("⏳ Timeout / tempmute kiadva: **" + target.getEffectiveName() + "** (" + minutes + " perc)").queue();
+        String title = LangManager.get(lang, "discord.moderation.timeout.title");
+        String desc = LangManager.get(lang, "discord.moderation.timeout.description")
+                .replace("%user%", target.getEffectiveName())
+                .replace("%minutes%", String.valueOf(minutes));
 
-        DiscordLog.sendCategory(
-                getLogChannel(),
-                "⏳ Discord Timeout / TempMute",
-                "Moderátor: **" + moderator + "**\n" +
-                        "Felhasználó: **" + target.getEffectiveName() + "**\n" +
-                        "Minecraft: **" + op.getName() + "**\n" +
-                        "Időtartam: `" + minutes + " perc`\n" +
-                        "Indok: `" + reason + "`"
-        );
+        sendSuccessEmbed(event, title, desc);
+        logModeration(title, desc);
     }
 }

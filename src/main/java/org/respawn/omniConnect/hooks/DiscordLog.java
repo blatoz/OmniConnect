@@ -64,10 +64,48 @@ public class DiscordLog {
     }
 
 
+    // --------------------------------------------------------------------
+    // ÚJ METÓDUSOK — Egyszerű logolás csatorna ID alapján
+    // --------------------------------------------------------------------
 
     /**
-     * Közös metódus embed küldésére.
+     * Sima szöveg küldése egy csatornába.
      */
+    public static void send(String channelId, String message) {
+        if (!DiscordManager.ready) return;
+        if (channelId == null || channelId.isEmpty()) return;
+        if (message == null || message.isEmpty()) return;
+
+        var jda = DiscordManager.getInstance().getJDA();
+        if (jda == null) return;
+
+        TextChannel channel = jda.getTextChannelById(channelId);
+        if (channel == null) return;
+
+        channel.sendMessage(message).queue();
+    }
+
+    /**
+     * Embed küldése csatorna ID alapján.
+     */
+    public static void sendEmbed(String channelId, EmbedBuilder embed) {
+        if (!DiscordManager.ready) return;
+        if (channelId == null || channelId.isEmpty()) return;
+        if (embed == null) return;
+
+        var jda = DiscordManager.getInstance().getJDA();
+        if (jda == null) return;
+
+        TextChannel channel = jda.getTextChannelById(channelId);
+        if (channel == null) return;
+
+        channel.sendMessageEmbeds(embed.build()).queue();
+    }
+
+
+    // --------------------------------------------------------------------
+    // Közös metódus embed küldésére (pluginKey / category logoláshoz)
+    // --------------------------------------------------------------------
     private static void sendToChannel(String channelId, String title, String description, Color color) {
         var jda = DiscordManager.getInstance().getJDA();
         if (jda == null) return;

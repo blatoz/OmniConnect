@@ -4,6 +4,7 @@
 package org.respawn.omniConnect;
 
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMuteEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
@@ -191,8 +192,8 @@ public class DiscordListener extends ListenerAdapter {
                 .setColor(Color.CYAN)
                 .addField("Felhasználó", event.getUser().getName(), true)
                 .addField("Felhasználó ID", event.getUser().getId(), true)
-                .addField("Régi avatar", oldAvatarUrl != null ? oldAvatarUrl : "Nincs", false)
-                .addField("Új avatar", newAvatarUrl != null ? newAvatarUrl : "Nincs", false)
+                .addField("Régi Avatar", oldAvatarUrl != null ? oldAvatarUrl : "Nincs", false)
+                .addField("Új Avatar", newAvatarUrl != null ? newAvatarUrl : "Nincs", false)
         );
     }
 
@@ -206,8 +207,8 @@ public class DiscordListener extends ListenerAdapter {
                 .setColor(Color.LIGHT_GRAY)
                 .addField("Felhasználó", event.getUser().getName(), true)
                 .addField("Felhasználó ID", event.getUser().getId(), true)
-                .addField("Régi discriminator", oldDiscriminator, true)
-                .addField("Új discriminator", newDiscriminator, true)
+                .addField("Régi Discriminator", oldDiscriminator, true)
+                .addField("Új Discriminator", newDiscriminator, true)
         );
     }
 
@@ -728,6 +729,17 @@ public class DiscordListener extends ListenerAdapter {
                 .addField("Előző Csatorna ID", event.getChannelLeft().getId(), true)
                 .addField("Új Csatorna", event.getChannelJoined().getName(), true)
                 .addField("Új Csatorna ID", event.getChannelJoined().getId(), true)
+        );
+    }
+    @Override
+    public void onGuildVoiceMute(@NotNull GuildVoiceMuteEvent event) {
+        LogManager.getInstance().sendEmbed(builder -> builder
+                .setTitle("Voice Némítás Frissítve")
+                .setColor(Color.MAGENTA)
+                .addField("Felhasználó", event.getMember().getUser().getName(), true)
+                .addField("Felhasználó ID", event.getMember().getUser().getId(), true)
+                .addField("Némítva?", event.isMuted() ? "Igen" : "Nem", true)
+
         );
     }
 }

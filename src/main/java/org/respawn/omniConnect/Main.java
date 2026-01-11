@@ -7,7 +7,7 @@ import org.respawn.omniConnect.ticket.TicketManager;
 
 import org.respawn.omniConnect.commands.LinkCommand;
 import org.respawn.omniConnect.commands.LinkCommands;
-import org.respawn.omniConnect.discord.DiscordModerationCommands;
+import org.respawn.omniConnect.commands.DiscordModerationCommands;
 import org.respawn.omniConnect.discord.DiscordLinkVerifyListener;
 import org.respawn.omniConnect.link.LinkDatabase;
 

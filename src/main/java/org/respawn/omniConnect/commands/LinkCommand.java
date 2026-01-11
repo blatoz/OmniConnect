@@ -4,39 +4,95 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.respawn.omniConnect.Main;
+import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 import org.respawn.omniConnect.link.LinkDatabase;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LinkCommand implements CommandExecutor {
 
-    // egyszerű kód tárolás memóriában (te később DB-be is teheted)
-    private static final java.util.Map<String, UUID> pending = new java.util.HashMap<>();
+    private static final Map<String, UUID> pending = new ConcurrentHashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Csak játékosok használhatják.");
+            sender.sendMessage("§cOnly players can use this command.");
             return true;
         }
 
         Player p = (Player) sender;
-        String code = generateCode();
+        String lang = LangManager.getDefaultLanguage();
 
+        // Config: link.enabled
+        if (!Main.getInstance().getConfig().getBoolean("link.enabled", true)) {
+            p.sendMessage(LangManager.get(lang, "minecraft.link.disabled"));
+            return true;
+        }
+
+        // Config: link.message-key
+        String msgKey = Main.getInstance().getConfig().getString(
+                "link.message-key",
+                "minecraft.link.generated"
+        );
+
+        String alreadyKey = Main.getInstance().getConfig().getString(
+                "link.already-key",
+                "minecraft.link.already_pending"
+        );
+
+        // Ha már van pending kód
+        if (LinkDatabase.hasPendingCode(p.getUniqueId())) {
+            String existing = LinkDatabase.getPendingCode(p.getUniqueId());
+            String msg = LangManager.get(lang, alreadyKey)
+                    .replace("%code%", existing);
+            p.sendMessage(msg);
+            return true;
+        }
+
+        // Új kód
+        String code = generateUniqueCode();
         pending.put(code, p.getUniqueId());
-        p.sendMessage("§aDiscord összekötéshez írd be Discordon: §f/link " + code);
+        LinkDatabase.storePendingCode(p.getUniqueId(), code);
+
+        // Minecraft üzenet
+        String msg = LangManager.get(lang, msgKey)
+                .replace("%code%", code);
+        p.sendMessage(msg);
+
+        // Discord embed log
+        String title = LangManager.get(lang, "discord.link.generated.title");
+        String desc = LangManager.get(lang, "discord.link.generated.description")
+                .replace("%player%", p.getName())
+                .replace("%code%", code);
+
+        DiscordLog.sendCategory(
+                "discord.link.log-channel",
+                title,
+                desc
+        );
 
         return true;
     }
 
     public static UUID consumeCode(String code) {
-        return pending.remove(code);
+        UUID uuid = pending.remove(code);
+        if (uuid != null) {
+            LinkDatabase.consumePendingCode(code);
+        }
+        return uuid;
     }
 
-    private String generateCode() {
-        int n = ThreadLocalRandom.current().nextInt(100000, 999999);
-        return String.valueOf(n);
+    private String generateUniqueCode() {
+        String code;
+        do {
+            code = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999));
+        } while (pending.containsKey(code));
+        return code;
     }
 }
