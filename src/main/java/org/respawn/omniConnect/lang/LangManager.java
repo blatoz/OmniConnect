@@ -1,5 +1,6 @@
 package org.respawn.omniConnect.lang;
 
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.respawn.omniConnect.Main;
@@ -11,7 +12,8 @@ import java.util.Map;
 
 public class LangManager {
 
-    private static final Map<String, FileConfiguration> languages = new HashMap<>();
+    private static final Map<String, org.bukkit.configuration.file.YamlConfiguration> LANGUAGES = new HashMap<>();
+
     private static String defaultLanguage = "en";
 
     public static void load() {
@@ -28,20 +30,25 @@ public class LangManager {
             for (File file : files) {
                 if (file.getName().endsWith(".yml")) {
                     String lang = file.getName().replace(".yml", "");
-                    languages.put(lang, YamlConfiguration.loadConfiguration(file));
+                    LANGUAGES.put(lang, YamlConfiguration.loadConfiguration(file));
                 }
             }
         }
 
         // Ha nincs angol → létrehozzuk
-        if (!languages.containsKey("en")) {
+        if (!LANGUAGES.containsKey("en")) {
             plugin.saveResource("lang/en.yml", false);
-            languages.put("en", YamlConfiguration.loadConfiguration(new File(langFolder, "en.yml")));
+            LANGUAGES.put("en", YamlConfiguration.loadConfiguration(new File(langFolder, "en.yml")));
         }
     }
+    public static boolean languageExists(String lang) {
+        if (lang == null) return false;
+        return LANGUAGES.containsKey(lang.toLowerCase());
+    }
+
 
     public static boolean hasLanguage(String lang) {
-        return languages.containsKey(lang);
+        return LANGUAGES.containsKey(lang);
     }
 
     public static String getDefaultLanguage() {
@@ -49,16 +56,17 @@ public class LangManager {
     }
 
     public static String get(String lang, String key) {
-        FileConfiguration cfg = languages.get(lang);
+        FileConfiguration cfg = LANGUAGES.get(lang);
 
         if (cfg != null && cfg.contains(key)) {
             return cfg.getString(key);
         }
 
         // fallback angolra
-        FileConfiguration en = languages.get("en");
+        FileConfiguration en = LANGUAGES.get("en");
         return en.getString(key, "§cMissing lang key: " + key);
     }
+
 
     public static String get(String lang, String key, Map<String, String> placeholders) {
         String text = get(lang, key);

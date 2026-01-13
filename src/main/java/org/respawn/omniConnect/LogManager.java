@@ -2,6 +2,7 @@ package org.respawn.omniConnect;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.respawn.omniConnect.lang.LangManager;
 
 import java.time.OffsetDateTime;
 import java.util.function.Consumer;
@@ -38,7 +39,9 @@ public class LogManager {
         EmbedBuilder embed = new EmbedBuilder();
         embedBuilderConsumer.accept(embed);
 
-        embed.setFooter("OmniConnect Log Rendszer");
+        String lang = LangManager.getDefaultLanguage();
+        embed.setFooter(LangManager.get(lang, "discord.log.footer"));
+
         embed.setTimestamp(OffsetDateTime.now());
 
         channel.sendMessageEmbeds(embed.build()).queue();
@@ -60,19 +63,19 @@ public class LogManager {
         }
 
         if (channelId == null || channelId.isEmpty()) {
-            Main.getInstance().getLogger().warning("Nincs log csatorna beállítva a config.yml-ben!");
+            Main.getInstance().getLogger().warning("Not has been set a log channel for discord logging feature in the config.yml!");
             return null;
         }
 
         try {
             if (!DiscordManager.ready) {
-                Main.getInstance().getLogger().warning("Discord bot nem áll rendelkezésre, log csatorna nem elérhető.");
+                Main.getInstance().getLogger().warning("Discord bot not available, log channel is not available.");
                 return null;
             }
 
             return DiscordManager.getInstance().getJDA().getTextChannelById(channelId);
         } catch (IllegalStateException e) {
-            Main.getInstance().getLogger().warning("Discord JDA nem elérhető, nem lehet log csatornát lekérni: " + e.getMessage());
+            Main.getInstance().getLogger().warning("Discord JDA not available, cannot retrieve log channel: " + e.getMessage());
             return null;
         }
     }

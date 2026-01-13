@@ -14,7 +14,7 @@ public class HookManager {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("anticheat.enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] Anticheat hookok letiltva.");
+            Bukkit.getLogger().info("[OmniConnect] Anticheat hooks disabled.");
             return;
         }
 
@@ -31,7 +31,7 @@ public class HookManager {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("exploitfix.enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] ExploitFix hookok letiltva.");
+            Bukkit.getLogger().info("[OmniConnect] ExploitFix hooks disabled.");
             return;
         }
 
@@ -43,7 +43,7 @@ public class HookManager {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("kingdoms.enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] Kingdoms hookok letiltva.");
+            Bukkit.getLogger().info("[OmniConnect] Kingdoms hook is disabled.");
             return;
         }
 
@@ -53,7 +53,7 @@ public class HookManager {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("moderation.enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] Moderációs hookok letiltva.");
+            Bukkit.getLogger().info("[OmniConnect] Moderation hooks is disabled.");
             return;
         }
 
@@ -140,7 +140,7 @@ public class HookManager {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("economy.enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] Gazdasági hookok letiltva.");
+            Bukkit.getLogger().info("[OmniConnect] Economy hooks is disabled.");
             return;
         }
         hook("playerpoints",
@@ -176,7 +176,7 @@ public class HookManager {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("management.enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] Menedzsment hookok letiltva.");
+            Bukkit.getLogger().info("[OmniConnect] Management hooks is disabled.");
             return;
         }
         hook("autorestart",
@@ -243,49 +243,71 @@ public class HookManager {
         FileConfiguration cfg = Main.getInstance().getConfig();
 
         if (!cfg.getBoolean("anticheat." + key + ".enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] " + key + " hook kikapcsolva.");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook turned off.");
             return;
         }
 
         try {
             Class.forName(className);
             hookClass.getDeclaredConstructor(String.class).newInstance(key);
-            Bukkit.getLogger().info("[OmniConnect] " + key + " hook aktiválva!");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook has been activated!");
         } catch (Exception e) {
-            Bukkit.getLogger().info("[OmniConnect] " + key + " nem található.");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " is not found.");
         }
         if (!cfg.getBoolean("exploitfix." + key + ".enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] " + key + " hook kikapcsolva.");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook turned off.");
             return;
         }
         try {
             Class.forName(className);
             hookClass.getDeclaredConstructor(String.class).newInstance(key);
-            Bukkit.getLogger().info("[OmniConnect] " + key + " hook aktiválva!");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook activated!");
         } catch (Exception e) {
-            Bukkit.getLogger().info("[OmniConnect] " + key + " nem található.");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " is not found.");
         }
         if (!cfg.getBoolean("kingdoms." + key + ".enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] " + key + " hook kikapcsolva.");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook turned off.");
             return;
         }
         try {
             Class.forName(className);
             hookClass.getDeclaredConstructor(String.class).newInstance(key);
-            Bukkit.getLogger().info("[OmniConnect] " + key + " hook aktiválva!");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook has been activated!");
         } catch (Exception e) {
-            Bukkit.getLogger().info("[OmniConnect] " + key + " nem található.");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " is not found.");
         }
         if (!cfg.getBoolean("moderation." + key + ".enabled")) {
-            Bukkit.getLogger().info("[OmniConnect] " + key + " hook kikapcsolva.");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook turned off.");
             return;
         }
         try {
             Class.forName(className);
             hookClass.getDeclaredConstructor(String.class).newInstance(key);
-            Bukkit.getLogger().info("[OmniConnect] " + key + " hook aktiválva!");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook activated!");
         } catch (Exception e) {
-            Bukkit.getLogger().info("[OmniConnect] " + key + " nem található.");
+            Bukkit.getLogger().info("[OmniConnect] " + key + " is not found.");
         }
+        if (!cfg.getBoolean("economy." + key + ".enabled")) {
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook turned off.");
+            return;
+        }
+        try {
+            Class.forName(className);
+            hookClass.getDeclaredConstructor(String.class).newInstance(key);
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook has been activated!");
+        } catch (Exception e) {
+            Bukkit.getLogger().info("[OmniConnect] " + key + " is not found.");
+        }
+        if (!cfg.getBoolean("management." + key + ".enabled")) {
+            Bukkit.getLogger().info("[OmniConnect] " + key + " hook turned off.");
+            return;
+        }
+        try {
+                Class.forName(className);
+                hookClass.getDeclaredConstructor(String.class).newInstance(key);
+                Bukkit.getLogger().info("[OmniConnect] " + key + " hook activated!");
+            } catch (Exception e) {
+                Bukkit.getLogger().info("[OmniConnect] " + key + " is not found.");
+            }
     }
 }

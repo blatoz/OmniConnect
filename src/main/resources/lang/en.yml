@@ -1,84 +1,295 @@
-linking:
-  link:
-    disabled: "§cThe link command is currently disabled."
-    generated: "§aTo link your Discord account, type: §f/link %code%"
-    already_pending: "§eYou already have an active code: §f/link %code%"
-    success: "§aYour Minecraft and Discord accounts are now linked!"
-    invalid: "§cInvalid or expired code."
-    already_linked: "§eThis Discord account is already linked to a Minecraft account."
+errors:
+  moderation_disabled: "❌ The moderation module is disabled."
+  utils_disabled: "❌ The utility module is disabled."
+  fun_disabled: "❌ The fun module is disabled."
+  missing_option: "❌ Missing option: %option%"
+  no_user: "❌ No user provided."
 
 discord:
+  log:
+    footer: "OmniConnect Log System"
+
+    common:
+      unknown: "Unknown"
+      no_reason: "No reason provided"
+      no_attachments: "No attachments"
+      no_content: "No text content"
+      none: "None"
+
+    message:
+      received:
+        title: "New Message"
+        user: "User"
+        user_id: "User ID"
+        channel: "Channel"
+        channel_id: "Channel ID"
+        content: "Content"
+        attachments: "Attachments"
+        message_id: "Message ID"
+
+      delete:
+        title: "Message Deleted"
+        channel: "Channel"
+        channel_id: "Channel ID"
+        user: "User"
+        content: "Message Content"
+        attachments: "Attachments"
+        message_id: "Message ID"
+
+      update:
+        title: "Message Edited"
+        user: "User"
+        user_id: "User ID"
+        channel: "Channel"
+        new_content: "New Content"
+        attachments: "Attachments"
+        message_id: "Message ID"
+
+    member:
+      join:
+        title: "Member Joined"
+        user: "User"
+        user_id: "User ID"
+        created: "Created"
+        is_bot: "Bot?"
+
+      leave:
+        title: "Member Left"
+        user: "User"
+        user_id: "User ID"
+        created: "Created"
+        is_bot: "Bot?"
+
+      name_update:
+        title: "Username Updated"
+        user_id: "User ID"
+        old: "Old Name"
+        new: "New Name"
+
+      avatar_update:
+        title: "Avatar Updated"
+        user: "User"
+        user_id: "User ID"
+        old: "Old Avatar"
+        new: "New Avatar"
+
+      discriminator_update:
+        title: "Discriminator Updated"
+        user: "User"
+        user_id: "User ID"
+        old: "Old Discriminator"
+        new: "New Discriminator"
+
+    ban:
+      title: "User Banned"
+      user: "User"
+      user_id: "User ID"
+      executor: "Executor"
+      reason: "Reason"
+
+    unban:
+      title: "Ban Revoked"
+      user: "User"
+      user_id: "User ID"
+      executor: "Executor"
+      reason: "Reason"
+
+    role:
+      add:
+        title: "Role Added"
+        user: "User"
+        user_id: "User ID"
+        roles: "Added Roles"
+        executor: "Executor"
+        reason: "Reason"
+
+      remove:
+        title: "Role Removed"
+        user: "User"
+        user_id: "User ID"
+        roles: "Removed Roles"
+        executor: "Executor"
+        reason: "Reason"
+
+    channel:
+      create:
+        title: "Channel Created"
+        name: "Channel"
+        id: "Channel ID"
+        type: "Channel Type"
+        executor: "Created By"
+        reason: "Reason"
+
+      delete:
+        title: "Channel Deleted"
+        name: "Channel"
+        id: "Channel ID"
+        type: "Channel Type"
+        executor: "Deleted By"
+        reason: "Reason"
+
+      update:
+        name:
+          title: "Channel Name Updated"
+          id: "Channel ID"
+          old: "Old Name"
+          new: "New Name"
+          executor: "Updated By"
+          reason: "Reason"
+
+        topic:
+          title: "Channel Topic Updated"
+          name: "Channel"
+          id: "Channel ID"
+          old: "Old Topic"
+          new: "New Topic"
+          executor: "Updated By"
+          reason: "Reason"
+
+        nsfw:
+          title: "NSFW Setting Updated"
+          name: "Channel"
+          id: "Channel ID"
+          old: "Old Value"
+          new: "New Value"
+          executor: "Updated By"
+          reason: "Reason"
+          values:
+            enabled: "NSFW"
+            disabled: "Not NSFW"
+
+        bitrate:
+          title: "Bitrate Updated"
+          name: "Channel"
+          id: "Channel ID"
+          old: "Old Bitrate"
+          new: "New Bitrate"
+          executor: "Updated By"
+          reason: "Reason"
+
+        userlimit:
+          title: "User Limit Updated"
+          name: "Channel"
+          id: "Channel ID"
+          old: "Old Limit"
+          new: "New Limit"
+          executor: "Updated By"
+          reason: "Reason"
+
+    voice:
+      join:
+        title: "Voice Join"
+        user: "User"
+        user_id: "User ID"
+        channel: "Channel"
+        channel_id: "Channel ID"
+
+      leave:
+        title: "Voice Leave"
+        user: "User"
+        user_id: "User ID"
+        channel: "Channel"
+        channel_id: "Channel ID"
+
+      move:
+        title: "Voice Move"
+        user: "User"
+        user_id: "User ID"
+        from: "From"
+        from_id: "From ID"
+        to: "To"
+        to_id: "To ID"
+
+      mute:
+        title: "User Muted"
+        user: "User"
+        user_id: "User ID"
+        executor: "Muted By"
+        reason: "Reason"
+        muted_field: "Muted?"
+        muted_yes: "Yes"
+        muted_no: "No"
+
+
+  chatbridge:
+    title: "Minecraft Chat"
+    player: "Player"
+    message: "Message"
+
+  moderation:
+    warn_title: "Warning"
+    warn_description: "%user% has been warned."
+    warn_reason: "Reason"
+    warn_no_reason: "No reason provided."
+
+    kick_title: "Kick"
+    kick_description: "%user% has been kicked."
+    kick_reason: "Reason"
+    kick_no_reason: "No reason provided."
+
+    ban_title: "Ban"
+    ban_description: "%user% has been banned."
+    ban_reason: "Reason"
+    ban_no_reason: "No reason provided."
+
+    timeout_title: "Timeout"
+    timeout_description: "%user% has been timed out."
+    timeout_duration: "Duration"
+
+  utils:
+    ping: "🏓 Pong! Latency: %ms% ms"
+    avatar_title: "%user%'s Avatar"
+    userinfo_title: "User Information"
+    serverinfo_title: "Server Information"
+    mclink_none: "❌ You have no linked Minecraft account."
+    mclink_linked: "🔗 Your linked Minecraft account: **%player%**"
+    mcstatus_title: "Minecraft Server Status"
+    mcstatus_online: "🟢 Online"
+    mcstatus_offline: "🔴 Offline"
+
   fun:
-    roll: "🎲 %number% / %max%"
-    coinflip: "🪙 Coinflip result: %result%"
+    roll: "🎲 Roll result: **%number%** / %max%"
+    coinflip: "🪙 Coin flip: **%result%**"
     coinflip_heads: "Heads"
     coinflip_tails: "Tails"
-    8ball:
-      message: "🎱 My answer: %answer%"
-      answer1: "Yes."
-      answer2: "No."
-      answer3: "Maybe."
-      answer4: "Ask again later."
-      answer5: "Definitely!"
-      answer6: "Unlikely."
-      answer7: "It seems so."
-      answer8: "Cannot predict now."
+
+    8ball: "🎱 The magic 8‑ball says: **%answer%**"
+    8ball.answer1: "Yes."
+    8ball.answer2: "No."
+    8ball.answer3: "Maybe."
+    8ball.answer4: "Try again later."
+    8ball.answer5: "Definitely!"
+    8ball.answer6: "Unlikely."
+    8ball.answer7: "It seems so."
+    8ball.answer8: "Cannot predict now."
+
     joke: "😂 Joke: %joke%"
     joke1: "Why did the chicken cross the road? To get to the other side!"
-    joke2: "Why don't computers have girlfriends? Too many bytes!"
-    joke3: "Why do programmers prefer the dark? Because light attracts bugs!"
-    joke4: "Why did the Java developer's car break down? No class!"
+    joke2: "What’s small, yellow and dangerous? A chick with a machine gun."
+    joke3: "Why doesn't a computer have a girlfriend? Too many bytes."
+    joke4: "Why do programmers prefer dark mode? Because light attracts bugs."
+
     cat_title: "🐱 Cat"
     dog_title: "🐶 Dog"
-    hug: "🤗 %user1% hugged %user2%!"
-    hug_no_target: "❌ No user selected."
-    slap: "👋 %user1% slapped %user2%!"
-    slap_no_target: "❌ No user selected."
     meme_title: "😂 Meme"
-    gif_prefix: "🎞 GIF:"
+    gif_prefix: "🎞 GIF result:"
     quote: "💬 Quote: %quote%"
-    quote1: "Success is not final, failure is not fatal."
-    quote2: "Persistence is the key."
-    quote3: "The best time to start is now."
-    ship: "💘 %user1% ❤️ %user2% — %percent%% %emoji%"
-    lovecalc_title: "💖 Love Calculator"
+
+    hug: "🤗 %user1% hugged %user2%!"
+    hug_no_target: "❌ You didn't specify who to hug."
+
+    slap: "👋 %user1% slapped %user2%!"
+    slap_no_target: "❌ You didn't specify who to slap."
+
+    ship: "❤️ %user1% and %user2% compatibility: **%percent%%** %emoji%"
+    lovecalc_title: "💘 Love Calculator"
     lovecalc_pair_title: "Pair"
     lovecalc_result_title: "Result"
 
-  utils:
-    ping: "🏓 Pong! Latency: %ping% ms"
-    avatar_title: "%user%'s avatar"
-    userinfo_title: "User Information"
-    userinfo_name: "Name"
-    userinfo_created: "Account created"
-    serverinfo_title: "Server Information"
-    serverinfo_name: "Name"
-    serverinfo_id: "ID"
-    serverinfo_members: "Members"
-    mclink_none: "❌ No linked Minecraft account."
-    mclink: "🔗 Linked Minecraft account: %name% (%uuid%)"
-    mcstatus_online: "🟢 The Minecraft server is online!"
-    mcstatus_offline: "🔴 The Minecraft server is offline."
-
-  moderation:
-    no_reason: "No reason provided."
-    warn: "⚠️ %user% has been warned. Reason: %reason%"
-    kick: "👢 %user% has been kicked. Reason: %reason%"
-    ban: "⛔ %user% has been banned. Reason: %reason%"
-    timeout: "⏳ %user% has been timed out for %minutes% minutes."
-
-errors:
-  fun_disabled: "❌ Fun commands are disabled."
-  utils_disabled: "❌ Utility commands are disabled."
-  moderation_disabled: "❌ Moderation commands are disabled."
-  no_user: "❌ No user selected."
-  missing_option: "❌ Missing option: %option%"
-  invalid_number: "❌ Invalid number."
-  only_guild: "❌ This command can only be used in a server."
-  no_permission: "❌ You do not have permission to use this command."
-
 minecraft:
   links:
+    disabled: "§cThis link command is disabled."
+    not_set: "§cThis link is not configured."
     discord: "§bJoin our Discord: §f%url%"
     store: "§bStore: §f%url%"
     rules: "§bRules: §f%url%"
@@ -86,3 +297,12 @@ minecraft:
     vote: "§bVote: §f%url%"
     map: "§bMap: §f%url%"
     wiki: "§bWiki: §f%url%"
+
+  link:
+    only_players: "§cOnly players can use this command."
+    disabled: "§cThe link command is disabled."
+    generated: "§aTo link your Discord account, type: §f/link %code%"
+    already_pending: "§eYou already have an active code: §f/link %code%"
+    success: "§aYour Minecraft and Discord accounts are now linked!"
+    invalid: "§cInvalid or expired code."
+    already_linked: "§eThis Discord account is already linked to a Minecraft account."

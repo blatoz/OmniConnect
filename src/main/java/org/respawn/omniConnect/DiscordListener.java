@@ -1,6 +1,3 @@
-// DiscordListener.java – teljes, javított, cache-es, csatorna-update-es verzió
-// (A teljes kódot ide illesztettem, hogy könnyen szerkeszthető legyen Pages-ben.)
-
 package org.respawn.omniConnect;
 
 import net.dv8tion.jda.api.entities.Message;
@@ -37,11 +34,11 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
 import org.jetbrains.annotations.NotNull;
+import org.respawn.omniConnect.lang.LangManager;
 
 import java.awt.*;
 import java.util.stream.Collectors;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Discord esemény figyelő - naplózza az összes szerver- és felhasználó-tevékenységet.
@@ -49,36 +46,48 @@ import java.util.concurrent.TimeUnit;
  */
 public class DiscordListener extends ListenerAdapter {
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
         if (!event.isFromGuild()) return;
 
+        String lang = lang();
+
         Message msg = event.getMessage();
         MessageCache.store(msg);
 
         final String attachments = msg.getAttachments().isEmpty()
-                ? "Nincs csatolmány"
+                ? LangManager.get(lang, "discord.log.common.no_attachments")
                 : msg.getAttachments().stream()
                 .map(a -> a.getFileName() + " (" + a.getUrl() + ")")
                 .collect(Collectors.joining("\n"));
 
+        String content = msg.getContentRaw().isEmpty()
+                ? LangManager.get(lang, "discord.log.common.no_content")
+                : msg.getContentRaw();
+
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Új Üzenet")
+                .setTitle(LangManager.get(lang, "discord.log.message.received.title"))
                 .setColor(Color.CYAN)
-                .addField("Felhasználó", event.getAuthor().getName(), true)
-                .addField("Felhasználó ID", event.getAuthor().getId(), true)
-                .addField("Csatorna", event.getChannel().getName(), true)
-                .addField("Csatorna ID", event.getChannel().getId(), true)
-                .addField("Tartalom", "```\n" + msg.getContentRaw() + "\n```", false)
-                .addField("Csatolmányok", attachments, false)
-                .addField("Üzenet ID", msg.getId(), true)
+                .addField(LangManager.get(lang, "discord.log.message.received.user"), event.getAuthor().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.message.received.user_id"), event.getAuthor().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.message.received.channel"), event.getChannel().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.message.received.channel_id"), event.getChannel().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.message.received.content"), "```\n" + content + "\n```", false)
+                .addField(LangManager.get(lang, "discord.log.message.received.attachments"), attachments, false)
+                .addField(LangManager.get(lang, "discord.log.message.received.message_id"), msg.getId(), true)
         );
     }
 
     @Override
     public void onMessageDelete(@NotNull MessageDeleteEvent event) {
         if (!event.isFromGuild()) return;
+
+        String lang = lang();
 
         Message cached = MessageCache.get(event.getMessageId());
 
@@ -88,31 +97,31 @@ public class DiscordListener extends ListenerAdapter {
 
         if (cached != null) {
             contentFinal = cached.getContentRaw().isEmpty()
-                    ? "Nincs szöveges tartalom"
+                    ? LangManager.get(lang, "discord.log.common.no_content")
                     : cached.getContentRaw();
 
             attachmentsFinal = cached.getAttachments().isEmpty()
-                    ? "Nincs csatolmány"
+                    ? LangManager.get(lang, "discord.log.common.no_attachments")
                     : cached.getAttachments().stream()
                     .map(a -> a.getFileName() + " (" + a.getUrl() + ")")
                     .collect(Collectors.joining("\n"));
 
             authorFinal = cached.getAuthor().getName();
         } else {
-            contentFinal = "Nem elérhető (a bot nem látta az üzenetet)";
-            attachmentsFinal = "Nincs csatolmány";
-            authorFinal = "Ismeretlen";
+            contentFinal = LangManager.get(lang, "discord.log.common.no_content");
+            attachmentsFinal = LangManager.get(lang, "discord.log.common.no_attachments");
+            authorFinal = LangManager.get(lang, "discord.log.common.unknown");
         }
 
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Üzenet Törölve")
+                .setTitle(LangManager.get(lang, "discord.log.message.delete.title"))
                 .setColor(Color.ORANGE)
-                .addField("Csatorna", event.getChannel().getName(), true)
-                .addField("Csatorna ID", event.getChannel().getId(), true)
-                .addField("Felhasználó", authorFinal, true)
-                .addField("Üzenet tartalma", "```\n" + contentFinal + "\n```", false)
-                .addField("Csatolmányok", attachmentsFinal, false)
-                .addField("Üzenet ID", event.getMessageId(), true)
+                .addField(LangManager.get(lang, "discord.log.message.delete.channel"), event.getChannel().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.message.delete.channel_id"), event.getChannel().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.message.delete.user"), authorFinal, true)
+                .addField(LangManager.get(lang, "discord.log.message.delete.content"), "```\n" + contentFinal + "\n```", false)
+                .addField(LangManager.get(lang, "discord.log.message.delete.attachments"), attachmentsFinal, false)
+                .addField(LangManager.get(lang, "discord.log.message.delete.message_id"), event.getMessageId(), true)
         );
 
         MessageCache.remove(event.getMessageId());
@@ -123,104 +132,124 @@ public class DiscordListener extends ListenerAdapter {
         if (event.getAuthor().isBot()) return;
         if (!event.isFromGuild()) return;
 
+        String lang = lang();
+
         Message msg = event.getMessage();
         MessageCache.store(msg);
 
         final String attachments = msg.getAttachments().isEmpty()
-                ? "Nincs csatolmány"
+                ? LangManager.get(lang, "discord.log.common.no_attachments")
                 : msg.getAttachments().stream()
                 .map(a -> a.getFileName() + " (" + a.getUrl() + ")")
                 .collect(Collectors.joining("\n"));
 
+        String content = msg.getContentRaw().isEmpty()
+                ? LangManager.get(lang, "discord.log.common.no_content")
+                : msg.getContentRaw();
+
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Üzenet Szerkesztve")
+                .setTitle(LangManager.get(lang, "discord.log.message.update.title"))
                 .setColor(Color.YELLOW)
-                .addField("Felhasználó", event.getAuthor().getName(), true)
-                .addField("Felhasználó ID", event.getAuthor().getId(), true)
-                .addField("Csatorna", event.getChannel().getName(), true)
-                .addField("Új tartalom", "```\n" + msg.getContentRaw() + "\n```", false)
-                .addField("Csatolmányok", attachments, false)
-                .addField("Üzenet ID", msg.getId(), true)
+                .addField(LangManager.get(lang, "discord.log.message.update.user"), event.getAuthor().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.message.update.user_id"), event.getAuthor().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.message.update.channel"), event.getChannel().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.message.update.new_content"), "```\n" + content + "\n```", false)
+                .addField(LangManager.get(lang, "discord.log.message.update.attachments"), attachments, false)
+                .addField(LangManager.get(lang, "discord.log.message.update.message_id"), msg.getId(), true)
         );
     }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
+        String lang = lang();
+
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Tag Csatlakozott")
+                .setTitle(LangManager.get(lang, "discord.log.member.join.title"))
                 .setColor(Color.GREEN)
-                .addField("Felhasználó", event.getUser().getName(), false)
-                .addField("Felhasználó ID", event.getUser().getId(), false)
-                .addField("Létrehozva", event.getUser().getTimeCreated().toString(), false)
-                .addField("Bot?", event.getUser().isBot() ? "Igen" : "Nem", false)
+                .addField(LangManager.get(lang, "discord.log.member.join.user"), event.getUser().getName(), false)
+                .addField(LangManager.get(lang, "discord.log.member.join.user_id"), event.getUser().getId(), false)
+                .addField(LangManager.get(lang, "discord.log.member.join.created"), event.getUser().getTimeCreated().toString(), false)
+                .addField(LangManager.get(lang, "discord.log.member.join.is_bot"), event.getUser().isBot() ? "Yes" : "No", false)
         );
     }
 
     @Override
     public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
+        String lang = lang();
+
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Tag Kilépett")
+                .setTitle(LangManager.get(lang, "discord.log.member.leave.title"))
                 .setColor(Color.RED)
-                .addField("Felhasználó", event.getUser().getName(), false)
-                .addField("Felhasználó ID", event.getUser().getId(), false)
-                .addField("Létrehozva", event.getUser().getTimeCreated().toString(), false)
-                .addField("Bot?", event.getUser().isBot() ? "Igen" : "Nem", false)
+                .addField(LangManager.get(lang, "discord.log.member.leave.user"), event.getUser().getName(), false)
+                .addField(LangManager.get(lang, "discord.log.member.leave.user_id"), event.getUser().getId(), false)
+                .addField(LangManager.get(lang, "discord.log.member.leave.created"), event.getUser().getTimeCreated().toString(), false)
+                .addField(LangManager.get(lang, "discord.log.member.leave.is_bot"), event.getUser().isBot() ? "Yes" : "No", false)
         );
     }
 
     @Override
     public void onUserUpdateName(@NotNull UserUpdateNameEvent event) {
+        String lang = lang();
+
         final String oldName = event.getOldValue();
         final String newName = event.getNewValue();
 
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Felhasználó Neve Megváltozott")
+                .setTitle(LangManager.get(lang, "discord.log.member.name_update.title"))
                 .setColor(Color.YELLOW)
-                .addField("Felhasználó ID", event.getUser().getId(), true)
-                .addField("Régi név", oldName, true)
-                .addField("Új név", newName, true)
+                .addField(LangManager.get(lang, "discord.log.member.name_update.user_id"), event.getUser().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.member.name_update.old"), oldName, true)
+                .addField(LangManager.get(lang, "discord.log.member.name_update.new"), newName, true)
         );
     }
 
     @Override
     public void onUserUpdateAvatar(@NotNull UserUpdateAvatarEvent event) {
+        String lang = lang();
+
         final String oldAvatarUrl = event.getOldValue();
         final String newAvatarUrl = event.getNewValue();
 
+        String oldText = oldAvatarUrl != null ? oldAvatarUrl : LangManager.get(lang, "discord.log.common.none");
+        String newText = newAvatarUrl != null ? newAvatarUrl : LangManager.get(lang, "discord.log.common.none");
+
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Felhasználó Avatárja Megváltozott")
+                .setTitle(LangManager.get(lang, "discord.log.member.avatar_update.title"))
                 .setColor(Color.CYAN)
-                .addField("Felhasználó", event.getUser().getName(), true)
-                .addField("Felhasználó ID", event.getUser().getId(), true)
-                .addField("Régi Avatar", oldAvatarUrl != null ? oldAvatarUrl : "Nincs", false)
-                .addField("Új Avatar", newAvatarUrl != null ? newAvatarUrl : "Nincs", false)
+                .addField(LangManager.get(lang, "discord.log.member.avatar_update.user"), event.getUser().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.member.avatar_update.user_id"), event.getUser().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.member.avatar_update.old"), oldText, false)
+                .addField(LangManager.get(lang, "discord.log.member.avatar_update.new"), newText, false)
         );
     }
 
     @Override
     public void onUserUpdateDiscriminator(@NotNull UserUpdateDiscriminatorEvent event) {
+        String lang = lang();
+
         final String oldDiscriminator = event.getOldValue();
         final String newDiscriminator = event.getNewValue();
 
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Felhasználó Discriminatora Megváltozott")
+                .setTitle(LangManager.get(lang, "discord.log.member.discriminator_update.title"))
                 .setColor(Color.LIGHT_GRAY)
-                .addField("Felhasználó", event.getUser().getName(), true)
-                .addField("Felhasználó ID", event.getUser().getId(), true)
-                .addField("Régi Discriminator", oldDiscriminator, true)
-                .addField("Új Discriminator", newDiscriminator, true)
+                .addField(LangManager.get(lang, "discord.log.member.discriminator_update.user"), event.getUser().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.member.discriminator_update.user_id"), event.getUser().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.member.discriminator_update.old"), oldDiscriminator, true)
+                .addField(LangManager.get(lang, "discord.log.member.discriminator_update.new"), newDiscriminator, true)
         );
     }
 
     @Override
     public void onGuildBan(@NotNull GuildBanEvent event) {
-        // Audit log lekérése
+        String lang = lang();
+
         event.getGuild().retrieveAuditLogs()
                 .type(ActionType.BAN)
                 .limit(5)
                 .queue(logs -> {
-                    String executor = "Ismeretlen";
-                    String reason = "Nincs indok megadva";
+                    String executor = LangManager.get(lang, "discord.log.common.unknown");
+                    String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                     Optional<AuditLogEntry> entry = logs.stream()
                             .filter(log -> log.getTargetId().equals(event.getUser().getId()))
@@ -241,25 +270,26 @@ public class DiscordListener extends ListenerAdapter {
                     final String finalReason = reason;
 
                     LogManager.getInstance().sendEmbed(builder -> builder
-                            .setTitle("Tag Kitiltva")
+                            .setTitle(LangManager.get(lang, "discord.log.ban.title"))
                             .setColor(Color.RED)
-                            .addField("Felhasználó", event.getUser().getName(), true)
-                            .addField("Felhasználó ID", event.getUser().getId(), true)
-                            .addField("Kitiltotta", finalExecutor, true)
-                            .addField("Indoklás", finalReason, false)
+                            .addField(LangManager.get(lang, "discord.log.ban.user"), event.getUser().getName(), true)
+                            .addField(LangManager.get(lang, "discord.log.ban.user_id"), event.getUser().getId(), true)
+                            .addField(LangManager.get(lang, "discord.log.ban.executor"), finalExecutor, true)
+                            .addField(LangManager.get(lang, "discord.log.ban.reason"), finalReason, false)
                     );
                 });
     }
 
     @Override
     public void onGuildUnban(@NotNull GuildUnbanEvent event) {
-        // Audit log lekérése
+        String lang = lang();
+
         event.getGuild().retrieveAuditLogs()
                 .type(ActionType.UNBAN)
                 .limit(5)
                 .queue(logs -> {
-                    String executor = "Ismeretlen";
-                    String reason = "Nincs indok megadva";
+                    String executor = LangManager.get(lang, "discord.log.common.unknown");
+                    String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                     Optional<AuditLogEntry> entry = logs.stream()
                             .filter(log -> log.getTargetId().equals(event.getUser().getId()))
@@ -280,29 +310,32 @@ public class DiscordListener extends ListenerAdapter {
                     final String finalReason = reason;
 
                     LogManager.getInstance().sendEmbed(builder -> builder
-                            .setTitle("Kitiltás Feloldva")
+                            .setTitle(LangManager.get(lang, "discord.log.unban.title"))
                             .setColor(Color.GREEN)
-                            .addField("Felhasználó", event.getUser().getName(), true)
-                            .addField("Felhasználó ID", event.getUser().getId(), true)
-                            .addField("Feloldotta", finalExecutor, true)
-                            .addField("Indoklás", finalReason, false)
+                            .addField(LangManager.get(lang, "discord.log.unban.user"), event.getUser().getName(), true)
+                            .addField(LangManager.get(lang, "discord.log.unban.user_id"), event.getUser().getId(), true)
+                            .addField(LangManager.get(lang, "discord.log.unban.executor"), finalExecutor, true)
+                            .addField(LangManager.get(lang, "discord.log.unban.reason"), finalReason, false)
                     );
                 });
     }
 
     @Override
     public void onGuildMemberRoleAdd(@NotNull GuildMemberRoleAddEvent event) {
-        final String roles = event.getRoles().stream()
+        String lang = lang();
+
+        final String roles = event.getRoles().isEmpty()
+                ? LangManager.get(lang, "discord.log.common.none")
+                : event.getRoles().stream()
                 .map(net.dv8tion.jda.api.entities.Role::getName)
                 .collect(Collectors.joining(", "));
 
-        // Audit log lekérése
         event.getGuild().retrieveAuditLogs()
                 .type(ActionType.MEMBER_ROLE_UPDATE)
                 .limit(5)
                 .queue(logs -> {
-                    String executor = "Ismeretlen";
-                    String reason = "Nincs indok megadva";
+                    String executor = LangManager.get(lang, "discord.log.common.unknown");
+                    String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                     Optional<AuditLogEntry> entry = logs.stream()
                             .filter(log -> log.getTargetId().equals(event.getUser().getId()))
@@ -323,30 +356,33 @@ public class DiscordListener extends ListenerAdapter {
                     final String finalReason = reason;
 
                     LogManager.getInstance().sendEmbed(builder -> builder
-                            .setTitle("Szerep Hozzáadva")
+                            .setTitle(LangManager.get(lang, "discord.log.role.add.title"))
                             .setColor(Color.MAGENTA)
-                            .addField("Felhasználó", event.getUser().getName(), true)
-                            .addField("Felhasználó ID", event.getUser().getId(), true)
-                            .addField("Kapott szerepek", roles, false)
-                            .addField("Végrehajtó", finalExecutor, true)
-                            .addField("Indoklás", finalReason, false)
+                            .addField(LangManager.get(lang, "discord.log.role.add.user"), event.getUser().getName(), true)
+                            .addField(LangManager.get(lang, "discord.log.role.add.user_id"), event.getUser().getId(), true)
+                            .addField(LangManager.get(lang, "discord.log.role.add.roles"), roles, false)
+                            .addField(LangManager.get(lang, "discord.log.role.add.executor"), finalExecutor, true)
+                            .addField(LangManager.get(lang, "discord.log.role.add.reason"), finalReason, false)
                     );
                 });
     }
 
     @Override
     public void onGuildMemberRoleRemove(@NotNull GuildMemberRoleRemoveEvent event) {
-        final String roles = event.getRoles().stream()
+        String lang = lang();
+
+        final String roles = event.getRoles().isEmpty()
+                ? LangManager.get(lang, "discord.log.common.none")
+                : event.getRoles().stream()
                 .map(net.dv8tion.jda.api.entities.Role::getName)
                 .collect(Collectors.joining(", "));
 
-        // Audit log lekérése
         event.getGuild().retrieveAuditLogs()
                 .type(ActionType.MEMBER_ROLE_UPDATE)
                 .limit(5)
                 .queue(logs -> {
-                    String executor = "Ismeretlen";
-                    String reason = "Nincs indok megadva";
+                    String executor = LangManager.get(lang, "discord.log.common.unknown");
+                    String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                     Optional<AuditLogEntry> entry = logs.stream()
                             .filter(log -> log.getTargetId().equals(event.getUser().getId()))
@@ -367,26 +403,27 @@ public class DiscordListener extends ListenerAdapter {
                     final String finalReason = reason;
 
                     LogManager.getInstance().sendEmbed(builder -> builder
-                            .setTitle("Szerep Eltávolítva")
+                            .setTitle(LangManager.get(lang, "discord.log.role.remove.title"))
                             .setColor(Color.PINK)
-                            .addField("Felhasználó", event.getUser().getName(), true)
-                            .addField("Felhasználó ID", event.getUser().getId(), true)
-                            .addField("Eltávolított szerepek", roles, false)
-                            .addField("Végrehajtó", finalExecutor, true)
-                            .addField("Indoklás", finalReason, false)
+                            .addField(LangManager.get(lang, "discord.log.role.remove.user"), event.getUser().getName(), true)
+                            .addField(LangManager.get(lang, "discord.log.role.remove.user_id"), event.getUser().getId(), true)
+                            .addField(LangManager.get(lang, "discord.log.role.remove.roles"), roles, false)
+                            .addField(LangManager.get(lang, "discord.log.role.remove.executor"), finalExecutor, true)
+                            .addField(LangManager.get(lang, "discord.log.role.remove.reason"), finalReason, false)
                     );
                 });
     }
 
     @Override
     public void onChannelCreate(@NotNull ChannelCreateEvent event) {
-        // Audit log lekérése
+        String lang = lang();
+
         event.getGuild().retrieveAuditLogs()
                 .type(ActionType.CHANNEL_CREATE)
                 .limit(5)
                 .queue(logs -> {
-                    String executor = "Ismeretlen";
-                    String reason = "Nincs indok megadva";
+                    String executor = LangManager.get(lang, "discord.log.common.unknown");
+                    String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                     Optional<AuditLogEntry> entry = logs.stream()
                             .filter(log -> log.getTargetId().equals(event.getChannel().getId()))
@@ -407,26 +444,27 @@ public class DiscordListener extends ListenerAdapter {
                     final String finalReason = reason;
 
                     LogManager.getInstance().sendEmbed(builder -> builder
-                            .setTitle("Csatorna Létrehozva")
+                            .setTitle(LangManager.get(lang, "discord.log.channel.create.title"))
                             .setColor(Color.BLUE)
-                            .addField("Csatorna", event.getChannel().getName(), false)
-                            .addField("Csatorna ID", event.getChannel().getId(), false)
-                            .addField("Csatorna Típusa", event.getChannel().getType().toString(), false)
-                            .addField("Létrehozta", finalExecutor, true)
-                            .addField("Indoklás", finalReason, false)
+                            .addField(LangManager.get(lang, "discord.log.channel.create.name"), event.getChannel().getName(), false)
+                            .addField(LangManager.get(lang, "discord.log.channel.create.id"), event.getChannel().getId(), false)
+                            .addField(LangManager.get(lang, "discord.log.channel.create.type"), event.getChannel().getType().toString(), false)
+                            .addField(LangManager.get(lang, "discord.log.channel.create.executor"), finalExecutor, true)
+                            .addField(LangManager.get(lang, "discord.log.channel.create.reason"), finalReason, false)
                     );
                 });
     }
 
     @Override
     public void onChannelDelete(@NotNull ChannelDeleteEvent event) {
-        // Audit log lekérése
+        String lang = lang();
+
         event.getGuild().retrieveAuditLogs()
                 .type(ActionType.CHANNEL_DELETE)
                 .limit(5)
                 .queue(logs -> {
-                    String executor = "Ismeretlen";
-                    String reason = "Nincs indok megadva";
+                    String executor = LangManager.get(lang, "discord.log.common.unknown");
+                    String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                     Optional<AuditLogEntry> entry = logs.stream()
                             .filter(log -> log.getTargetId().equals(event.getChannel().getId()))
@@ -447,30 +485,31 @@ public class DiscordListener extends ListenerAdapter {
                     final String finalReason = reason;
 
                     LogManager.getInstance().sendEmbed(builder -> builder
-                            .setTitle("Csatorna Törölve")
+                            .setTitle(LangManager.get(lang, "discord.log.channel.delete.title"))
                             .setColor(Color.RED)
-                            .addField("Csatorna", event.getChannel().getName(), false)
-                            .addField("Csatorna ID", event.getChannel().getId(), false)
-                            .addField("Csatorna Típusa", event.getChannel().getType().toString(), false)
-                            .addField("Törölte", finalExecutor, true)
-                            .addField("Indoklás", finalReason, false)
+                            .addField(LangManager.get(lang, "discord.log.channel.delete.name"), event.getChannel().getName(), false)
+                            .addField(LangManager.get(lang, "discord.log.channel.delete.id"), event.getChannel().getId(), false)
+                            .addField(LangManager.get(lang, "discord.log.channel.delete.type"), event.getChannel().getType().toString(), false)
+                            .addField(LangManager.get(lang, "discord.log.channel.delete.executor"), finalExecutor, true)
+                            .addField(LangManager.get(lang, "discord.log.channel.delete.reason"), finalReason, false)
                     );
                 });
     }
 
     @Override
     public void onChannelUpdateName(@NotNull ChannelUpdateNameEvent event) {
+        String lang = lang();
+
         final String oldName = event.getOldValue();
         final String newName = event.getNewValue();
 
         if (oldName != null && newName != null && !oldName.equals(newName)) {
-            // Audit log lekérése
             event.getGuild().retrieveAuditLogs()
                     .type(ActionType.CHANNEL_UPDATE)
                     .limit(5)
                     .queue(logs -> {
-                        String executor = "Ismeretlen";
-                        String reason = "Nincs indok megadva";
+                        String executor = LangManager.get(lang, "discord.log.common.unknown");
+                        String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                         Optional<AuditLogEntry> entry = logs.stream()
                                 .filter(log -> log.getTargetId().equals(event.getChannel().getId()))
@@ -491,13 +530,13 @@ public class DiscordListener extends ListenerAdapter {
                         final String finalReason = reason;
 
                         LogManager.getInstance().sendEmbed(builder -> builder
-                                .setTitle("Csatorna Neve Frissítve")
+                                .setTitle(LangManager.get(lang, "discord.log.channel.update.name.title"))
                                 .setColor(Color.YELLOW)
-                                .addField("Csatorna ID", event.getChannel().getId(), true)
-                                .addField("Régi név", oldName, true)
-                                .addField("Új név", newName, true)
-                                .addField("Módosította", finalExecutor, true)
-                                .addField("Indoklás", finalReason, false)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.name.id"), event.getChannel().getId(), true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.name.old"), oldName, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.name.new"), newName, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.name.executor"), finalExecutor, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.name.reason"), finalReason, false)
                         );
                     });
         }
@@ -505,20 +544,25 @@ public class DiscordListener extends ListenerAdapter {
 
     @Override
     public void onChannelUpdateTopic(@NotNull ChannelUpdateTopicEvent event) {
+        String lang = lang();
+
         String oldRaw = event.getOldValue();
         String newRaw = event.getNewValue();
 
-        final String oldTopic = (oldRaw == null) ? "*Nem volt téma megadva*" : oldRaw;
-        final String newTopic = (newRaw == null) ? "*Nem lett téma megadva*" : newRaw;
+        final String oldTopic = (oldRaw == null)
+                ? LangManager.get(lang, "discord.log.common.none")
+                : oldRaw;
+        final String newTopic = (newRaw == null)
+                ? LangManager.get(lang, "discord.log.common.none")
+                : newRaw;
 
         if (!oldTopic.equals(newTopic)) {
-            // Audit log lekérése
             event.getGuild().retrieveAuditLogs()
                     .type(ActionType.CHANNEL_UPDATE)
                     .limit(5)
                     .queue(logs -> {
-                        String executor = "Ismeretlen";
-                        String reason = "Nincs indok megadva";
+                        String executor = LangManager.get(lang, "discord.log.common.unknown");
+                        String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                         Optional<AuditLogEntry> entry = logs.stream()
                                 .filter(log -> log.getTargetId().equals(event.getChannel().getId()))
@@ -539,14 +583,14 @@ public class DiscordListener extends ListenerAdapter {
                         final String finalReason = reason;
 
                         LogManager.getInstance().sendEmbed(builder -> builder
-                                .setTitle("Csatorna Téma frissítve")
+                                .setTitle(LangManager.get(lang, "discord.log.channel.update.topic.title"))
                                 .setColor(Color.YELLOW)
-                                .addField("Csatorna", event.getChannel().getName(), true)
-                                .addField("Csatorna ID", event.getChannel().getId(), true)
-                                .addField("Régi Téma", oldTopic, false)
-                                .addField("Új Téma", newTopic, false)
-                                .addField("Módosította", finalExecutor, true)
-                                .addField("Indoklás", finalReason, false)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.topic.name"), event.getChannel().getName(), true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.topic.id"), event.getChannel().getId(), true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.topic.old"), oldTopic, false)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.topic.new"), newTopic, false)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.topic.executor"), finalExecutor, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.topic.reason"), finalReason, false)
                         );
                     });
         }
@@ -554,17 +598,26 @@ public class DiscordListener extends ListenerAdapter {
 
     @Override
     public void onChannelUpdateNSFW(@NotNull ChannelUpdateNSFWEvent event) {
+        String lang = lang();
+
         Boolean oldVal = event.getOldValue();
         Boolean newVal = event.getNewValue();
 
         if (oldVal != null && newVal != null && !oldVal.equals(newVal)) {
-            // Audit log lekérése
+            final String oldText = oldVal
+                    ? LangManager.get(lang, "discord.log.channel.update.nsfw.values.enabled")
+                    : LangManager.get(lang, "discord.log.channel.update.nsfw.values.disabled");
+
+            final String newText = newVal
+                    ? LangManager.get(lang, "discord.log.channel.update.nsfw.values.enabled")
+                    : LangManager.get(lang, "discord.log.channel.update.nsfw.values.disabled");
+
             event.getGuild().retrieveAuditLogs()
                     .type(ActionType.CHANNEL_UPDATE)
                     .limit(5)
                     .queue(logs -> {
-                        String executor = "Ismeretlen";
-                        String reason = "Nincs indok megadva";
+                        String executor = LangManager.get(lang, "discord.log.common.unknown");
+                        String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                         Optional<AuditLogEntry> entry = logs.stream()
                                 .filter(log -> log.getTargetId().equals(event.getChannel().getId()))
@@ -585,14 +638,14 @@ public class DiscordListener extends ListenerAdapter {
                         final String finalReason = reason;
 
                         LogManager.getInstance().sendEmbed(builder -> builder
-                                .setTitle("NSFW Beállítás Frissítve")
+                                .setTitle(LangManager.get(lang, "discord.log.channel.update.nsfw.title"))
                                 .setColor(Color.ORANGE)
-                                .addField("Csatorna", event.getChannel().getName(), true)
-                                .addField("Csatorna ID", event.getChannel().getId(), true)
-                                .addField("Régi Érték", oldVal ? "NSFW" : "Nem NSFW", true)
-                                .addField("Új Érték", newVal ? "NSFW" : "Nem NSFW", true)
-                                .addField("Módosította", finalExecutor, true)
-                                .addField("Indoklás", finalReason, false)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.nsfw.name"), event.getChannel().getName(), true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.nsfw.id"), event.getChannel().getId(), true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.nsfw.old"), oldText, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.nsfw.new"), newText, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.nsfw.executor"), finalExecutor, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.nsfw.reason"), finalReason, false)
                         );
                     });
         }
@@ -600,6 +653,8 @@ public class DiscordListener extends ListenerAdapter {
 
     @Override
     public void onChannelUpdateBitrate(@NotNull ChannelUpdateBitrateEvent event) {
+        String lang = lang();
+
         Integer oldVal = event.getOldValue();
         Integer newVal = event.getNewValue();
 
@@ -607,13 +662,12 @@ public class DiscordListener extends ListenerAdapter {
             final String oldBitrate = oldVal + " kbps";
             final String newBitrate = newVal + " kbps";
 
-            // Audit log lekérése
             event.getGuild().retrieveAuditLogs()
                     .type(ActionType.CHANNEL_UPDATE)
                     .limit(5)
                     .queue(logs -> {
-                        String executor = "Ismeretlen";
-                        String reason = "Nincs indok megadva";
+                        String executor = LangManager.get(lang, "discord.log.common.unknown");
+                        String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                         Optional<AuditLogEntry> entry = logs.stream()
                                 .filter(log -> log.getTargetId().equals(event.getChannel().getId()))
@@ -634,13 +688,13 @@ public class DiscordListener extends ListenerAdapter {
                         final String finalReason = reason;
 
                         LogManager.getInstance().sendEmbed(builder -> builder
-                                .setTitle("Hang Csatorna Bitráta Frissítve")
+                                .setTitle(LangManager.get(lang, "discord.log.channel.update.bitrate.title"))
                                 .setColor(Color.CYAN)
-                                .addField("Csatorna", event.getChannel().getName(), true)
-                                .addField("Régi Bitráta", oldBitrate, true)
-                                .addField("Új Bitráta", newBitrate, true)
-                                .addField("Módosította", finalExecutor, true)
-                                .addField("Indoklás", finalReason, false)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.bitrate.name"), event.getChannel().getName(), true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.bitrate.old"), oldBitrate, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.bitrate.new"), newBitrate, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.bitrate.executor"), finalExecutor, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.bitrate.reason"), finalReason, false)
                         );
                     });
         }
@@ -648,20 +702,25 @@ public class DiscordListener extends ListenerAdapter {
 
     @Override
     public void onChannelUpdateUserLimit(@NotNull ChannelUpdateUserLimitEvent event) {
+        String lang = lang();
+
         Integer oldVal = event.getOldValue();
         Integer newVal = event.getNewValue();
 
         if (oldVal != null && newVal != null && !oldVal.equals(newVal)) {
-            final String oldLimit = (oldVal == 0) ? "Nincs limit" : oldVal.toString();
-            final String newLimit = (newVal == 0) ? "Nincs limit" : newVal.toString();
+            final String oldLimit = (oldVal == 0)
+                    ? LangManager.get(lang, "discord.log.common.none")
+                    : oldVal.toString();
+            final String newLimit = (newVal == 0)
+                    ? LangManager.get(lang, "discord.log.common.none")
+                    : newVal.toString();
 
-            // Audit log lekérése
             event.getGuild().retrieveAuditLogs()
                     .type(ActionType.CHANNEL_UPDATE)
                     .limit(5)
                     .queue(logs -> {
-                        String executor = "Ismeretlen";
-                        String reason = "Nincs indok megadva";
+                        String executor = LangManager.get(lang, "discord.log.common.unknown");
+                        String reason = LangManager.get(lang, "discord.log.common.no_reason");
 
                         Optional<AuditLogEntry> entry = logs.stream()
                                 .filter(log -> log.getTargetId().equals(event.getChannel().getId()))
@@ -682,13 +741,13 @@ public class DiscordListener extends ListenerAdapter {
                         final String finalReason = reason;
 
                         LogManager.getInstance().sendEmbed(builder -> builder
-                                .setTitle("Hang Csatorna Felhasználó Limit Frissítve")
+                                .setTitle(LangManager.get(lang, "discord.log.channel.update.userlimit.title"))
                                 .setColor(Color.CYAN)
-                                .addField("Csatorna", event.getChannel().getName(), true)
-                                .addField("Régi Limit", oldLimit, true)
-                                .addField("Új Limit", newLimit, true)
-                                .addField("Módosította", finalExecutor, true)
-                                .addField("Indoklás", finalReason, false)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.userlimit.name"), event.getChannel().getName(), true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.userlimit.old"), oldLimit, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.userlimit.new"), newLimit, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.userlimit.executor"), finalExecutor, true)
+                                .addField(LangManager.get(lang, "discord.log.channel.update.userlimit.reason"), finalReason, false)
                         );
                     });
         }
@@ -696,50 +755,60 @@ public class DiscordListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
+        String lang = lang();
+
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Voice Csatlakozás")
+                .setTitle(LangManager.get(lang, "discord.log.voice.join.title"))
                 .setColor(Color.GREEN)
-                .addField("Felhasználó", event.getMember().getUser().getName(), true)
-                .addField("Felhasználó ID", event.getMember().getUser().getId(), true)
-                .addField("Csatorna", event.getChannelJoined().getName(), true)
-                .addField("Csatorna ID", event.getChannelJoined().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.join.user"), event.getMember().getUser().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.join.user_id"), event.getMember().getUser().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.join.channel"), event.getChannelJoined().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.join.channel_id"), event.getChannelJoined().getId(), true)
         );
     }
 
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
+        String lang = lang();
+
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Voice Kilépés")
+                .setTitle(LangManager.get(lang, "discord.log.voice.leave.title"))
                 .setColor(Color.RED)
-                .addField("Felhasználó", event.getMember().getUser().getName(), true)
-                .addField("Felhasználó ID", event.getMember().getUser().getId(), true)
-                .addField("Csatorna", event.getChannelLeft().getName(), true)
-                .addField("Csatorna ID", event.getChannelLeft().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.leave.user"), event.getMember().getUser().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.leave.user_id"), event.getMember().getUser().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.leave.channel"), event.getChannelLeft().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.leave.channel_id"), event.getChannelLeft().getId(), true)
         );
     }
 
     @Override
     public void onGuildVoiceMove(@NotNull GuildVoiceMoveEvent event) {
+        String lang = lang();
+
         LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Voice Csatorna Váltás")
+                .setTitle(LangManager.get(lang, "discord.log.voice.move.title"))
                 .setColor(Color.ORANGE)
-                .addField("Felhasználó", event.getMember().getUser().getName(), true)
-                .addField("Felhasználó ID", event.getMember().getUser().getId(), true)
-                .addField("Előző Csatorna", event.getChannelLeft().getName(), true)
-                .addField("Előző Csatorna ID", event.getChannelLeft().getId(), true)
-                .addField("Új Csatorna", event.getChannelJoined().getName(), true)
-                .addField("Új Csatorna ID", event.getChannelJoined().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.move.user"), event.getMember().getUser().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.move.user_id"), event.getMember().getUser().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.move.from"), event.getChannelLeft().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.move.to"), event.getChannelJoined().getName(), true)
         );
     }
+
     @Override
     public void onGuildVoiceMute(@NotNull GuildVoiceMuteEvent event) {
-        LogManager.getInstance().sendEmbed(builder -> builder
-                .setTitle("Voice Némítás Frissítve")
-                .setColor(Color.MAGENTA)
-                .addField("Felhasználó", event.getMember().getUser().getName(), true)
-                .addField("Felhasználó ID", event.getMember().getUser().getId(), true)
-                .addField("Némítva?", event.isMuted() ? "Igen" : "Nem", true)
+        String lang = lang();
 
+        String mutedText = event.isMuted()
+                ? LangManager.get(lang, "discord.log.voice.mute.muted_yes")
+                : LangManager.get(lang, "discord.log.voice.mute.muted_no");
+
+        LogManager.getInstance().sendEmbed(builder -> builder
+                .setTitle(LangManager.get(lang, "discord.log.voice.mute.title"))
+                .setColor(Color.MAGENTA)
+                .addField(LangManager.get(lang, "discord.log.voice.mute.user"), event.getMember().getUser().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.mute.user_id"), event.getMember().getUser().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.mute.muted_field"), mutedText, true)
         );
     }
 }

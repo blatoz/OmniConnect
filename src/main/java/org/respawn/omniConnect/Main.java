@@ -1,6 +1,7 @@
 package org.respawn.omniConnect;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.respawn.omniConnect.discord.DiscordBotManager;
 import org.respawn.omniConnect.hooks.HookManager;
 import org.respawn.omniConnect.listeners.ChatListener;
 import org.respawn.omniConnect.ticket.TicketManager;
@@ -71,6 +72,7 @@ public class Main extends JavaPlugin {
 
         // --- Discord bot indítása ---
         DiscordManager.getInstance().start();
+        DiscordBotManager.start();
 
         // --- Discord slash command listenerek (moderáció + linking) ---
         if (DiscordManager.ready) {

@@ -1,84 +1,295 @@
-linking:
-  link:
-    disabled: "§cA link parancs jelenleg le van tiltva."
-    generated: "§aDiscord összekötéshez írd be Discordon: §f/link %code%"
-    already_pending: "§eMár van aktív kódod: §f/link %code%"
-    success: "§aSikeresen összekötötted a Minecraft és Discord fiókodat!"
-    invalid: "§cÉrvénytelen vagy lejárt kód."
-    already_linked: "§eEz a Discord fiók már össze van kötve egy Minecraft fiókkal."
+errors:
+  moderation_disabled: "❌ A moderációs modul le van tiltva."
+  utils_disabled: "❌ A segédparancsok modul le van tiltva."
+  fun_disabled: "❌ A szórakoztató parancsok modul le van tiltva."
+  missing_option: "❌ Hiányzó opció: %option%"
+  no_user: "❌ Nem adtál meg felhasználót."
 
 discord:
+  log:
+    footer: "OmniConnect Log Rendszer"
+
+    common:
+      unknown: "Ismeretlen"
+      no_reason: "Nincs indok megadva"
+      no_attachments: "Nincs csatolmány"
+      no_content: "Nincs szöveges tartalom"
+      none: "Nincs"
+
+    message:
+      received:
+        title: "Új Üzenet"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        channel: "Csatorna"
+        channel_id: "Csatorna ID"
+        content: "Tartalom"
+        attachments: "Csatolmányok"
+        message_id: "Üzenet ID"
+
+      delete:
+        title: "Üzenet Törölve"
+        channel: "Csatorna"
+        channel_id: "Csatorna ID"
+        user: "Felhasználó"
+        content: "Üzenet tartalma"
+        attachments: "Csatolmányok"
+        message_id: "Üzenet ID"
+
+      update:
+        title: "Üzenet Szerkesztve"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        channel: "Csatorna"
+        new_content: "Új tartalom"
+        attachments: "Csatolmányok"
+        message_id: "Üzenet ID"
+
+    member:
+      join:
+        title: "Tag Csatlakozott"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        created: "Létrehozva"
+        is_bot: "Bot?"
+
+      leave:
+        title: "Tag Kilépett"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        created: "Létrehozva"
+        is_bot: "Bot?"
+
+      name_update:
+        title: "Felhasználó Neve Megváltozott"
+        user_id: "Felhasználó ID"
+        old: "Régi név"
+        new: "Új név"
+
+      avatar_update:
+        title: "Felhasználó Avatárja Megváltozott"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        old: "Régi Avatar"
+        new: "Új Avatar"
+
+      discriminator_update:
+        title: "Felhasználó Discriminatora Megváltozott"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        old: "Régi Discriminator"
+        new: "Új Discriminator"
+
+    ban:
+      title: "Tag Kitiltva"
+      user: "Felhasználó"
+      user_id: "Felhasználó ID"
+      executor: "Kitiltotta"
+      reason: "Indoklás"
+
+    unban:
+      title: "Kitiltás Feloldva"
+      user: "Felhasználó"
+      user_id: "Felhasználó ID"
+      executor: "Feloldotta"
+      reason: "Indoklás"
+
+    role:
+      add:
+        title: "Szerep Hozzáadva"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        roles: "Kapott szerepek"
+        executor: "Végrehajtó"
+        reason: "Indoklás"
+
+      remove:
+        title: "Szerep Eltávolítva"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        roles: "Eltávolított szerepek"
+        executor: "Végrehajtó"
+        reason: "Indoklás"
+
+    channel:
+      create:
+        title: "Csatorna Létrehozva"
+        name: "Csatorna"
+        id: "Csatorna ID"
+        type: "Csatorna Típusa"
+        executor: "Létrehozta"
+        reason: "Indoklás"
+
+      delete:
+        title: "Csatorna Törölve"
+        name: "Csatorna"
+        id: "Csatorna ID"
+        type: "Csatorna Típusa"
+        executor: "Törölte"
+        reason: "Indoklás"
+
+      update:
+        name:
+          title: "Csatorna Neve Frissítve"
+          id: "Csatorna ID"
+          old: "Régi név"
+          new: "Új név"
+          executor: "Módosította"
+          reason: "Indoklás"
+
+        topic:
+          title: "Csatorna Téma Frissítve"
+          name: "Csatorna"
+          id: "Csatorna ID"
+          old: "Régi Téma"
+          new: "Új Téma"
+          executor: "Módosította"
+          reason: "Indoklás"
+
+        nsfw:
+          title: "NSFW Beállítás Frissítve"
+          name: "Csatorna"
+          id: "Csatorna ID"
+          old: "Régi Érték"
+          new: "Új Érték"
+          executor: "Módosította"
+          reason: "Indoklás"
+          vaules:
+            true: "NSFW"
+            false: "Nem NSFW"
+
+        bitrate:
+          title: "Bitráta Frissítve"
+          name: "Csatorna"
+          id: "Csatorna ID"
+          old: "Régi Bitráta"
+          new: "Új Bitráta"
+          executor: "Módosította"
+          reason: "Indoklás"
+
+        userlimit:
+          title: "Felhasználó Limit Frissítve"
+          name: "Csatorna"
+          id: "Csatorna ID"
+          old: "Régi Limit"
+          new: "Új Limit"
+          executor: "Módosította"
+          reason: "Indoklás"
+
+    voice:
+      join:
+        title: "Voice Csatlakozás"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        channel: "Csatorna"
+        channel_id: "Csatorna ID"
+
+      leave:
+        title: "Voice Kilépés"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        channel: "Csatorna"
+        channel_id: "Csatorna ID"
+
+      move:
+        title: "Voice Átlépés"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        from: "Innen"
+        from_id: "Innen ID"
+        to: "Ide"
+        to_id: "Ide ID"
+
+      mute:
+        title: "Felhasználó Némítva"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        executor: "Némította"
+        reason: "Indoklás"
+        muted_field: "Némitva?"
+        muted_yes: "Igen"
+        muted_no: "Nem"
+
+
+  chatbridge:
+    title: "Minecraft Chat"
+    player: "Játékos"
+    message: "Üzenet"
+
+  moderation:
+    warn_title: "Figyelmeztetés"
+    warn_description: "%user% figyelmeztetve lett."
+    warn_reason: "Indok"
+    warn_no_reason: "Nincs megadva indok."
+
+    kick_title: "Kirúgás"
+    kick_description: "%user% ki lett rúgva."
+    kick_reason: "Indok"
+    kick_no_reason: "Nincs megadva indok."
+
+    ban_title: "Kitiltás"
+    ban_description: "%user% ki lett tiltva."
+    ban_reason: "Indok"
+    ban_no_reason: "Nincs megadva indok."
+
+    timeout_title: "Időkorlát"
+    timeout_description: "%user% időkorlátra került."
+    timeout_duration: "Időtartam"
+
+  utils:
+    ping: "🏓 Pong! Késleltetés: %ms% ms"
+    avatar_title: "%user% profilképe"
+    userinfo_title: "Felhasználó információ"
+    serverinfo_title: "Szerver információ"
+    mclink_none: "❌ Nincs összekötött Minecraft fiókod."
+    mclink_linked: "🔗 Összekötött Minecraft fiókod: **%player%**"
+    mcstatus_title: "Minecraft szerver állapota"
+    mcstatus_online: "🟢 Online"
+    mcstatus_offline: "🔴 Offline"
+
   fun:
-    roll: "🎲 %number% / %max%"
-    coinflip: "🪙 Érme feldobva: %result%"
+    roll: "🎲 Dobás eredménye: **%number%** / %max%"
+    coinflip: "🪙 Érme feldobva: **%result%**"
     coinflip_heads: "Fej"
     coinflip_tails: "Írás"
-    8ball:
-      message: "🎱 A válaszom: %answer%"
-      answer1: "Igen."
-      answer2: "Nem."
-      answer3: "Talán."
-      answer4: "Később próbáld újra."
-      answer5: "Biztosan!"
-      answer6: "Nem valószínű."
-      answer7: "Úgy tűnik igen."
-      answer8: "Nem tudom megmondani."
+
+    8ball: "🎱 A mágikus 8‑labda válasza: **%answer%**"
+    8ball.answer1: "Igen."
+    8ball.answer2: "Nem."
+    8ball.answer3: "Talán."
+    8ball.answer4: "Később próbáld újra."
+    8ball.answer5: "Biztosan!"
+    8ball.answer6: "Nem valószínű."
+    8ball.answer7: "Úgy tűnik igen."
+    8ball.answer8: "Nem tudom megmondani."
+
     joke: "😂 Vicc: %joke%"
-    joke1: "Miért ment át a csirke az úton? Hogy a másik oldalra érjen!"
-    joke2: "Miért nincs a számítógépnek barátnője? Mert túl sok bite van!"
-    joke3: "Miért szeretnek a programozók a sötétben dolgozni? Mert a fény hibákat vonz!"
-    joke4: "Miért nem működik a Java fejlesztő autója? Mert nincs benne class!"
+    joke1: "Miért ment át a csirke az úton? Hogy a másik oldalra jusson!"
+    joke2: "Mi az: kicsi, sárga és veszélyes? Egy csibe gépfegyverrel."
+    joke3: "Miért nincs a számítógépnek barátnője? Mert túl sok bite van."
+    joke4: "A programozók miért szeretik a sötét módot? Mert a fény vonzza a bugokat."
+
     cat_title: "🐱 Cica"
     dog_title: "🐶 Kutya"
-    hug: "🤗 %user1% megölelte %user2%-t!"
-    hug_no_target: "§cNem jelöltél meg játékost."
-    slap: "👋 %user1% megpofozta %user2%-t!"
-    slap_no_target: "§cNem jelöltél meg játékost."
-    meme_title: "😂 Meme"
-    gif_prefix: "🎞 GIF:"
+    meme_title: "😂 Mém"
+    gif_prefix: "🎞 GIF találat:"
     quote: "💬 Idézet: %quote%"
-    quote1: "A siker nem végleges, a kudarc nem végzetes."
-    quote2: "A kitartás a kulcs."
-    quote3: "A legjobb idő elkezdeni: most."
-    ship: "💘 %user1% ❤️ %user2% — %percent%% %emoji%"
-    lovecalc_title: "💖 Szerelem kalkulátor"
+
+    hug: "🤗 %user1% megölelte %user2%‑t!"
+    hug_no_target: "❌ Nem adtál meg kit szeretnél megölelni."
+
+    slap: "👋 %user1% megpofozta %user2%‑t!"
+    slap_no_target: "❌ Nem adtál meg kit szeretnél megpofozni."
+
+    ship: "❤️ %user1% és %user2% kapcsolati esélye: **%percent%%** %emoji%"
+    lovecalc_title: "💘 Szerelem kalkulátor"
     lovecalc_pair_title: "Pár"
     lovecalc_result_title: "Eredmény"
 
-  utils:
-    ping: "🏓 Pong! Késleltetés: %ping% ms"
-    avatar_title: "%user% profilképe"
-    userinfo_title: "Felhasználó információ"
-    userinfo_name: "Név"
-    userinfo_created: "Fiók létrehozva"
-    serverinfo_title: "Szerver információ"
-    serverinfo_name: "Név"
-    serverinfo_id: "ID"
-    serverinfo_members: "Tagok"
-    mclink_none: "❌ Nincs összekötve Minecraft fiókkal."
-    mclink: "🔗 Összekötött Minecraft fiók: %name% (%uuid%)"
-    mcstatus_online: "🟢 A Minecraft szerver online!"
-    mcstatus_offline: "🔴 A Minecraft szerver offline."
-
-  moderation:
-    no_reason: "Nincs megadva indok."
-    warn: "⚠️ %user% figyelmeztetve lett. Indok: %reason%"
-    kick: "👢 %user% ki lett rúgva. Indok: %reason%"
-    ban: "⛔ %user% bannolva lett. Indok: %reason%"
-    timeout: "⏳ %user% %minutes% percre némítva lett."
-
-errors:
-  fun_disabled: "❌ A fun parancsok le vannak tiltva."
-  utils_disabled: "❌ A utility parancsok le vannak tiltva."
-  moderation_disabled: "❌ A moderációs parancsok le vannak tiltva."
-  no_user: "❌ Nem jelöltél meg felhasználót."
-  missing_option: "❌ Hiányzó opció: %option%"
-  invalid_number: "❌ Érvénytelen szám."
-  only_guild: "❌ Ez a parancs csak szerveren használható."
-  no_permission: "❌ Nincs jogosultságod a parancs használatához."
-
 minecraft:
   links:
+    disabled: "§cEz a link parancs le van tiltva."
+    not_set: "§cA link nincs beállítva a configban."
     discord: "§bDiscord szerverünk: §f%url%"
     store: "§bWebshop: §f%url%"
     rules: "§bSzabályzat: §f%url%"
@@ -86,3 +297,12 @@ minecraft:
     vote: "§bSzavazás: §f%url%"
     map: "§bTérkép: §f%url%"
     wiki: "§bWiki: §f%url%"
+
+  link:
+    only_players: "§cEzt a parancsot csak játékosok használhatják."
+    disabled: "§cA link parancs jelenleg le van tiltva."
+    generated: "§aDiscord összekötéshez írd be Discordon: §f/link %code%"
+    already_pending: "§eMár van aktív kódod: §f/link %code%"
+    success: "§aSikeresen összekötötted a Minecraft és Discord fiókodat!"
+    invalid: "§cÉrvénytelen vagy lejárt kód."
+    already_linked: "§eEz a Discord fiók már össze van kötve egy Minecraft fiókkal."

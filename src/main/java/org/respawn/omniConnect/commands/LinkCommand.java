@@ -21,13 +21,16 @@ public class LinkCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
+        String lang = LangManager.getDefaultLanguage();
+
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§cOnly players can use this command.");
+            sender.sendMessage(LangManager.get(lang, "minecraft.link.only_players"));
             return true;
         }
 
+
         Player p = (Player) sender;
-        String lang = LangManager.getDefaultLanguage();
+
 
         // Config: link.enabled
         if (!Main.getInstance().getConfig().getBoolean("link.enabled", true)) {
