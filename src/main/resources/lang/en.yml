@@ -6,6 +6,51 @@ errors:
   no_user: "❌ No user provided."
 
 discord:
+  ticket:
+    panel:
+      title: "Support Ticket System"
+      description: "Choose what type of ticket you want to open using the buttons below."
+
+    open:
+      topic_prefix: "Ticket type: %type% | Opened by: %user%"
+      title: "Ticket Opened – %type_label%"
+      description:
+        header: "Hello, %user_mention%!"
+        body: "%type_description%"
+        footer: "Please describe in detail how we can help you."
+      button_close: "🔒 Close Ticket"
+
+    log:
+      open:
+        title: "Ticket Opened"
+        type: "Type"
+        user: "User"
+        user_id: "User ID"
+        channel: "Channel"
+        channel_id: "Channel ID"
+
+      close:
+        title: "Ticket Closed"
+        channel: "Channel"
+        channel_id: "Channel ID"
+        closed_by: "Closed By"
+
+      internal_open:
+        title: "Ticket Opened (Discord)"
+        type: "Type"
+        user: "User"
+        channel: "Channel"
+
+      internal_close:
+        title: "Ticket Closed (Discord)"
+        channel: "Channel"
+        closed_by: "Closed By"
+
+    close:
+      title: "Ticket Closing"
+      description: "The ticket was closed by: %closer%"
+      unknown_closer: "Unknown"
+
   log:
     footer: "OmniConnect Log System"
 
@@ -205,10 +250,18 @@ discord:
         user: "User"
         user_id: "User ID"
         executor: "Muted By"
-        reason: "Reason"
         muted_field: "Muted?"
         muted_yes: "Yes"
         muted_no: "No"
+
+      deafen:
+        title: "User Deafened"
+        user: "User"
+        user_id: "User ID"
+        executor: "Deafened By"
+        deafened_field: "Deafened?"
+        deafened_yes: "Yes"
+        deafened_no: "No"
 
 
   chatbridge:

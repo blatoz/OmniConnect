@@ -6,6 +6,51 @@ errors:
   no_user: "❌ Nem adtál meg felhasználót."
 
 discord:
+  ticket:
+    panel:
+      title: "Support Ticket Rendszer"
+      description: "Válaszd ki, milyen típusú ticketet szeretnél nyitni az alábbi gombok közül."
+
+    open:
+      topic_prefix: "Ticket típusa: %type% | Nyitotta: %user%"
+      title: "Ticket Megnyitva – %type_label%"
+      description:
+        header: "Üdv, %user_mention%!"
+        body: "%type_description%"
+        footer: "Kérjük, részletesen írd le, miben tudunk segíteni."
+      button_close: "🔒 Ticket Lezárása"
+
+    log:
+      open:
+        title: "Ticket Nyitva"
+        type: "Típus"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        channel: "Csatorna"
+        channel_id: "Csatorna ID"
+
+      close:
+        title: "Ticket Lezárva"
+        channel: "Csatorna"
+        channel_id: "Csatorna ID"
+        closed_by: "Lezárta"
+
+      internal_open:
+        title: "Ticket Nyitva (Discord)"
+        type: "Típus"
+        user: "Felhasználó"
+        channel: "Csatorna"
+
+      internal_close:
+        title: "Ticket Lezárva (Discord)"
+        channel: "Csatorna"
+        closed_by: "Lezárta"
+
+    close:
+      title: "Ticket Lezárása"
+      description: "A ticketet lezárta: %closer%"
+      unknown_closer: "Ismeretlen"
+
   log:
     footer: "OmniConnect Log Rendszer"
 
@@ -205,10 +250,18 @@ discord:
         user: "Felhasználó"
         user_id: "Felhasználó ID"
         executor: "Némította"
-        reason: "Indoklás"
         muted_field: "Némitva?"
         muted_yes: "Igen"
         muted_no: "Nem"
+
+      deafen:
+        title: "Felhasználó Süketítve"
+        user: "Felhasználó"
+        user_id: "Felhasználó ID"
+        executor: "Lesüketítette"
+        deafened_field: "Lesüketítve?"
+        deafened_yes: "Igen"
+        deafened_no: "Nem"
 
 
   chatbridge:

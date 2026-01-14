@@ -11,13 +11,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.respawn.omniConnect.LogManager;
+import org.respawn.omniConnect.lang.LangManager;
 
 import java.awt.*;
 import java.util.EnumSet;
 
-/**
- * Jegy (ticket) kezelő - kezeli a ticket csatornák létrehozását és bezárását.
- */
 public class TicketManager {
 
     private static TicketManager instance;
@@ -27,15 +25,6 @@ public class TicketManager {
     private final String logChannelId;
     private final String panelChannelId;
 
-    /**
-     * TicketManager konstruktor.
-     *
-     * @param guildId A guild ID
-     * @param ticketCategoryId A ticket csatorna kategória ID
-
-     * @param logChannelId A log csatorna ID
-     * @param panelChannelId A panel csatorna ID
-     */
     private TicketManager(String guildId,
                           String ticketCategoryId,
                           String logChannelId,
@@ -46,15 +35,6 @@ public class TicketManager {
         this.panelChannelId = panelChannelId;
     }
 
-
-    /**
-     * TicketManager inicializálása.
-     *
-     * @param guildId A guild ID
-     * @param ticketCategoryId A ticket csatorna kategória ID
-     * @param logChannelId A log csatorna ID
-     * @param panelChannelId A panel csatorna ID
-     */
     public static void init(String guildId,
                             String ticketCategoryId,
                             String logChannelId,
@@ -62,94 +42,52 @@ public class TicketManager {
         instance = new TicketManager(guildId, ticketCategoryId, logChannelId, panelChannelId);
     }
 
-
-    /**
-     * Singleton getInstance metódus.
-     *
-     * @return TicketManager instancia
-     */
     public static TicketManager getInstance() {
         return instance;
     }
 
-    /**
-     * A Guild objektumának lekérése az ID alapján.
-     *
-     * @param jda A JDA instancia
-     * @return A Guild vagy null, ha nem létezik
-     */
     private Guild getGuild(JDA jda) {
         return jda.getGuildById(guildId);
     }
 
-    /**
-     * A ticket kategória objektumának lekérése az ID alapján.
-     *
-     * @param jda A JDA instancia
-     * @return A Category vagy null, ha nem létezik
-     */
     private Category getTicketCategory(JDA jda) {
         Guild guild = getGuild(jda);
         return guild != null ? guild.getCategoryById(ticketCategoryId) : null;
     }
 
-    /**
-     * A support szerepkör objektumának lekérése az ID alapján.
-     *
-     * @param jda A JDA instancia
-     * @return A Role vagy null, ha nem létezik
-     */
     private Role getSupportRole(JDA jda) {
         Guild guild = getGuild(jda);
         if (guild == null) return null;
-
 
         String roleId = TicketConfig.getInstance().getStaffRoleId();
         return guild.getRoleById(roleId);
     }
 
-
-
-    /**
-     * A log csatorna objektumának lekérése az ID alapján.
-     *
-     * @param jda A JDA instancia
-     * @return A TextChannel vagy null, ha nem létezik
-     */
     private TextChannel getLogChannel(JDA jda) {
         Guild guild = getGuild(jda);
         return guild != null ? guild.getTextChannelById(logChannelId) : null;
     }
 
-    /**
-     * A panel csatorna objektumának lekérése az ID alapján.
-     *
-     * @param jda A JDA instancia
-     * @return A TextChannel vagy null, ha nem létezik
-     */
     private TextChannel getPanelChannel(JDA jda) {
         Guild guild = getGuild(jda);
         return guild != null ? guild.getTextChannelById(panelChannelId) : null;
     }
 
-    /**
-     * A ticket panel üzenetének küldése a panel csatornára.
-     * Gombokat tartalmaz a különböző ticket típusokhoz.
-     *
-     * @param jda A JDA instancia
-     */
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     public void sendTicketPanel(JDA jda) {
         TextChannel channel = getPanelChannel(jda);
-        if (channel == null) {
-            return;
-        }
+        if (channel == null) return;
+
+        String lang = lang();
 
         EmbedBuilder builder = new EmbedBuilder()
-                .setTitle("Support Ticket Rendszer")
-                .setDescription("Válaszd ki, milyen típusú ticketet szeretnél nyitni az alábbi gombok közül.")
+                .setTitle(LangManager.get(lang, "discord.ticket.panel.title"))
+                .setDescription(LangManager.get(lang, "discord.ticket.panel.description"))
                 .setColor(Color.GREEN);
 
-        // 7 gomb (2 sor)
         Button supportBtn = Button.primary(TicketType.SUPPORT.getCreateButtonId(), TicketType.SUPPORT.getButtonLabel());
         Button reportBtn = Button.danger(TicketType.REPORT.getCreateButtonId(), TicketType.REPORT.getButtonLabel());
         Button bugBtn = Button.primary(TicketType.BUG.getCreateButtonId(), TicketType.BUG.getButtonLabel());
@@ -166,29 +104,24 @@ public class TicketManager {
                 .queue();
     }
 
-    /**
-     * Ticket csatorna létrehozása.
-     *
-     * @param jda A JDA instancia
-     * @param member A csatornát nyitó tag
-     * @param type A ticket típusa
-     */
     public void createTicketChannel(JDA jda, Member member, TicketType type) {
         Category category = getTicketCategory(jda);
         Role supportRole = getSupportRole(jda);
-        if (category == null || supportRole == null || member == null) {
-            return;
-        }
+        if (category == null || supportRole == null || member == null) return;
+
+        String lang = lang();
 
         String baseName = member.getUser().getName().toLowerCase().replace(" ", "-");
         String channelName = type.getChannelPrefix() + "-" + baseName;
 
         category.createTextChannel(channelName).queue(channel -> {
 
-            channel.getManager().setTopic(
-                    "Ticket típusa: " + type.name() +
-                            " | Nyitotta: " + member.getUser().getAsTag()
-            ).queue();
+            String topicTemplate = LangManager.get(lang, "discord.ticket.open.topic_prefix");
+            String topic = topicTemplate
+                    .replace("%type%", type.name())
+                    .replace("%user%", member.getUser().getAsTag());
+
+            channel.getManager().setTopic(topic).queue();
 
             Guild guild = category.getGuild();
 
@@ -216,59 +149,70 @@ public class TicketManager {
                     ))
                     .queue();
 
+            String titleTemplate = LangManager.get(lang, "discord.ticket.open.title");
+            String header = LangManager.get(lang, "discord.ticket.open.description.header");
+            String body = LangManager.get(lang, "discord.ticket.open.description.body");
+            String footer = LangManager.get(lang, "discord.ticket.open.description.footer");
+
+            String title = titleTemplate.replace("%type_label%", type.getButtonLabel());
+            String desc = header.replace("%user_mention%", member.getAsMention())
+                    + "\n\n"
+                    + body.replace("%type_description%", type.getDescription())
+                    + "\n\n"
+                    + footer;
+
             EmbedBuilder openEmbed = new EmbedBuilder()
-                    .setTitle("Ticket Megnyitva – " + type.getButtonLabel())
-                    .setDescription(
-                            "Üdv, " + member.getAsMention() + "!\n\n" +
-                                    type.getDescription() + "\n\n" +
-                                    "Kérjük, részletesen írd le, miben tudunk segíteni."
-                    )
+                    .setTitle(title)
+                    .setDescription(desc)
                     .setColor(Color.CYAN);
+
+            String closeLabel = LangManager.get(lang, "discord.ticket.open.button_close");
 
             channel.sendMessageEmbeds(openEmbed.build())
                     .setActionRow(
-                            Button.danger("ticket:close", "🔒 Ticket Lezárása")
+                            Button.danger("ticket:close", closeLabel)
                     )
                     .queue();
 
             TextChannel logChannel = getLogChannel(jda);
             if (logChannel != null) {
                 EmbedBuilder log = new EmbedBuilder()
-                        .setTitle("Ticket Nyitva")
+                        .setTitle(LangManager.get(lang, "discord.ticket.log.open.title"))
                         .setColor(Color.GREEN)
-                        .addField("Típus", type.name(), true)
-                        .addField("Felhasználó", member.getUser().getAsTag(), true)
-                        .addField("Csatorna", channel.getAsMention(), false)
-                        .addField("Csatorna ID", channel.getId(), true);
+                        .addField(LangManager.get(lang, "discord.ticket.log.open.type"), type.name(), true)
+                        .addField(LangManager.get(lang, "discord.ticket.log.open.user"), member.getUser().getAsTag(), true)
+                        .addField(LangManager.get(lang, "discord.ticket.log.open.channel"), channel.getAsMention(), false)
+                        .addField(LangManager.get(lang, "discord.ticket.log.open.channel_id"), channel.getId(), true);
 
                 logChannel.sendMessageEmbeds(log.build()).queue();
             }
 
             LogManager.getInstance().sendEmbed(builder ->
-                    builder.setTitle("Ticket Nyitva (Discord)")
+                    builder.setTitle(LangManager.get(lang, "discord.ticket.log.internal_open.title"))
                             .setColor(Color.GREEN)
-                            .addField("Típus", type.name(), true)
-                            .addField("Felhasználó", member.getUser().getAsTag(), true)
-                            .addField("Csatorna", channel.getName(), true)
+                            .addField(LangManager.get(lang, "discord.ticket.log.internal_open.type"), type.name(), true)
+                            .addField(LangManager.get(lang, "discord.ticket.log.internal_open.user"), member.getUser().getAsTag(), true)
+                            .addField(LangManager.get(lang, "discord.ticket.log.internal_open.user_id"), member.getId(), true)
+                            .addField(LangManager.get(lang, "discord.ticket.log.internal_open.channel"), channel.getName(), true)
             );
         });
     }
 
-    /**
-     * Ticket csatorna lezárása és törlése.
-     *
-     * @param channel Az lezárandó ticket csatorna
-     * @param closer A csatornát lezáró tag
-     */
     public void closeTicketChannel(TextChannel channel, Member closer) {
-        if (channel == null) {
-            return;
-        }
+        if (channel == null) return;
+
+        String lang = lang();
+
+        String closerName = closer != null
+                ? closer.getUser().getAsTag()
+                : LangManager.get(lang, "discord.ticket.close.unknown_closer");
+
+        String closingDescTemplate = LangManager.get(lang, "discord.ticket.close.description");
+        String closingDesc = closingDescTemplate.replace("%closer%", closerName);
 
         EmbedBuilder closing = new EmbedBuilder()
-                .setTitle("Ticket Lezárása")
-                .setDescription("A ticketet lezárta: " +
-                        (closer != null ? closer.getUser().getAsTag() : "Ismeretlen"))
+                .setTitle(LangManager.get(lang, "discord.ticket.close.title"))
+                .setDescription(closingDesc)
                 .setColor(Color.ORANGE);
 
         channel.sendMessageEmbeds(closing.build()).queue();
@@ -277,19 +221,19 @@ public class TicketManager {
         TextChannel logChannel = getLogChannel(guild.getJDA());
         if (logChannel != null) {
             EmbedBuilder log = new EmbedBuilder()
-                    .setTitle("Ticket Lezárva")
+                    .setTitle(LangManager.get(lang, "discord.ticket.log.close.title"))
                     .setColor(Color.RED)
-                    .addField("Csatorna", channel.getName(), true)
-                    .addField("Csatorna ID", channel.getId(), true)
-                    .addField("Lezárta", closer != null ? closer.getUser().getAsTag() : "Ismeretlen", false);
+                    .addField(LangManager.get(lang, "discord.ticket.log.close.channel"), channel.getName(), true)
+                    .addField(LangManager.get(lang, "discord.ticket.log.close.channel_id"), channel.getId(), true)
+                    .addField(LangManager.get(lang, "discord.ticket.log.close.closed_by"), closerName, false);
             logChannel.sendMessageEmbeds(log.build()).queue();
         }
 
         LogManager.getInstance().sendEmbed(builder ->
-                builder.setTitle("Ticket Lezárva (Discord)")
+                builder.setTitle(LangManager.get(lang, "discord.ticket.log.internal_close.title"))
                         .setColor(Color.RED)
-                        .addField("Csatorna", channel.getName(), true)
-                        .addField("Lezárta", closer != null ? closer.getUser().getAsTag() : "Ismeretlen", false)
+                        .addField(LangManager.get(lang, "discord.ticket.log.internal_close.channel"), channel.getName(), true)
+                        .addField(LangManager.get(lang, "discord.ticket.log.internal_close.closed_by"), closerName, false)
         );
 
         channel.delete().queueAfter(5, java.util.concurrent.TimeUnit.SECONDS);

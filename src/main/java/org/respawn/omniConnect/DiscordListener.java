@@ -1,7 +1,7 @@
 package org.respawn.omniConnect;
 
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMuteEvent;
+import net.dv8tion.jda.api.events.guild.voice.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
@@ -25,10 +25,6 @@ import net.dv8tion.jda.api.events.channel.update.ChannelUpdateTopicEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNSFWEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateBitrateEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateUserLimitEvent;
-
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.audit.ActionType;
@@ -809,6 +805,22 @@ public class DiscordListener extends ListenerAdapter {
                 .addField(LangManager.get(lang, "discord.log.voice.mute.user"), event.getMember().getUser().getName(), true)
                 .addField(LangManager.get(lang, "discord.log.voice.mute.user_id"), event.getMember().getUser().getId(), true)
                 .addField(LangManager.get(lang, "discord.log.voice.mute.muted_field"), mutedText, true)
+        );
+    }
+    @Override
+    public void onGuildVoiceDeafen(@NotNull GuildVoiceDeafenEvent event) {
+        String lang = lang();
+
+        String deafenedText = event.isDeafened()
+                ? LangManager.get(lang, "discord.log.voice.deafen.deafened_yes")
+                : LangManager.get(lang, "discord.log.voice.deafen.deafened_no");
+
+        LogManager.getInstance().sendEmbed(builder -> builder
+                .setTitle(LangManager.get(lang, "discord.log.voice.deafen.title"))
+                .setColor(Color.MAGENTA)
+                .addField(LangManager.get(lang, "discord.log.voice.deafen.user"), event.getMember().getUser().getName(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.deafen.user_id"), event.getMember().getUser().getId(), true)
+                .addField(LangManager.get(lang, "discord.log.voice.deafen.deafened_field"), deafenedText, true)
         );
     }
 }
