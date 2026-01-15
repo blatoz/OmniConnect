@@ -6,6 +6,17 @@ errors:
   no_user: "❌ No user provided."
 
 discord:
+  system:
+    stop:
+      title: "Server Stopped"
+      status: "The Minecraft server has stopped or is restarting.\nOr the plugin has been reloaded."
+      field_status: "Status"
+
+    start:
+      title: "Server Started"
+      status: "The Minecraft server has started and OmniConnect is active.\nThe plugin has successfully reloaded."
+      field_status: "Status"
+
   ticket:
     panel:
       title: "Support Ticket System"
@@ -50,6 +61,43 @@ discord:
       title: "Ticket Closing"
       description: "The ticket was closed by: %closer%"
       unknown_closer: "Unknown"
+
+    type:
+      support:
+        button: "🎫 Support"
+        description: "General support request."
+        prefix: "help"
+
+      report:
+        button: "🚨 Report"
+        description: "Report a rule violation, player or message."
+        prefix: "report"
+
+      bug:
+        button: "🐞 Bug Report"
+        description: "Report server, plugin or Discord bugs."
+        prefix: "bug"
+
+      tgf:
+        button: "📝 Staff Application"
+        description: "Apply for a staff or team position."
+        prefix: "tgf"
+
+      partner:
+        button: "🤝 Partnership"
+        description: "Partnership inquiries and collaborations."
+        prefix: "partner"
+
+      reward:
+        button: "🎁 Claim Reward"
+        description: "Claim your giveaway reward."
+        prefix: "reward"
+
+      lost:
+        button: "📦 Lost Items"
+        description: "Recover lost items."
+        prefix: "lost"
+
 
   log:
     footer: "OmniConnect Log System"
@@ -339,7 +387,16 @@ discord:
     lovecalc_pair_title: "Pair"
     lovecalc_result_title: "Result"
 
+  link:
+    invalid_code: "❌ Invalid or expired code."
+    success: "✅ You have successfully linked your Minecraft and Discord accounts."
+
 minecraft:
+  chatbridge:
+    prefix: "§9[Discord] §f"
+    role_unknown: "User"
+    format: "%prefix% %author% §7(%role%)§f: %message%"
+
   links:
     disabled: "§cThis link command is disabled."
     not_set: "§cThis link is not configured."

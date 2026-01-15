@@ -6,6 +6,18 @@ errors:
   no_user: "❌ Nem adtál meg felhasználót."
 
 discord:
+
+  system:
+    stop:
+      title: "Szerver Leáll"
+      status: "A Minecraft szerver leállt vagy újraindul.\nVagy a plugint újratöltik."
+      field_status: "Státusz"
+
+    start:
+      title: "Szerver Indul"
+      status: "A Minecraft szerver elindult és az OmniConnect aktív.\nA plugin sikeresen újratöltött."
+      field_status: "Státusz"
+
   ticket:
     panel:
       title: "Support Ticket Rendszer"
@@ -50,6 +62,43 @@ discord:
       title: "Ticket Lezárása"
       description: "A ticketet lezárta: %closer%"
       unknown_closer: "Ismeretlen"
+
+    type:
+      support:
+        button: "🎫 Support"
+        description: "Általános segítségkérés."
+        prefix: "help"
+
+      report:
+        button: "🚨 Jelentés"
+        description: "Szabálysértés, játékos vagy üzenet jelentése."
+        prefix: "report"
+
+      bug:
+        button: "🐞 Bug Report"
+        description: "Hibák jelentése (szerver, plugin, Discord, stb.)."
+        prefix: "bug"
+
+      tgf:
+        button: "📝 TGF"
+        description: "Jelentkezés staff / csapat pozícióra."
+        prefix: "tgf"
+
+      partner:
+        button: "🤝 Partnerség"
+        description: "Partnerségi megkeresések és együttműködések."
+        prefix: "partner"
+
+      reward:
+        button: "🎁 Nyeremény átvétele"
+        description: "Nyereményjáték jutalom átvétele."
+        prefix: "reward"
+
+      lost:
+        button: "📦 Elveszett cuccok"
+        description: "Elveszett tárgyak visszaigénylése."
+        prefix: "lost"
+
 
   log:
     footer: "OmniConnect Log Rendszer"
@@ -339,7 +388,16 @@ discord:
     lovecalc_pair_title: "Pár"
     lovecalc_result_title: "Eredmény"
 
+  link:
+    invalid_code: "❌ Érvénytelen vagy lejárt kód."
+    success: "✅ Sikeresen összekötötted a Minecraft és Discord fiókodat."
+
 minecraft:
+  chatbridge:
+    prefix: "§9[Discord] §f"
+    role_unknown: "Felhasználó"
+    format: "%prefix% %author% §7(%role%)§f: %message%"
+
   links:
     disabled: "§cEz a link parancs le van tiltva."
     not_set: "§cA link nincs beállítva a configban."

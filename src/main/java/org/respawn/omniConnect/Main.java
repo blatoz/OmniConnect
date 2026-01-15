@@ -3,6 +3,7 @@ package org.respawn.omniConnect;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.respawn.omniConnect.discord.DiscordBotManager;
 import org.respawn.omniConnect.hooks.HookManager;
+import org.respawn.omniConnect.lang.LangManager;
 import org.respawn.omniConnect.listeners.ChatListener;
 import org.respawn.omniConnect.ticket.TicketManager;
 
@@ -72,7 +73,6 @@ public class Main extends JavaPlugin {
 
         // --- Discord bot indítása ---
         DiscordManager.getInstance().start();
-        DiscordBotManager.start();
 
         // --- Discord slash command listenerek (moderáció + linking) ---
         if (DiscordManager.ready) {
@@ -86,17 +86,24 @@ public class Main extends JavaPlugin {
                 String botName = DiscordManager.getInstance().getJDA().getSelfUser().getName();
                 String botAvatar = DiscordManager.getInstance().getJDA().getSelfUser().getAvatarUrl();
 
+                String lang = LangManager.getDefaultLanguage();
+
                 LogManager.getInstance().sendEmbed(embed -> embed
                         .setAuthor(botName, null, botAvatar)
-                        .setTitle("Szerver Elindult")
+                        .setTitle(LangManager.get(lang, "discord.system.start.title"))
                         .setColor(Color.GREEN)
-                        .addField("Státusz", "A Minecraft szerver elindult és az OmniConnect aktív.\nA plugin sikeresen újratöltött.", false)
+                        .addField(
+                                LangManager.get(lang, "discord.system.field_status"),
+                                LangManager.get(lang, "discord.system.start.status"),
+                                false
+                        )
                 );
+
             } catch (Exception e) {
-                getLogger().warning("Nem sikerült az indulási embed küldése: " + e.getMessage());
+                getLogger().warning("Failed to send the start embed: " + e.getMessage());
             }
         } else {
-            getLogger().warning("A Discord bot nem áll rendelkezésre, az indulási üzenet nem került elküldésre.");
+            getLogger().warning("The Discord bot is not available, the start message is not sended.");
         }
     }
 
@@ -108,14 +115,21 @@ public class Main extends JavaPlugin {
                 String botName = DiscordManager.getInstance().getJDA().getSelfUser().getName();
                 String botAvatar = DiscordManager.getInstance().getJDA().getSelfUser().getAvatarUrl();
 
+                String lang = LangManager.getDefaultLanguage();
+
                 LogManager.getInstance().sendEmbed(embed -> embed
                         .setAuthor(botName, null, botAvatar)
-                        .setTitle("Szerver Leáll")
+                        .setTitle(LangManager.get(lang, "discord.system.stop.title"))
                         .setColor(Color.RED)
-                        .addField("Státusz", "A Minecraft szerver leállt vagy újraindul.\nVagy a plugint újratöltik.", false)
+                        .addField(
+                                LangManager.get(lang, "discord.system.field_status"),
+                                LangManager.get(lang, "discord.system.stop.status"),
+                                false
+                        )
                 );
+
             } catch (Exception e) {
-                getLogger().warning("Nem sikerült a leállási üzenet küldése: " + e.getMessage());
+                getLogger().warning("Failed to send the shutdown message: " + e.getMessage());
             }
         }
 

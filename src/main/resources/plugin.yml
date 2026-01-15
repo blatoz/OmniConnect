@@ -5,34 +5,34 @@ api-version: '1.16'
 author: Daniyt_th
 commands:
   link:
-    description: Minecraft ↔ Discord fiók összekötése
+    description: Minecraft ↔ Discord account link
     usage: /link
 
   discord:
-    description: Discord szerver link megjelenítése
+    description: Discord Server link showcase
     usage: /discord
 
   store:
-    description: Webshop link megjelenítése
+    description: Webshop link showcase
     usage: /store
 
   rules:
-    description: Szabályzat link megjelenítése
+    description: Rules showcase
     usage: /rules
 
   website:
-    description: Weboldal link megjelenítése
+    description: Website link showcase
     usage: /website
 
   vote:
-    description: Szavazóoldal link megjelenítése
+    description: Vote Site link showcase
     usage: /vote
 
   map:
-    description: Térkép (Dynmap) link megjelenítése
+    description: Map (Dynmap) link showcase
     usage: /map
 
   wiki:
-    description: Wiki / dokumentáció link megjelenítése
+    description: Wiki / Documention link showcase
     usage: /wiki
 
