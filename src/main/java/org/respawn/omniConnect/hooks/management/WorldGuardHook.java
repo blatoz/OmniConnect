@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class WorldGuardHook implements Listener {
 
@@ -14,7 +15,11 @@ public class WorldGuardHook implements Listener {
     public WorldGuardHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] WorldGuard hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] WorldGuard hook has been enabled!");
+    }
+
+    private String lang() {
+        return LangManager.getDefaultLanguage();
     }
 
     @EventHandler
@@ -22,11 +27,9 @@ public class WorldGuardHook implements Listener {
         String name = event.getClass().getName();
 
         try {
+            String lang = lang();
 
-            // ============================================================
-            // Régió létrehozása
-            // com.sk89q.worldguard.bukkit.event.region.RegionCreateEvent
-            // ============================================================
+            // RegionCreateEvent
             if (name.equals("com.sk89q.worldguard.bukkit.event.region.RegionCreateEvent")) {
 
                 Object region = event.getClass().getMethod("getRegion").invoke(event);
@@ -35,18 +38,15 @@ public class WorldGuardHook implements Listener {
                 Object actor = event.getClass().getMethod("getActor").invoke(event);
                 String executor = actor != null ? actor.toString() : "Ismeretlen";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "📐 WorldGuard – Régió Létrehozva",
-                        "Régió: **" + id + "**\n"
-                                + "Létrehozta: **" + executor + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.worldguard.log.create.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.worldguard.log.create.region") + ": **" + id + "**\n" +
+                                LangManager.get(lang, "hooks.management.worldguard.log.create.executor") + ": **" + executor + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
-            // ============================================================
-            // Régió törlése
-            // com.sk89q.worldguard.bukkit.event.region.RegionDeleteEvent
-            // ============================================================
+            // RegionDeleteEvent
             if (name.equals("com.sk89q.worldguard.bukkit.event.region.RegionDeleteEvent")) {
 
                 String id = (String) event.getClass().getMethod("getRegionId").invoke(event);
@@ -54,18 +54,15 @@ public class WorldGuardHook implements Listener {
                 Object actor = event.getClass().getMethod("getActor").invoke(event);
                 String executor = actor != null ? actor.toString() : "Ismeretlen";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🗑️ WorldGuard – Régió Törölve",
-                        "Régió: **" + id + "**\n"
-                                + "Törölte: **" + executor + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.worldguard.log.delete.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.worldguard.log.delete.region") + ": **" + id + "**\n" +
+                                LangManager.get(lang, "hooks.management.worldguard.log.delete.executor") + ": **" + executor + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
-            // ============================================================
-            // Régió módosítása (owners, members, flags, priority, boundaries)
-            // com.sk89q.worldguard.bukkit.event.region.RegionUpdateEvent
-            // ============================================================
+            // RegionUpdateEvent
             if (name.equals("com.sk89q.worldguard.bukkit.event.region.RegionUpdateEvent")) {
 
                 Object region = event.getClass().getMethod("getRegion").invoke(event);
@@ -74,18 +71,15 @@ public class WorldGuardHook implements Listener {
                 Object actor = event.getClass().getMethod("getActor").invoke(event);
                 String executor = actor != null ? actor.toString() : "Ismeretlen";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "✏️ WorldGuard – Régió Módosítva",
-                        "Régió: **" + id + "**\n"
-                                + "Módosította: **" + executor + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.worldguard.log.update.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.worldguard.log.update.region") + ": **" + id + "**\n" +
+                                LangManager.get(lang, "hooks.management.worldguard.log.update.executor") + ": **" + executor + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
-            // ============================================================
-            // Flag érték változás
-            // com.sk89q.worldguard.bukkit.event.flag.FlagValueChangeEvent
-            // ============================================================
+            // FlagValueChangeEvent
             if (name.equals("com.sk89q.worldguard.bukkit.event.flag.FlagValueChangeEvent")) {
 
                 Object flag = event.getClass().getMethod("getFlag").invoke(event);
@@ -98,15 +92,15 @@ public class WorldGuardHook implements Listener {
                 Object actor = event.getClass().getMethod("getActor").invoke(event);
                 String executor = actor != null ? actor.toString() : "Ismeretlen";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🚩 WorldGuard – Flag Módosítva",
-                        "Régió: **" + id + "**\n"
-                                + "Flag: **" + flag + "**\n"
-                                + "Régi Érték: **" + oldVal + "**\n"
-                                + "Új Érték: **" + newVal + "**\n"
-                                + "Módosította: **" + executor + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.worldguard.log.flag_change.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.worldguard.log.flag_change.region") + ": **" + id + "**\n" +
+                                LangManager.get(lang, "hooks.management.worldguard.log.flag_change.flag") + ": **" + flag + "**\n" +
+                                LangManager.get(lang, "hooks.management.worldguard.log.flag_change.old_value") + ": **" + oldVal + "**\n" +
+                                LangManager.get(lang, "hooks.management.worldguard.log.flag_change.new_value") + ": **" + newVal + "**\n" +
+                                LangManager.get(lang, "hooks.management.worldguard.log.flag_change.executor") + ": **" + executor + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
         } catch (Exception ignored) {}

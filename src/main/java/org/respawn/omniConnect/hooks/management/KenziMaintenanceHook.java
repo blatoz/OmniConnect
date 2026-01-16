@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class KenziMaintenanceHook implements Listener {
 
@@ -14,7 +15,11 @@ public class KenziMaintenanceHook implements Listener {
     public KenziMaintenanceHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] Kenzi’s Maintenance hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] Kenzi’s Maintenance hook has been enabled!");
+    }
+
+    private String lang() {
+        return LangManager.getDefaultLanguage();
     }
 
     @EventHandler
@@ -22,34 +27,34 @@ public class KenziMaintenanceHook implements Listener {
         String name = event.getClass().getName();
 
         try {
-            // ============================================================
-            // MaintenanceEnableEvent
-            // ============================================================
+            String lang = lang();
+
+            // Enable
             if (name.equals("de.kenzoxx.Maintenance.api.events.MaintenanceEnableEvent")) {
 
                 Object executorObj = event.getClass().getMethod("getExecutor").invoke(event);
                 String executor = executorObj != null ? executorObj.toString() : "Ismeretlen";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🛠️ Kenzi’s Maintenance Bekapcsolva",
-                        "Végrehajtotta: **" + executor + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.kenzimaintenance.log.enable.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.kenzimaintenance.log.enable.executor")
+                                + ": **" + executor + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
-            // ============================================================
-            // MaintenanceDisableEvent
-            // ============================================================
+            // Disable
             if (name.equals("de.kenzoxx.Maintenance.api.events.MaintenanceDisableEvent")) {
 
                 Object executorObj = event.getClass().getMethod("getExecutor").invoke(event);
                 String executor = executorObj != null ? executorObj.toString() : "Ismeretlen";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🟢 Kenzi’s Maintenance Kikapcsolva",
-                        "Végrehajtotta: **" + executor + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.kenzimaintenance.log.disable.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.kenzimaintenance.log.disable.executor")
+                                + ": **" + executor + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
         } catch (Exception ignored) {}

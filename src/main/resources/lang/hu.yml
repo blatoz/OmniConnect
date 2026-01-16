@@ -776,10 +776,206 @@ hooks:
             target: "Célpont"
             reason: "Indok"
 
-    vulcanreport:
+      vulcanreport:
+        log:
+          report:
+            title: "📣 Játékos Bejelentés"
+            reporter: "Jelentő"
+            target: "Célpont"
+            reason: "Indok"
+
+  management:
+    autorestart:
       log:
-        report:
-          title: "📣 Játékos Bejelentés"
-          reporter: "Jelentő"
-          target: "Célpont"
+        restart:
+          title: "🔄 AutoRestart – Újraindítási Értesítés"
+          message: "Üzenet"
+
+    coreprotect:
+      log:
+        player_command:
+          title: "🧩 CoreProtect – Parancs Végrehajtva (Játékos)"
+          executor: "Végrehajtó"
+          command: "Parancs"
+
+        console_command:
+          title: "🧩 CoreProtect – Parancs Végrehajtva (Konzol)"
+          executor: "Végrehajtó"
+          command: "Parancs"
+
+    essentialsx:
+      log:
+        player_command:
+          title: "📘 EssentialsX – Parancs Végrehajtva (Játékos)"
+          executor: "Játékos"
+          command: "Parancs"
+
+        console_command:
+          title: "📘 EssentialsX – Parancs Végrehajtva (Konzol)"
+          executor: "Játékos"
+          command: "Parancs"
+
+    flectonemaintenance:
+      log:
+        enable:
+          title: "🛠️ Flectone Maintenance Bekapcsolva"
+          executor: "Végrehajtotta"
+
+        disable:
+          title: "🟢 Flectone Maintenance Kikapcsolva"
+          executor: "Végrehajtotta"
+
+    kennytvmaintenance:
+      log:
+        enable:
+          title: "🛠️ KennyTV Maintenance – Bekapcsolva"
+          description: "A szerver karbantartási módba lépett, a MOTD meg lett változtatva."
+
+        disable:
+          title: "🛠️ KennyTV Maintenance – Kikapcsolva"
+          description: "A szerver kilépett a karbantartási módból, a MOTD vissza lett állítva."
+
+        whitelist_add:
+          title: "🛠️ KennyTV Maintenance – Whitelist Hozzáadva"
+          player: "Játékos"
+
+        whitelist_remove:
+          title: "🛠️ KennyTV Maintenance – Whitelist Eltávolítva"
+          player: "Játékos"
+
+        kick:
+          title: "🛠️ KennyTV Maintenance – Játékos Kirúgva"
+          player: "Játékos"
           reason: "Indok"
+
+    kenzimaintenance:
+      log:
+        enable:
+          title: "🛠️ Kenzi’s Maintenance Bekapcsolva"
+          executor: "Végrehajtotta"
+
+        disable:
+          title: "🟢 Kenzi’s Maintenance Kikapcsolva"
+          executor: "Végrehajtotta"
+
+    linsamaintenance:
+      log:
+        enable:
+          title: "🛠️ LinsaFTW Maintenance Bekapcsolva"
+          executor: "Végrehajtotta"
+
+        disable:
+          title: "🟢 LinsaFTW Maintenance Kikapcsolva"
+          executor: "Végrehajtotta"
+
+    luckperms:
+      log:
+        node_add:
+          title: "🔑 LuckPerms – Jog Hozzáadva"
+          target: "Cél"
+          node: "Jog"
+
+        node_remove:
+          title: "🗑️ LuckPerms – Jog Eltávolítva"
+          target: "Cél"
+          node: "Jog"
+
+        user_recalculate:
+          title: "♻️ LuckPerms – Felhasználó Adat Újraszámolva"
+          user: "Felhasználó"
+
+        group_create:
+          title: "📁 LuckPerms – Csoport Létrehozva"
+          group: "Csoport"
+
+        group_delete:
+          title: "🗑️ LuckPerms – Csoport Törölve"
+          group: "Csoport"
+
+    nametagedit:
+      log:
+        tag_change:
+          title: "🏷️ NametagEdit – Prefix/Suffix Módosítva"
+          player: "Játékos"
+          old_prefix: "Régi Prefix"
+          new_prefix: "Új Prefix"
+          old_suffix: "Régi Suffix"
+          new_suffix: "Új Suffix"
+
+    plugmanx:
+      log:
+        enable:
+          title: "🟢 PlugManX – Plugin Engedélyezve"
+          plugin: "Plugin"
+
+        disable:
+          title: "🔴 PlugManX – Plugin Letiltva"
+          plugin: "Plugin"
+
+        reload:
+          title: "🔄 PlugManX – Plugin Újratöltve"
+          plugin: "Plugin"
+
+    serverrestorer:
+      log:
+        create:
+          title: "📦 ServerRestorer – Biztonsági Mentés Létrehozva"
+          backup: "Biztonsági Mentés Neve"
+          creator: "Készítette"
+
+        restore:
+          title: "♻️ ServerRestorer – Biztonsági Mentés Visszaállítva"
+          backup: "Biztonsági Mentés Neve"
+          executor: "Visszaállította"
+
+        delete:
+          title: "🗑️ ServerRestorer – Biztonsági Mentés Törölve"
+          backup: "Biztonsági Mentés Neve"
+          executor: "Törölte"
+
+    tab:
+      log:
+        tag_change:
+          title: "🏷️ TAB – Prefix/Suffix Módosítva"
+          player: "Játékos"
+          old_prefix: "Régi Prefix"
+          new_prefix: "Új Prefix"
+          old_suffix: "Régi Suffix"
+          new_suffix: "Új Suffix"
+
+    worldedit:
+      log:
+        command:
+          title: "🧱 WorldEdit – Parancs Végrehajtva"
+          player: "Játékos"
+          command: "Parancs"
+
+        editsession:
+          title: "🧱 WorldEdit – EditSession Létrehozva"
+          executor: "Végrehajtó"
+          world: "Világ"
+
+    worldguard:
+      log:
+        create:
+          title: "📐 WorldGuard – Régió Létrehozva"
+          region: "Régió"
+          executor: "Létrehozta"
+
+        delete:
+          title: "🗑️ WorldGuard – Régió Törölve"
+          region: "Régió"
+          executor: "Törölte"
+
+        update:
+          title: "✏️ WorldGuard – Régió Módosítva"
+          region: "Régió"
+          executor: "Módosította"
+
+        flag_change:
+          title: "🚩 WorldGuard – Flag Módosítva"
+          region: "Régió"
+          flag: "Flag"
+          old_value: "Régi Érték"
+          new_value: "Új Érték"
+          executor: "Módosította"

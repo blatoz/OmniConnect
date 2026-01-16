@@ -778,3 +778,199 @@ hooks:
           reporter: "Reporter"
           target: "Target"
           reason: "Reason"
+
+  management:
+    autorestart:
+      log:
+        restart:
+          title: "🔄 AutoRestart – Restart Notification"
+          message: "Message"
+
+    coreprotect:
+      log:
+        player_command:
+          title: "🧩 CoreProtect – Command Executed (Player)"
+          executor: "Executor"
+          command: "Command"
+
+        console_command:
+          title: "🧩 CoreProtect – Command Executed (Console)"
+          executor: "Executor"
+          command: "Command"
+
+    essentialsx:
+      log:
+        player_command:
+          title: "📘 EssentialsX – Command Executed (Player)"
+          executor: "Executor"
+          command: "Command"
+
+        console_command:
+          title: "📘 EssentialsX – Command Executed (Console)"
+          executor: "Executor"
+          command: "Command"
+
+    flectonemaintenance:
+      log:
+        enable:
+          title: "🛠️ Flectone Maintenance Enabled"
+          executor: "Executor"
+
+        disable:
+          title: "🟢 Flectone Maintenance Disabled"
+          executor: "Executor"
+
+    kennytvmaintenance:
+      log:
+        enable:
+          title: "🛠️ KennyTV Maintenance – Enabled"
+          description: "The server has entered maintenance mode and the MOTD was updated."
+
+        disable:
+          title: "🛠️ KennyTV Maintenance – Disabled"
+          description: "The server has exited maintenance mode and the MOTD was restored."
+
+        whitelist_add:
+          title: "🛠️ KennyTV Maintenance – Whitelist Added"
+          player: "Player"
+
+        whitelist_remove:
+          title: "🛠️ KennyTV Maintenance – Whitelist Removed"
+          player: "Player"
+
+        kick:
+          title: "🛠️ KennyTV Maintenance – Player Kicked"
+          player: "Player"
+          reason: "Reason"
+
+    kenzimaintenance:
+      log:
+        enable:
+          title: "🛠️ Kenzi’s Maintenance Enabled"
+          executor: "Executor"
+
+        disable:
+          title: "🟢 Kenzi’s Maintenance Disabled"
+          executor: "Executor"
+
+    linsamaintenance:
+      log:
+        enable:
+          title: "🛠️ LinsaFTW Maintenance Enabled"
+          executor: "Executor"
+
+        disable:
+          title: "🟢 LinsaFTW Maintenance Disabled"
+          executor: "Executor"
+
+    luckperms:
+      log:
+        node_add:
+          title: "🔑 LuckPerms – Node Added"
+          target: "Target"
+          node: "Node"
+
+        node_remove:
+          title: "🗑️ LuckPerms – Node Removed"
+          target: "Target"
+          node: "Node"
+
+        user_recalculate:
+          title: "♻️ LuckPerms – User Data Recalculated"
+          user: "User"
+
+        group_create:
+          title: "📁 LuckPerms – Group Created"
+          group: "Group"
+
+        group_delete:
+          title: "🗑️ LuckPerms – Group Deleted"
+          group: "Group"
+
+    nametagedit:
+      log:
+        tag_change:
+          title: "🏷️ NametagEdit – Prefix/Suffix Changed"
+          player: "Player"
+          old_prefix: "Old Prefix"
+          new_prefix: "New Prefix"
+          old_suffix: "Old Suffix"
+          new_suffix: "New Suffix"
+
+    plugmanx:
+      log:
+        enable:
+          title: "🟢 PlugManX – Plugin Enabled"
+          plugin: "Plugin"
+
+        disable:
+          title: "🔴 PlugManX – Plugin Disabled"
+          plugin: "Plugin"
+
+        reload:
+          title: "🔄 PlugManX – Plugin Reloaded"
+          plugin: "Plugin"
+
+    serverrestorer:
+      log:
+        create:
+          title: "📦 ServerRestorer – Backup Created"
+          backup: "Backup Name"
+          creator: "Created By"
+
+        restore:
+          title: "♻️ ServerRestorer – Backup Restored"
+          backup: "Backup Name"
+          executor: "Restored By"
+
+        delete:
+          title: "🗑️ ServerRestorer – Backup Deleted"
+          backup: "Backup Name"
+          executor: "Deleted By"
+
+    tab:
+      log:
+        tag_change:
+          title: "🏷️ TAB – Prefix/Suffix Changed"
+          player: "Player"
+          old_prefix: "Old Prefix"
+          new_prefix: "New Prefix"
+          old_suffix: "Old Suffix"
+          new_suffix: "New Suffix"
+
+    worldedit:
+      log:
+        command:
+          title: "🧱 WorldEdit – Command Executed"
+          player: "Player"
+          command: "Command"
+
+        editsession:
+          title: "🧱 WorldEdit – EditSession Created"
+          executor: "Executor"
+          world: "World"
+
+    worldguard:
+      log:
+        create:
+          title: "📐 WorldGuard – Region Created"
+          region: "Region"
+          executor: "Created By"
+
+        delete:
+          title: "🗑️ WorldGuard – Region Deleted"
+          region: "Region"
+          executor: "Deleted By"
+
+        update:
+          title: "✏️ WorldGuard – Region Updated"
+          region: "Region"
+          executor: "Updated By"
+
+        flag_change:
+          title: "🚩 WorldGuard – Flag Changed"
+          region: "Region"
+          flag: "Flag"
+          old_value: "Old Value"
+          new_value: "New Value"
+          executor: "Changed By"

@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class WorldEditHook implements Listener {
 
@@ -15,45 +16,39 @@ public class WorldEditHook implements Listener {
     public WorldEditHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] WorldEdit hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] WorldEdit hook has been enabled!");
     }
 
-    // ------------------------------------------------------------
-    // WorldEdit parancsok figyelése (//set, //replace, //undo, stb.)
-    // ------------------------------------------------------------
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onWorldEditCommand(PlayerCommandPreprocessEvent event) {
         String msg = event.getMessage();
-        if (!isWorldEditCommand(msg)) {
-            return;
-        }
+        if (!isWorldEditCommand(msg)) return;
 
+        String lang = lang();
         String playerName = event.getPlayer().getName();
 
-        DiscordLog.send(
-                pluginKey,
-                "🧱 WorldEdit – Parancs Végrehajtva",
-                "Játékos: **" + playerName + "**\n"
-                        + "Parancs: `" + msg + "`"
-        );
+        String title = LangManager.get(lang, "hooks.management.worldedit.log.command.title");
+        String body =
+                LangManager.get(lang, "hooks.management.worldedit.log.command.player") + ": **" + playerName + "**\n" +
+                        LangManager.get(lang, "hooks.management.worldedit.log.command.command") + ": `" + msg + "`";
+
+        DiscordLog.send(pluginKey, title, body);
     }
 
     private boolean isWorldEditCommand(String raw) {
         if (raw == null) return false;
 
         String cmd = raw.trim().toLowerCase();
-
-        // Klasszikus WorldEdit parancsok (rövid és hosszú formák)
         return cmd.startsWith("//")
                 || cmd.startsWith("/worldedit")
                 || cmd.startsWith("/we ")
                 || cmd.equals("/we");
     }
 
-    // ------------------------------------------------------------
-    // WorldEdit EditSession esemény figyelése reflectionnel
-    // com.sk89q.worldedit.event.extent.EditSessionEvent
-    // ------------------------------------------------------------
     @EventHandler
     public void onWorldEditEvent(Event event) {
         String name = event.getClass().getName();
@@ -61,18 +56,20 @@ public class WorldEditHook implements Listener {
         try {
             if (name.equals("com.sk89q.worldedit.event.extent.EditSessionEvent")) {
 
+                String lang = lang();
+
                 Object actor = event.getClass().getMethod("getActor").invoke(event);
                 String executor = actor != null ? actor.toString() : "Ismeretlen";
 
                 Object world = event.getClass().getMethod("getWorld").invoke(event);
                 String worldName = world != null ? world.toString() : "Ismeretlen";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🧱 WorldEdit – EditSession Létrehozva",
-                        "Végrehajtó: **" + executor + "**\n"
-                                + "Világ: **" + worldName + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.worldedit.log.editsession.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.worldedit.log.editsession.executor") + ": **" + executor + "**\n" +
+                                LangManager.get(lang, "hooks.management.worldedit.log.editsession.world") + ": **" + worldName + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
         } catch (Exception ignored) {}

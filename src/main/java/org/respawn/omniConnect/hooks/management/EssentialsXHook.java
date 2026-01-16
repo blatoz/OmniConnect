@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class EssentialsXHook implements Listener {
 
@@ -15,46 +16,44 @@ public class EssentialsXHook implements Listener {
     public EssentialsXHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] EssentialsX hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] EssentialsX hook has been enabled!");
     }
 
-    // ------------------------------------------------------------
-    // Játékos parancsok figyelése
-    // ------------------------------------------------------------
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onPlayerEssentialsCommand(PlayerCommandPreprocessEvent event) {
         String msg = event.getMessage().toLowerCase();
         if (!isLoggedEssentialsCommand(msg)) return;
 
+        String lang = lang();
         String player = event.getPlayer().getName();
 
-        DiscordLog.send(
-                pluginKey,
-                "📘 EssentialsX – Parancs Végrehajtva (Játékos)",
-                "Játékos: **" + player + "**\n"
-                        + "Parancs: `" + msg + "`"
-        );
+        String title = LangManager.get(lang, "hooks.management.essentialsx.log.player_command.title");
+        String body =
+                LangManager.get(lang, "hooks.management.essentialsx.log.player_command.executor") + ": **" + player + "**\n" +
+                        LangManager.get(lang, "hooks.management.essentialsx.log.player_command.command") + ": `" + msg + "`";
+
+        DiscordLog.send(pluginKey, title, body);
     }
 
-    // ------------------------------------------------------------
-    // Konzol parancsok figyelése
-    // ------------------------------------------------------------
     @EventHandler
     public void onConsoleEssentialsCommand(ServerCommandEvent event) {
         String msg = "/" + event.getCommand().toLowerCase();
         if (!isLoggedEssentialsCommand(msg)) return;
 
-        DiscordLog.send(
-                pluginKey,
-                "📘 EssentialsX – Parancs Végrehajtva (Konzol)",
-                "Játékos: **CONSOLE**\n"
-                        + "Parancs: `" + msg + "`"
-        );
+        String lang = lang();
+
+        String title = LangManager.get(lang, "hooks.management.essentialsx.log.console_command.title");
+        String body =
+                LangManager.get(lang, "hooks.management.essentialsx.log.console_command.executor") + ": **CONSOLE**\n" +
+                        LangManager.get(lang, "hooks.management.essentialsx.log.console_command.command") + ": `" + msg + "`";
+
+        DiscordLog.send(pluginKey, title, body);
     }
 
-    // ------------------------------------------------------------
-    // Csak az általad kért parancsok logolása
-    // ------------------------------------------------------------
     private boolean isLoggedEssentialsCommand(String cmd) {
         return cmd.startsWith("/invsee")
                 || cmd.startsWith("/tp")

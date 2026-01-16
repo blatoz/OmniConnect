@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class LinsaMaintenanceHook implements Listener {
 
@@ -14,7 +15,11 @@ public class LinsaMaintenanceHook implements Listener {
     public LinsaMaintenanceHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] LinsaFTW Maintenance hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] LinsaFTW Maintenance hook has been enabled!");
+    }
+
+    private String lang() {
+        return LangManager.getDefaultLanguage();
     }
 
     @EventHandler
@@ -22,18 +27,28 @@ public class LinsaMaintenanceHook implements Listener {
         String name = event.getClass().getName();
 
         try {
-            // com.linsftw.maintenance.api.events.MaintenanceToggleEvent
             if (name.equals("com.linsftw.maintenance.api.events.MaintenanceToggleEvent")) {
+
+                String lang = lang();
 
                 boolean enabled = (boolean) event.getClass().getMethod("isEnabled").invoke(event);
                 Object executorObj = event.getClass().getMethod("getExecutor").invoke(event);
                 String executor = executorObj != null ? executorObj.toString() : "Ismeretlen";
 
-                DiscordLog.send(
-                        pluginKey,
-                        enabled ? "🛠️ LinsaFTW Maintenance Kekapcsolva" : "🟢 LinsaFTW Maintenance Kikapcsolva",
-                        "Végrehajtotta: **" + executor + "**"
+                String title = LangManager.get(lang,
+                        enabled
+                                ? "hooks.management.linsamaintenance.log.enable.title"
+                                : "hooks.management.linsamaintenance.log.disable.title"
                 );
+
+                String body =
+                        LangManager.get(lang,
+                                enabled
+                                        ? "hooks.management.linsamaintenance.log.enable.executor"
+                                        : "hooks.management.linsamaintenance.log.disable.executor"
+                        ) + ": **" + executor + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
         } catch (Exception ignored) {}

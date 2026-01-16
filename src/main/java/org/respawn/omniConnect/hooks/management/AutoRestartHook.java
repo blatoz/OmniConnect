@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class AutoRestartHook implements Listener {
 
@@ -14,28 +15,26 @@ public class AutoRestartHook implements Listener {
     public AutoRestartHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] AutoRestart hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] AutoRestart hook has been enabled!");
     }
 
-    // ------------------------------------------------------------
-    // Játékosoknak küldött restart üzenetek figyelése
-    // ------------------------------------------------------------
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        // AutoRestart néha chat formában broadcastol
         String msg = event.getMessage();
         if (!isRestartMessage(msg)) return;
 
-        DiscordLog.send(
-                pluginKey,
-                "🔄 AutoRestart – Újraindítási Értesítés",
-                "Üzenet: `" + msg + "`"
-        );
+        String lang = lang();
+
+        String title = LangManager.get(lang, "hooks.management.autorestart.log.restart.title");
+        String body = LangManager.get(lang, "hooks.management.autorestart.log.restart.message") + ": `" + msg + "`";
+
+        DiscordLog.send(pluginKey, title, body);
     }
 
-    // ------------------------------------------------------------
-    // Restart üzenetek felismerése
-    // ------------------------------------------------------------
     private boolean isRestartMessage(String msg) {
         if (msg == null) return false;
 

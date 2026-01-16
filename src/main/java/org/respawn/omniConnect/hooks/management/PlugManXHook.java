@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class PlugManXHook implements Listener {
 
@@ -14,7 +15,11 @@ public class PlugManXHook implements Listener {
     public PlugManXHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] PlugManX hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] PlugManX hook has been enabled!");
+    }
+
+    private String lang() {
+        return LangManager.getDefaultLanguage();
     }
 
     @EventHandler
@@ -22,55 +27,55 @@ public class PlugManXHook implements Listener {
         String name = event.getClass().getName();
 
         try {
+            String lang = lang();
+
             switch (name) {
 
-                // -------------------------
-                // PluginEnableEvent
-                // -------------------------
                 case "com.rylinaux.plugmanx.api.PluginEnableEvent": {
                     Object plugin = event.getClass().getMethod("getPlugin").invoke(event);
                     String pluginName = (String) plugin.getClass().getMethod("getName").invoke(plugin);
 
-                    DiscordLog.send(pluginKey,
-                            "🟢 PlugManX – Plugin Engedélyezve",
-                            "Plugin: **" + pluginName + "**"
-                    );
+                    String title = LangManager.get(lang, "hooks.management.plugmanx.log.enable.title");
+                    String body =
+                            LangManager.get(lang, "hooks.management.plugmanx.log.enable.plugin")
+                                    + ": **" + pluginName + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 
-                // -------------------------
-                // PluginDisableEvent
-                // -------------------------
                 case "com.rylinaux.plugmanx.api.PluginDisableEvent": {
                     Object plugin = event.getClass().getMethod("getPlugin").invoke(event);
                     String pluginName = (String) plugin.getClass().getMethod("getName").invoke(plugin);
 
-                    DiscordLog.send(pluginKey,
-                            "🔴 PlugManX – Plugin Letiltva",
-                            "Plugin: **" + pluginName + "**"
-                    );
+                    String title = LangManager.get(lang, "hooks.management.plugmanx.log.disable.title");
+                    String body =
+                            LangManager.get(lang, "hooks.management.plugmanx.log.disable.plugin")
+                                    + ": **" + pluginName + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 
-                // -------------------------
-                // PluginReloadEvent
-                // -------------------------
                 case "com.rylinaux.plugmanx.api.PluginReloadEvent": {
                     Object plugin = event.getClass().getMethod("getPlugin").invoke(event);
                     String pluginName = (String) plugin.getClass().getMethod("getName").invoke(plugin);
 
-                    DiscordLog.send(pluginKey,
-                            "🔄 PlugManX – Plugin Újratöltve",
-                            "Plugin: **" + pluginName + "**"
-                    );
+                    String title = LangManager.get(lang, "hooks.management.plugmanx.log.reload.title");
+                    String body =
+                            LangManager.get(lang, "hooks.management.plugmanx.log.reload.plugin")
+                                    + ": **" + pluginName + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 
                 default:
                     break;
             }
+
         } catch (Exception e) {
-            Bukkit.getLogger().warning("[OmniConnect] PlugManX hook hiba: " + e.getMessage());
+            Bukkit.getLogger().warning("[OmniConnect] PlugManX hook error: " + e.getMessage());
         }
     }
 }

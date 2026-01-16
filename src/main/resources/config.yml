@@ -56,7 +56,7 @@ discord:
   #  /meme, /gif, /quote, /ship, /lovecalc)
   # ──────────────────────────────────────────────────────────
   fun:
-    enabled: true
+    enabled: true # Enable or disable fun commands
 
     commands:
       roll: true
@@ -250,7 +250,7 @@ moderation:
 
 
 # ──────────────────────────────────────────────────────────────
-# ECONOMY PLUGINOK
+# ECONOMY PLUGINS
 # ──────────────────────────────────────────────────────────────
 economy:
   enabled: False # Enable or disable economy plugin logging

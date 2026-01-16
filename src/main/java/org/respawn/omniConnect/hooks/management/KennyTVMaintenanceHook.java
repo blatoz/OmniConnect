@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class KennyTVMaintenanceHook implements Listener {
 
@@ -14,7 +15,11 @@ public class KennyTVMaintenanceHook implements Listener {
     public KennyTVMaintenanceHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] KennyTV Maintenance hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] KennyTV Maintenance hook has been enabled!");
+    }
+
+    private String lang() {
+        return LangManager.getDefaultLanguage();
     }
 
     @EventHandler
@@ -22,80 +27,68 @@ public class KennyTVMaintenanceHook implements Listener {
         String name = event.getClass().getName().toLowerCase();
 
         try {
+            String lang = lang();
 
-            // ============================================================
-            // Maintenance mód bekapcsolva
-            // eu.kennytv.maintenance.api.event.MaintenanceEnableEvent
-            // ============================================================
+            // Enable
             if (name.contains("maintenanceenableevent")) {
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🛠️ KennyTV Maintenance – Bekapcsolva",
-                        "A szerver karbantartási módba lépett, a MOTD meg lett változtatva a karbantartás idejére."
-                );
+                String title = LangManager.get(lang, "hooks.management.kennytvmaintenance.log.enable.title");
+                String desc = LangManager.get(lang, "hooks.management.kennytvmaintenance.log.enable.description");
+
+                DiscordLog.send(pluginKey, title, desc);
             }
 
-            // ============================================================
-            // Maintenance mód kikapcsolva
-            // eu.kennytv.maintenance.api.event.MaintenanceDisableEvent
-            // ============================================================
+            // Disable
             if (name.contains("maintenancedisableevent")) {
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🛠️ KennyTV Maintenance – Kikapcsolva",
-                        "A szerver kilépett a karbantartási módból, a MOTD vissza lett változtatva az eredeti MOTD-ra."
-                );
+                String title = LangManager.get(lang, "hooks.management.kennytvmaintenance.log.disable.title");
+                String desc = LangManager.get(lang, "hooks.management.kennytvmaintenance.log.disable.description");
+
+                DiscordLog.send(pluginKey, title, desc);
             }
 
-            // ============================================================
-            // Whitelist hozzáadás
-            // eu.kennytv.maintenance.api.event.MaintenanceWhitelistAddEvent
-            // ============================================================
+            // Whitelist Add
             if (name.contains("whitelistaddevent")) {
 
                 Object player = event.getClass().getMethod("getPlayer").invoke(event);
-                String playerName = player != null ? player.toString() : "Ismeretlen";
+                String playerName = player != null ? player.toString() : "Unknown";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🛠️ KennyTV Maintenance – Whitelist Hozzáadva",
-                        "Játékos: **" + playerName + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.kennytvmaintenance.log.whitelist_add.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.kennytvmaintenance.log.whitelist_add.player")
+                                + ": **" + playerName + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
-            // ============================================================
-            // Whitelist eltávolítás
-            // eu.kennytv.maintenance.api.event.MaintenanceWhitelistRemoveEvent
-            // ============================================================
+            // Whitelist Remove
             if (name.contains("whitelistremoveevent")) {
 
                 Object player = event.getClass().getMethod("getPlayer").invoke(event);
-                String playerName = player != null ? player.toString() : "Ismeretlen";
+                String playerName = player != null ? player.toString() : "Unknown";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🛠️ KennyTV Maintenance – Whitelist Eltávolítva",
-                        "Játékos: **" + playerName + "**"
-                );
+                String title = LangManager.get(lang, "hooks.management.kennytvmaintenance.log.whitelist_remove.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.kennytvmaintenance.log.whitelist_remove.player")
+                                + ": **" + playerName + "**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
-            // ============================================================
-            // Kick event (maintenance miatt)
-            // eu.kennytv.maintenance.api.event.MaintenanceKickEvent
-            // ============================================================
+            // Kick
             if (name.contains("kickevent")) {
 
                 Object player = event.getClass().getMethod("getPlayer").invoke(event);
-                String playerName = player != null ? player.toString() : "Ismeretlen";
+                String playerName = player != null ? player.toString() : "Unknown";
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🛠️ KennyTV Maintenance – Játékos Kirúgva",
-                        "Játékos: **" + playerName + "**\n"
-                                + "Indok: Karbantartási mód"
-                );
+                String title = LangManager.get(lang, "hooks.management.kennytvmaintenance.log.kick.title");
+                String body =
+                        LangManager.get(lang, "hooks.management.kennytvmaintenance.log.kick.player")
+                                + ": **" + playerName + "**\n" +
+                                LangManager.get(lang, "hooks.management.kennytvmaintenance.log.kick.reason")
+                                + ": **Maintenance mode**";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
         } catch (Exception ignored) {}

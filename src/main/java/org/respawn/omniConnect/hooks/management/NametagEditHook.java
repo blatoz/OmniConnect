@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class NametagEditHook implements Listener {
 
@@ -14,7 +15,11 @@ public class NametagEditHook implements Listener {
     public NametagEditHook(String pluginKey) {
         this.pluginKey = pluginKey;
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
-        Bukkit.getLogger().info("[OmniConnect] NametagEdit hook aktiválva!");
+        Bukkit.getLogger().info("[OmniConnect] NametagEdit hook has been enabled!");
+    }
+
+    private String lang() {
+        return LangManager.getDefaultLanguage();
     }
 
     @EventHandler
@@ -22,11 +27,9 @@ public class NametagEditHook implements Listener {
         String name = event.getClass().getName();
 
         try {
-            // ============================================================
-            // NametagEdit - PlayerTagChangeEvent
-            // com.nametagedit.plugin.api.events.PlayerTagChangeEvent
-            // ============================================================
             if (name.equals("com.nametagedit.plugin.api.events.PlayerTagChangeEvent")) {
+
+                String lang = lang();
 
                 Object player = event.getClass().getMethod("getPlayer").invoke(event);
                 String playerName = player != null ? player.toString() : "Ismeretlen";
@@ -37,15 +40,16 @@ public class NametagEditHook implements Listener {
                 String oldSuffix = (String) event.getClass().getMethod("getOldSuffix").invoke(event);
                 String newSuffix = (String) event.getClass().getMethod("getNewSuffix").invoke(event);
 
-                DiscordLog.send(
-                        pluginKey,
-                        "🏷️ NametagEdit – Prefix/Suffix Módosítva",
-                        "Játékos: **" + playerName + "**\n"
-                                + "Régi Prefix: `" + oldPrefix + "`\n"
-                                + "Új Prefix: `" + newPrefix + "`\n"
-                                + "Régi Suffix: `" + oldSuffix + "`\n"
-                                + "Új Suffix: `" + newSuffix + "`"
-                );
+                String title = LangManager.get(lang, "hooks.management.nametagedit.log.tag_change.title");
+
+                String body =
+                        LangManager.get(lang, "hooks.management.nametagedit.log.tag_change.player") + ": **" + playerName + "**\n" +
+                                LangManager.get(lang, "hooks.management.nametagedit.log.tag_change.old_prefix") + ": `" + oldPrefix + "`\n" +
+                                LangManager.get(lang, "hooks.management.nametagedit.log.tag_change.new_prefix") + ": `" + newPrefix + "`\n" +
+                                LangManager.get(lang, "hooks.management.nametagedit.log.tag_change.old_suffix") + ": `" + oldSuffix + "`\n" +
+                                LangManager.get(lang, "hooks.management.nametagedit.log.tag_change.new_suffix") + ": `" + newSuffix + "`";
+
+                DiscordLog.send(pluginKey, title, body);
             }
 
         } catch (Exception ignored) {}
