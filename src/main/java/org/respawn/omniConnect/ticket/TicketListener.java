@@ -8,14 +8,14 @@ import org.jetbrains.annotations.NotNull;
 import org.respawn.omniConnect.lang.LangManager;
 
 /**
- * Jegy (ticket) eseménylisszener - kezeli a ticket gombok interakcióit.
+ * Ticket event listener - handles interactions with ticket buttons.
  */
 public class TicketListener extends ListenerAdapter {
 
     /**
-     * Gomb interakció kezelő - kezeli a ticket létrehozást és bezárást.
+     * Button interaction handler - handles ticket creation and closure.
      *
-     * @param event A gomb interakció eseménye
+     * @param event The button interaction event
      */
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
@@ -26,7 +26,7 @@ public class TicketListener extends ListenerAdapter {
 
         String lang = LangManager.getDefaultLanguage();
 
-        // Ticket létrehozás
+        // Ticket creaze
         if (id.startsWith("ticket:create:")) {
             event.deferReply(true).queue();
 
@@ -50,7 +50,7 @@ public class TicketListener extends ListenerAdapter {
             return;
         }
 
-        // Ticket lezárás
+        // Ticket close
         if (id.equals("ticket:close")) {
             event.deferReply(true).queue();
 

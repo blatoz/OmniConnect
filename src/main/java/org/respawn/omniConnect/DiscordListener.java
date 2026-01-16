@@ -37,8 +37,8 @@ import java.util.stream.Collectors;
 import java.util.Optional;
 
 /**
- * Discord esemény figyelő - naplózza az összes szerver- és felhasználó-tevékenységet.
- * Kezeli az üzenetek, csatornák, szerepek és voice csatornák eseményeit.
+ * Discord event monitor - logs all server and user activity.
+ * Handles events for messages, channels, roles, and voice channels.
  */
 public class DiscordListener extends ListenerAdapter {
 

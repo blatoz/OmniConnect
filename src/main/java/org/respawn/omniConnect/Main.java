@@ -1,7 +1,7 @@
 package org.respawn.omniConnect;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.respawn.omniConnect.discord.DiscordBotManager;
+import org.respawn.omniConnect.commands.DiscordFunCommands;
 import org.respawn.omniConnect.hooks.HookManager;
 import org.respawn.omniConnect.lang.LangManager;
 import org.respawn.omniConnect.listeners.ChatListener;
@@ -16,38 +16,38 @@ import org.respawn.omniConnect.link.LinkDatabase;
 import java.awt.*;
 
 /**
- * OmniConnect - Minecraft és Discord szinkronizációs plugin.
- * Kezeli a chat integrációt, jegyrendszert és szerver eseményeit.
+ * OmniConnect - Minecraft and Discord synchronization plugin.
+ * Handles chat integration, ticket system, and server events.
  */
 public class Main extends JavaPlugin {
 
     private static Main instance;
 
     /**
-     * A Main singleton instancia lekérése.
+     * Retrieving the Main singleton instance.
      *
-     * @return Main instancia
+     * @return Main instance
      */
     public static Main getInstance() {
         return instance;
     }
 
     /**
-     * Plugin inicializálása és indítása.
-     * Beolvassa a config-ot, regisztrálja az eseménylistenereket és elindítja a Discord botot.
+     * Initialize and start the plugin.
+     * Read the config, register the event listeners, and start the Discord bot.
      */
     @Override
     public void onEnable() {
         instance = this;
 
         saveDefaultConfig();
-        getLogger().info("OmniConnect plugin elindult!");
+        getLogger().info("OmniConnect plugin has been started!");
 
-        // Parancsok, listenerek
+        // Commands, Listeners
         registerCommands();
         registerListeners();
 
-        // --- Ticket rendszer inicializálása configból ---
+        // --- Ticket system Initializing from the config  ---
         String guildId = getConfig().getString("discord.guild-id");
         String ticketCategoryId = getConfig().getString("discord.ticket.category-id");
         String logChannelId = getConfig().getString("discord.ticket.log-channel-id");
@@ -60,10 +60,10 @@ public class Main extends JavaPlugin {
                 panelChannelId
         );
 
-        // --- Account linking adatbázis ---
+        // --- Account linking database ---
         LinkDatabase.init();
 
-        // --- Hookok inicializálása ---
+        // --- Hooks Initializing ---
         HookManager.init();
         HookManager.initExploitFixHooks();
         HookManager.initKingdomsHooks();
@@ -71,18 +71,20 @@ public class Main extends JavaPlugin {
         HookManager.initManagementHooks();
         HookManager.initEconomyHooks();
 
-        // --- Discord bot indítása ---
+        // --- Discord bot start ---
         DiscordManager.getInstance().start();
 
-        // --- Discord slash command listenerek (moderáció + linking) ---
+        // --- Discord slash command listerek (moderáció + linking) ---
         if (DiscordManager.ready) {
             try {
                 DiscordManager.getInstance().getJDA().addEventListener(
                         new DiscordModerationCommands(),
+                        new DiscordFunCommands(),
+                        new DiscordFunCommands(),
                         new DiscordLinkVerifyListener()
                 );
 
-                // Log Discordra induláskor
+                // Log Discord started embed
                 String botName = DiscordManager.getInstance().getJDA().getSelfUser().getName();
                 String botAvatar = DiscordManager.getInstance().getJDA().getSelfUser().getAvatarUrl();
 
@@ -109,7 +111,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Log Discordra leálláskor (csak ha a bot még elérhető)
+        // Log Discord on shutdown (only if the bot is ready)
         if (DiscordManager.ready) {
             try {
                 String botName = DiscordManager.getInstance().getJDA().getSelfUser().getName();
@@ -137,12 +139,12 @@ public class Main extends JavaPlugin {
     }
 
     private void registerCommands() {
-        // Minecraft oldali linking
+        // Minecraft side linking
         if (getCommand("link") != null) {
             getCommand("link").setExecutor(new LinkCommand());
         }
 
-        // Link parancsok (Discord / Store / Rules / Website / Vote / Map / Wiki)
+        // Link commands (Discord / Store / Rules / Website / Vote / Map / Wiki)
         if (getCommand("discord") != null) {
             getCommand("discord").setExecutor(new LinkCommands());
         }

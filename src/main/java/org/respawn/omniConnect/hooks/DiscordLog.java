@@ -11,8 +11,8 @@ import java.awt.*;
 public class DiscordLog {
 
     /**
-     * Általános logolás pluginKey alapján (régi rendszer kompatibilitás).
-     * anticheat / exploitfix hookokhoz.
+     * General logging based on pluginKey (old system compatibility).
+     * anticheat / exploitfix hooks.
      */
     public static void send(String pluginKey, String title, String description) {
         if (!DiscordManager.ready) return;
@@ -97,7 +97,7 @@ public class DiscordLog {
     // --------------------------------------------------------------------
 
     /**
-     * Sima szöveg küldése egy csatornába.
+     * Sending plain text to a channel.
      */
     public static void send(String channelId, String message) {
         if (!DiscordManager.ready) return;

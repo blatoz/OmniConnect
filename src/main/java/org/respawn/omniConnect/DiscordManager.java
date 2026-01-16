@@ -26,8 +26,8 @@ import java.util.EnumSet;
 
 
 /**
- * Discord bot kezelő - singleton minta alapján.
- * Kezeli a bot indítását, leállítását és az üzenetküldenést.
+ * Discord bot handler - based on the singleton pattern.
+ * Handles bot startup, shutdown, and message sending.
  */
 public class DiscordManager {
 
@@ -43,9 +43,9 @@ public class DiscordManager {
     }
 
     /**
-     * Singleton getInstance metódus.
+     * Singleton getInstance method.
      *
-     * @return DiscordManager singleton instancia
+     * @return DiscordManager singleton instance
      */
     public static synchronized DiscordManager getInstance() {
         if (instance == null) {
@@ -55,8 +55,8 @@ public class DiscordManager {
     }
 
     /**
-     * Indítás alternatív egyszerűsített init metódus (ha más kód használja).
-     * Megtartva kompatibilitás kedvéért, de nem publikusan használandó.
+     * Start alternative simplified init method (if used by other code).
+     * Retained for compatibility, but not for public use.
      */
     public static void init(String token) {
         getInstance().startWithToken(token);
@@ -95,8 +95,8 @@ public class DiscordManager {
     }
 
     /**
-     * Discord bot indítása a config.yml-ben megadott tokennel.
-     * Regisztrálja az összes szükséges event listenert.
+     * Start the Discord bot with the token specified in config.yml.
+     * Register all necessary event listeners.
      */
     public synchronized void start() {
         // If already started and ready, do nothing
@@ -149,7 +149,7 @@ public class DiscordManager {
     }
 
     /**
-     * Discord bot graceful leállítása.
+     * Discord bot graceful shtudown.
      */
     public void shutdown() {
         if (jda != null) {
@@ -161,11 +161,11 @@ public class DiscordManager {
     }
 
     /**
-     * A JDA instancia lekérése.
+     * Retrieving the JDA instance.
      *
-     * Ez a metódus null-t ad vissza, ha a JDA még nincs inicializálva vagy nincs token.
+     * This method returns null if the JDA has not yet been initialized or there is no token.
      *
-     * @return JDA instancia vagy null, ha nem elérhető
+     * @return JDA instance or null if not available
      */
     public synchronized JDA getJDA() {
         if (jda == null) {
@@ -268,17 +268,17 @@ public class DiscordManager {
 
 
     /**
-     * Minecraft üzenet küldése a Discord chat csatornára.
+     * Send a Minecraft message to the Discord chat channel.
      *
-     * @param playerName A játékos neve
-     * @param message Az üzenet tartalma
-     * @param rank A játékos rangja/csoportja
+     * @param playerName The player's name
+     * @param message The content of the message
+     * @param rank The player's rank/group
      */
     public void sendMinecraftChat(String playerName, String message, String rank) {
         try {
             JDA currentJda = getJDA();
             if (currentJda == null) {
-                return; // Bot nem elérhető
+                return; // Bot not available
             }
 
             String channelId = Main.getInstance().getConfig().getString("discord.chat-bridge.channel-id");

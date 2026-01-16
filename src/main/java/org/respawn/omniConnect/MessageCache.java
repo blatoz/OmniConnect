@@ -6,35 +6,35 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Üzenet cache - tárola az újonnan fogadott üzeneteket a törlés/szerkesztés logolásához.
+ * Message cache - stores newly received messages for deletion/editing logging..
  */
 public class MessageCache {
 
     private static final Map<String, Message> cache = new ConcurrentHashMap<>();
 
     /**
-     * Üzenet tárolása a cache-ben.
+     * Store message in cache.
      *
-     * @param message A Discord üzenet
+     * @param message Discord message
      */
     public static void store(Message message) {
         cache.put(message.getId(), message);
     }
 
     /**
-     * Üzenet lekérése ID alapján.
+     * Retrieve a message based on its ID.
      *
-     * @param id Az üzenet ID-je
-     * @return A Message vagy null, ha nem található
+     * @param id The message ID
+     * @return The Message or null if not found
      */
     public static Message get(String id) {
         return cache.get(id);
     }
 
     /**
-     * Üzenet eltávolítása a cache-ből.
+     * Remove message from cache.
      *
-     * @param id Az üzenet ID-je
+     * @param id Message ID
      */
     public static void remove(String id) {
         cache.remove(id);

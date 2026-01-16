@@ -8,17 +8,17 @@ import java.time.OffsetDateTime;
 import java.util.function.Consumer;
 
 /**
- * Naplózási kezelő - singleton minta alapján.
- * Küld embed üzeneteket a log csatornára.
+ * Logging handler - based on singleton pattern.
+ * Sends embed messages to the log channel.
  */
 public class LogManager {
 
     private static LogManager instance;
 
     /**
-     * Singleton getInstance metódus.
+     * Singleton getInstance method.
      *
-     * @return LogManager singleton instancia
+     * @return LogManager singleton instance
      */
     public static LogManager getInstance() {
         if (instance == null) {
@@ -28,9 +28,9 @@ public class LogManager {
     }
 
     /**
-     * Embed üzenet küldése a log csatornára.
+     * Send an embed message to the log channel.
      *
-     * @param embedBuilderConsumer A Consumer amely az EmbedBuilder-t konfigurál
+     * @param embedBuilderConsumer The Consumer that configures the EmbedBuilder
      */
     public void sendEmbed(Consumer<EmbedBuilder> embedBuilderConsumer) {
         TextChannel channel = getLogChannel();
@@ -48,9 +48,9 @@ public class LogManager {
     }
 
     /**
-     * A log csatorna lekérése az ID alapján.
+     * Retrieve the log channel based on the ID.
      *
-     * @return TextChannel instancia vagy null, ha nem létezik
+     * @return TextChannel instance or null if it does not exist
      */
     private TextChannel getLogChannel() {
         // Prefer config keys present in config.yml

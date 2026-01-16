@@ -6,14 +6,14 @@ import org.jetbrains.annotations.NotNull;
 import org.respawn.omniConnect.lang.LangManager;
 
 /**
- * Ticket panel parancs kezelő - kezeli a /ticketpanel slash parancsot.
+ * Ticket panel command handler - handles the /ticketpanel slash command.
  */
 public class TicketPanelCommand extends ListenerAdapter {
 
     /**
-     * Slash parancs interakció kezelő.
+     * Slash command interaction handler.
      *
-     * @param event A slash parancs interakció eseménye
+     * @param event The slash command interaction event
      */
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
