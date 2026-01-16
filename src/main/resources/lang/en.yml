@@ -640,3 +640,141 @@ hooks:
           player: "Player"
           kingdom: "Kingdom"
           amount: "Amount"
+
+
+  moderation:
+    advancedban:
+      log:
+        punishment:
+          title: "⚖️ AdvancedBan Punishment"
+          type: "Type"
+          player: "Player"
+          staff: "Staff"
+          reason: "Reason"
+
+    chatcontrol:
+      log:
+        rule_match:
+          title: "🛑 ChatControl Rule Violation"
+          player: "Player"
+          rule: "Rule"
+          message: "Message"
+
+    chatcontrolred:
+      log:
+        rule_match:
+          title: "🛑 ChatControl Rule Violation"
+          player: "Player"
+          rule: "Rule"
+          message: "Message"
+
+    cmi:
+      log:
+        ban:
+          title: "⛔ CMI Ban"
+          player: "Player"
+
+        mute:
+          title: "🔇 CMI Mute"
+          player: "Player"
+
+        kick:
+          title: "👢 CMI Kick"
+          player: "Player"
+
+        jail:
+          title: "🚨 CMI Jail"
+          player: "Player"
+
+        unjail:
+          title: "🔓 CMI Unjail"
+          player: "Player"
+
+    essentialsjail:
+      log:
+        jail:
+          title: "🚨 EssentialsX Jail"
+          player: "Player"
+
+        unjail:
+          title: "🔓 EssentialsX Unjail"
+          player: "Player"
+
+    essentialsx:
+      log:
+        ban:
+          title: "⛔ EssentialsX Ban"
+          player: "Player"
+
+        tempban:
+          title: "⏳ EssentialsX TempBan"
+          player: "Player"
+
+        mute:
+          title: "🔇 EssentialsX Mute"
+          player: "Player"
+
+        unmute:
+          title: "🔊 EssentialsX Unmute"
+          player: "Player"
+
+        kick:
+          title: "👢 EssentialsX Kick"
+          player: "Player"
+
+    libertybans:
+      log:
+        punishment:
+          title: "🧨 LibertyBans Punishment"
+          type: "Type"
+          player: "Player"
+          staff: "Staff"
+          reason: "Reason"
+
+    litebans:
+      log:
+        punishment:
+          title: "🔨 LiteBans Punishment"
+          type: "Type"
+          player: "Player"
+          staff: "Staff"
+          reason: "Reason"
+
+    matrixreport:
+      log:
+        report:
+          title: "📣 Player Report"
+          reporter: "Reporter"
+          target: "Target"
+          reason: "Reason"
+
+    playerreport:
+      log:
+        report:
+          title: "📣 Player Report"
+          reporter: "Reporter"
+          target: "Target"
+          reason: "Reason"
+
+    staffchat:
+      log:
+        message:
+          title: "🛡️ StaffChat"
+          player: "Staff"
+          message: "Message"
+
+    staffplus:
+      log:
+        report:
+          title: "📣 StaffPlus Report"
+          reporter: "Reporter"
+          target: "Target"
+          reason: "Reason"
+
+    vulcanreport:
+      log:
+        report:
+          title: "📣 Player Report"
+          reporter: "Reporter"
+          target: "Target"
+          reason: "Reason"

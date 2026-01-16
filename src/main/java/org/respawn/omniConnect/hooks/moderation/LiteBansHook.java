@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class LiteBansHook implements Listener {
 
@@ -16,12 +17,18 @@ public class LiteBansHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onPunishment(Event event) {
         if (!event.getClass().getName().equals("litebans.api.EventPunishmentAdd"))
             return;
 
         try {
+            String lang = lang();
+
             Object punishment = event.getClass().getMethod("getPunishment").invoke(event);
 
             String type = (String) punishment.getClass().getMethod("getType").invoke(punishment);
@@ -29,13 +36,15 @@ public class LiteBansHook implements Listener {
             String executor = (String) punishment.getClass().getMethod("getExecutorName").invoke(punishment);
             String reason = (String) punishment.getClass().getMethod("getReason").invoke(punishment);
 
-            DiscordLog.send(pluginKey,
-                    "🔨 LiteBans Büntetés",
-                    "Típus: **" + type + "**\n"
-                            + "Játékos: **" + target + "**\n"
-                            + "Staff: **" + executor + "**\n"
-                            + "Indok: **" + reason + "**"
-            );
+            String title = LangManager.get(lang, "hooks.moderation.litebans.log.punishment.title");
+
+            String body =
+                    LangManager.get(lang, "hooks.moderation.litebans.log.punishment.type") + ": **" + type + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.litebans.log.punishment.player") + ": **" + target + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.litebans.log.punishment.staff") + ": **" + executor + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.litebans.log.punishment.reason") + ": **" + reason + "**";
+
+            DiscordLog.send(pluginKey, title, body);
 
         } catch (Exception ignored) {}
     }

@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class EssentialsJailHook implements Listener {
 
@@ -16,18 +17,27 @@ public class EssentialsJailHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onEssentialsJail(Event event) {
         String name = event.getClass().getName();
 
         try {
+            String lang = lang();
+
             switch (name) {
 
                 case "com.earth2me.essentials.events.EssentialsJailEvent": {
                     Object player = event.getClass().getMethod("getAffected").invoke(event);
                     String target = (String) player.getClass().getMethod("getName").invoke(player);
 
-                    DiscordLog.send(pluginKey, "🚨 EssentialsX Bebörtönzés", "Játékos: **" + target + "**");
+                    String title = LangManager.get(lang, "hooks.moderation.essentialsjail.log.jail.title");
+                    String body = LangManager.get(lang, "hooks.moderation.essentialsjail.log.jail.player") + ": **" + target + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 
@@ -35,7 +45,10 @@ public class EssentialsJailHook implements Listener {
                     Object player = event.getClass().getMethod("getAffected").invoke(event);
                     String target = (String) player.getClass().getMethod("getName").invoke(player);
 
-                    DiscordLog.send(pluginKey, "🔓 EssentialsX Bebörtönzés Törölve", "Játékos: **" + target + "**");
+                    String title = LangManager.get(lang, "hooks.moderation.essentialsjail.log.unjail.title");
+                    String body = LangManager.get(lang, "hooks.moderation.essentialsjail.log.unjail.player") + ": **" + target + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 

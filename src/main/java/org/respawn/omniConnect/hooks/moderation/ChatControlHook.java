@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class ChatControlHook implements Listener {
 
@@ -16,11 +17,17 @@ public class ChatControlHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onChatControl(Event event) {
         String name = event.getClass().getName();
 
         try {
+            String lang = lang();
+
             switch (name) {
 
                 case "com.zrips.chatcontrol.events.RuleMatchEvent": {
@@ -32,12 +39,14 @@ public class ChatControlHook implements Listener {
                     String ruleName = rule.toString();
                     String msg = message.toString();
 
-                    DiscordLog.send(pluginKey,
-                            "🛑 ChatControl Szabálytalanság",
-                            "Játékos: **" + playerName + "**\n"
-                                    + "Szabály: **" + ruleName + "**\n"
-                                    + "Üzenet: **" + msg + "**"
-                    );
+                    String title = LangManager.get(lang, "hooks.moderation.chatcontrol.log.rule_match.title");
+
+                    String body =
+                            LangManager.get(lang, "hooks.moderation.chatcontrol.log.rule_match.player") + ": **" + playerName + "**\n" +
+                                    LangManager.get(lang, "hooks.moderation.chatcontrol.log.rule_match.rule") + ": **" + ruleName + "**\n" +
+                                    LangManager.get(lang, "hooks.moderation.chatcontrol.log.rule_match.message") + ": **" + msg + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 

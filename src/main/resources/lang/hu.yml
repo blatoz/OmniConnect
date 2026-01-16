@@ -643,3 +643,143 @@ hooks:
           player: "Játékos"
           kingdom: "Királyság"
           amount: "Összeg"
+
+
+
+  moderation:
+    advancedban:
+      log:
+        punishment:
+          title: "⚖️ AdvancedBan Büntetés"
+          type: "Típus"
+          player: "Játékos"
+          staff: "Staff"
+          reason: "Indok"
+
+
+    chatcontrol:
+      log:
+        rule_match:
+          title: "🛑 ChatControl Szabálytalanság"
+          player: "Játékos"
+          rule: "Szabály"
+          message: "Üzenet"
+
+    chatcontrolred:
+      log:
+        rule_match:
+          title: "🛑 ChatControl Szabálytalanság"
+          player: "Játékos"
+          rule: "Szabály"
+          message: "Üzenet"
+
+    cmi:
+      log:
+        ban:
+          title: "⛔ CMI Kitiltás"
+          player: "Játékos"
+
+        mute:
+          title: "🔇 CMI Némítás"
+          player: "Játékos"
+
+        kick:
+          title: "👢 CMI Kirúgás"
+          player: "Játékos"
+
+        jail:
+          title: "🚨 CMI Bebörtönzés"
+          player: "Játékos"
+
+        unjail:
+          title: "🔓 CMI Bebörtönzés Törölve"
+          player: "Játékos"
+
+  essentialsjail:
+      log:
+        jail:
+          title: "🚨 EssentialsX Bebörtönzés"
+          player: "Játékos"
+
+        unjail:
+          title: "🔓 EssentialsX Bebörtönzés Törölve"
+          player: "Játékos"
+
+  essentialsx:
+      log:
+        ban:
+          title: "⛔ EssentialsX Kitiltás"
+          player: "Játékos"
+
+        tempban:
+          title: "⏳ EssentialsX Ideiglenes Kitiltás"
+          player: "Játékos"
+
+        mute:
+          title: "🔇 EssentialsX Némítás"
+          player: "Játékos"
+
+        unmute:
+          title: "🔊 EssentialsX Némítás Feloldva"
+          player: "Játékos"
+
+        kick:
+          title: "👢 EssentialsX Kirúgás"
+          player: "Játékos"
+
+      libertybans:
+        log:
+          punishment:
+            title: "🧨 LibertyBans Büntetés"
+            type: "Típus"
+            player: "Játékos"
+            staff: "Staff"
+            reason: "Indok"
+
+      litebans:
+        log:
+          punishment:
+            title: "🔨 LiteBans Büntetés"
+            type: "Típus"
+            player: "Játékos"
+            staff: "Staff"
+            reason: "Indok"
+
+      matrixreport:
+        log:
+          report:
+            title: "📣 Játékos Bejelentés"
+            reporter: "Jelentő"
+            target: "Célpont"
+            reason: "Indok"
+
+      playerreport:
+        log:
+          report:
+            title: "📣 Játékos Bejelentés"
+            reporter: "Jelentő"
+            target: "Célpont"
+            reason: "Indok"
+
+      staffchat:
+        log:
+          message:
+            title: "🛡️ StaffChat"
+            player: "Staff"
+            message: "Üzenet"
+
+      staffplus:
+        log:
+          report:
+            title: "📣 StaffPlus Report"
+            reporter: "Jelentő"
+            target: "Célpont"
+            reason: "Indok"
+
+    vulcanreport:
+      log:
+        report:
+          title: "📣 Játékos Bejelentés"
+          reporter: "Jelentő"
+          target: "Célpont"
+          reason: "Indok"

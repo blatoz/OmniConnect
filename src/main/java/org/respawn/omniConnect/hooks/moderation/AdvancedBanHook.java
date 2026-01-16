@@ -6,8 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
-public class  AdvancedBanHook implements Listener {
+public class AdvancedBanHook implements Listener {
 
     private final String pluginKey;
 
@@ -16,12 +17,18 @@ public class  AdvancedBanHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onPunishment(Event event) {
         if (!event.getClass().getName().equals("me.leoko.advancedban.bukkit.event.PunishmentEvent"))
             return;
 
         try {
+            String lang = lang();
+
             Object punishment = event.getClass().getMethod("getPunishment").invoke(event);
 
             String type = (String) punishment.getClass().getMethod("getType").invoke(punishment);
@@ -29,13 +36,15 @@ public class  AdvancedBanHook implements Listener {
             String operator = (String) punishment.getClass().getMethod("getOperator").invoke(punishment);
             String reason = (String) punishment.getClass().getMethod("getReason").invoke(punishment);
 
-            DiscordLog.send(pluginKey,
-                    "⚖️ AdvancedBan Büntetés",
-                    "Típus: **" + type + "**\n"
-                            + "Játékos: **" + target + "**\n"
-                            + "Staff: **" + operator + "**\n"
-                            + "Indok: **" + reason + "**"
-            );
+            String title = LangManager.get(lang, "hooks.moderation.advancedban.log.punishment.title");
+
+            String body =
+                    LangManager.get(lang, "hooks.moderation.advancedban.log.punishment.type") + ": **" + type + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.advancedban.log.punishment.player") + ": **" + target + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.advancedban.log.punishment.staff") + ": **" + operator + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.advancedban.log.punishment.reason") + ": **" + reason + "**";
+
+            DiscordLog.send(pluginKey, title, body);
 
         } catch (Exception ignored) {}
     }

@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class LibertyBansHook implements Listener {
 
@@ -16,12 +17,18 @@ public class LibertyBansHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onLibertyBans(Event event) {
         if (!event.getClass().getName().equals("space.arim.libertybans.api.event.PunishmentEvent"))
             return;
 
         try {
+            String lang = lang();
+
             Object punishment = event.getClass().getMethod("getPunishment").invoke(event);
 
             String type = punishment.getClass().getMethod("getType").invoke(punishment).toString();
@@ -29,13 +36,15 @@ public class LibertyBansHook implements Listener {
             String operator = punishment.getClass().getMethod("getOperatorName").invoke(punishment).toString();
             String reason = punishment.getClass().getMethod("getReason").invoke(punishment).toString();
 
-            DiscordLog.send(pluginKey,
-                    "🧨 LibertyBans Büntetés",
-                    "Típus: **" + type + "**\n"
-                            + "Játékos: **" + target + "**\n"
-                            + "Staff: **" + operator + "**\n"
-                            + "Indok: **" + reason + "**"
-            );
+            String title = LangManager.get(lang, "hooks.moderation.libertybans.log.punishment.title");
+
+            String body =
+                    LangManager.get(lang, "hooks.moderation.libertybans.log.punishment.type") + ": **" + type + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.libertybans.log.punishment.player") + ": **" + target + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.libertybans.log.punishment.staff") + ": **" + operator + "**\n" +
+                            LangManager.get(lang, "hooks.moderation.libertybans.log.punishment.reason") + ": **" + reason + "**";
+
+            DiscordLog.send(pluginKey, title, body);
 
         } catch (Exception ignored) {}
     }
