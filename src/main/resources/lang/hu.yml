@@ -420,8 +420,76 @@ minecraft:
     already_linked: "§eEz a Discord fiók már össze van kötve egy Minecraft fiókkal."
 
 
-
 hooks:
+  anticheat:
+    aac:
+      log:
+        violation:
+          title: "⚠️ AAC Riasztás"
+          player: "Játékos"
+          hack_type: "Hack Típus"
+          vl: "VL (Szabálysértés)"
+
+    grim:
+      log:
+        violation:
+          title: "⚠️ GrimAC Riasztás"
+          player: "Játékos"
+          hack_type: "Hack Típus"
+          vl: "VL (Szabálysértés)"
+
+
+    lightanticheat:
+      log:
+        violation:
+          title: "⚠️ LightAntiCheat Alert"
+          player: "Player"
+          hack_type: "Hack Type"
+          vl: "VL (Violations)"
+
+
+    ncp:
+      log:
+        violation:
+          title: "⚠️ NoCheatPlus Riasztás"
+          player: "Játékos"
+          hack_type: "Hack Típus"
+          vl: "VL (Szabálysértés)"
+
+    negativity:
+      log:
+        violation:
+          title: "⚠️ Negativity Riasztás"
+          player: "Játékos"
+          hack_type: "Csalás Típus"
+          reliability: "Reliability"
+
+    spartan:
+      log:
+        violation:
+          title: "⚠️ Spartan Riasztás"
+          player: "Játékos"
+          hack_type: "Hack Típus"
+          vl: "VL (Szabálysértés)"
+
+    vulcan:
+      log:
+        violation:
+          title: "⚠️ Vulcan Riasztás"
+          player: "Játékos"
+          hack_type: "Check"
+          vl: "VL (Szabálysértés)"
+
+
+
+    matrix:
+      log:
+        violation:
+          title: "⚠️ Matrix Riasztás"
+          player: "Játékos"
+          hack_type: "Hack Típus"
+
+
   exploitfixer:
     log:
       blocked:

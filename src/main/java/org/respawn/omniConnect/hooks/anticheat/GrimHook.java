@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class GrimHook implements Listener {
 
@@ -16,21 +17,34 @@ public class GrimHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onFlag(Event event) {
-        if (!event.getClass().getName().equals("ac.grim.grimac.events.FlagEvent")) return;
+        if (!event.getClass().getName().equals("ac.grim.grimac.events.FlagEvent"))
+            return;
 
         try {
+            String lang = lang();
+
             Object player = event.getClass().getMethod("getPlayer").invoke(event);
             Object check = event.getClass().getMethod("getCheck").invoke(event);
             int vl = (int) event.getClass().getMethod("getViolations").invoke(event);
+
             String playerName = (String) player.getClass().getMethod("getName").invoke(player);
             String checkName = (String) check.getClass().getMethod("getName").invoke(check);
 
-            DiscordLog.send(pluginKey,
-                    "⚠️ GrimAC Riasztás",
-                    "Játékos: **" + playerName + "**\nHack Típus: **" + checkName + "**\nVL(Szabálysértés): **" + vl + "**"
-            );
+            String title = LangManager.get(lang, "hooks.anticheat.grim.log.violation.title");
+
+            String body =
+                    LangManager.get(lang, "hooks.anticheat.grim.log.violation.player") + ": **" + playerName + "**\n" +
+                            LangManager.get(lang, "hooks.anticheat.grim.log.violation.hack_type") + ": **" + checkName + "**\n" +
+                            LangManager.get(lang, "hooks.anticheat.grim.log.violation.vl") + ": **" + vl + "**";
+
+            DiscordLog.send(pluginKey, title, body);
+
         } catch (Exception ignored) {}
     }
 }

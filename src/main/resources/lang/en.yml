@@ -421,6 +421,72 @@ minecraft:
 
 
 hooks:
+  anticheat:
+    aac:
+      log:
+        violation:
+          title: "⚠️ AAC Alert"
+          player: "Player"
+          hack_type: "Hack Type"
+          vl: "VL (Violations)"
+
+    grim:
+      log:
+        violation:
+          title: "⚠️ GrimAC Alert"
+          player: "Player"
+          hack_type: "Hack Type"
+          vl: "VL (Violations)"
+
+    lightanticheat:
+      log:
+        violation:
+          title: "⚠️ LightAntiCheat Alert"
+          player: "Player"
+          hack_type: "Hack Type"
+          vl: "VL (Violations)"
+
+    matrix:
+      log:
+        violation:
+          title: "⚠️ Matrix Alert"
+          player: "Player"
+          hack_type: "Hack Type"
+
+    negativity:
+      log:
+        violation:
+          title: "⚠️ Negativity Alert"
+          player: "Player"
+          hack_type: "Cheat Type"
+          reliability: "Reliability"
+
+    ncp:
+      log:
+        violation:
+          title: "⚠️ NoCheatPlus Alert"
+          player: "Player"
+          hack_type: "Hack Type"
+          vl: "VL (Violations)"
+
+    spartan:
+      log:
+        violation:
+          title: "⚠️ Spartan Alert"
+          player: "Player"
+          hack_type: "Hack Type"
+          vl: "VL (Violations)"
+
+
+    vulcan:
+      log:
+        violation:
+          title: "⚠️ Vulcan Alert"
+          player: "Player"
+          hack_type: "Check"
+          vl: "VL (Violations)"
+
+
   exploitfixer:
     log:
       blocked:

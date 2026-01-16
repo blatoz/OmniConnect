@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
-
+import org.respawn.omniConnect.lang.LangManager;
 
 public class MatrixHook implements Listener {
 
@@ -17,19 +17,31 @@ public class MatrixHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onViolation(Event event) {
-        if (!event.getClass().getName().equals("me.rerere.matrix.api.events.PlayerViolationEvent")) return;
+        if (!event.getClass().getName().equals("me.rerere.matrix.api.events.PlayerViolationEvent"))
+            return;
 
         try {
+            String lang = lang();
+
             Object player = event.getClass().getMethod("getPlayer").invoke(event);
             Object hackType = event.getClass().getMethod("getHackType").invoke(event);
+
             String playerName = (String) player.getClass().getMethod("getName").invoke(player);
 
-            DiscordLog.send(pluginKey,
-                    "⚠️ Matrix Riasztás",
-                    "Játékos: **" + playerName + "**\nHack Típus: **" + hackType.toString() + "**"
-            );
+            String title = LangManager.get(lang, "hooks.anticheat.matrix.log.violation.title");
+
+            String body =
+                    LangManager.get(lang, "hooks.anticheat.matrix.log.violation.player") + ": **" + playerName + "**\n" +
+                            LangManager.get(lang, "hooks.anticheat.matrix.log.violation.hack_type") + ": **" + hackType.toString() + "**";
+
+            DiscordLog.send(pluginKey, title, body);
+
         } catch (Exception ignored) {}
     }
 }
