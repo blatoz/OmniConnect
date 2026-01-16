@@ -55,6 +55,7 @@ discord:
       internal_close:
         title: "Ticket Closed (Discord)"
         channel: "Channel"
+        channel_id: "Channel ID"
         closed_by: "Closed By"
 
     close:
@@ -416,3 +417,160 @@ minecraft:
     success: "§aYour Minecraft and Discord accounts are now linked!"
     invalid: "§cInvalid or expired code."
     already_linked: "§eThis Discord account is already linked to a Minecraft account."
+
+
+
+hooks:
+  exploitfixer:
+    log:
+      blocked:
+        title: "⚠️ ExploitFixer Alert"
+        player: "Player"
+        exploit: "Exploit"
+        category: "Category"
+        severity: "Severity"
+        description: "Description"
+        id: "ID"
+
+
+    anarchyexploitfixes:
+      log:
+        blocked:
+          title: "⚠️ AnarchyExploitFixes Alert"
+          player: "Player"
+          exploit: "Exploit"
+
+    lpxantipacket:
+      log:
+        blocked:
+          title: "⚠️ LPX AntiPacketExploit Alert"
+          player: "Player"
+          packet: "Packet"
+
+
+  economy:
+    coinmanager:
+      log:
+        add:
+          title: "🪙 CoinManager – Coins Added"
+          player: "Player"
+          amount: "Added"
+          balance: "New Balance"
+
+        remove:
+          title: "💸 CoinManager – Coins Removed"
+          player: "Player"
+          amount: "Removed"
+          balance: "New Balance"
+
+        set:
+          title: "⚙️ CoinManager – Balance Set"
+          player: "Player"
+          balance: "New Balance"
+
+    azrova:
+      log:
+        change:
+          title: "💳 Azrova Economy Change"
+          player: "Player"
+          diff: "Change"
+          new_balance: "New Balance"
+
+    dzeconomy:
+      log:
+        change:
+          title: "💵 DZEconomy Change"
+          player: "Player"
+          diff: "Change"
+          new_balance: "New Balance"
+
+    ezeconomy:
+      log:
+        change:
+          title: "💰 EzEconomy Change"
+          player: "Player"
+          diff: "Change"
+          new_balance: "New Balance"
+
+    essentials:
+      log:
+        change:
+          title: "💵 EssentialsX Economy Change"
+          player: "Player"
+          diff: "Change"
+          new_balance: "New Balance"
+
+    playerpoints:
+      log:
+        change:
+          title: "💠 PlayerPoints Change"
+          player: "Player"
+          diff: "Change"
+          new_balance: "New Balance"
+
+        reset:
+          title: "♻️ PlayerPoints Reset"
+          player: "Player"
+          message: "points have been reset."
+
+    xconomy:
+      log:
+        change:
+          title: "💸 XConomy Change"
+          player: "Player"
+          diff: "Change"
+          new_balance: "New Balance"
+
+
+  kingdoms:
+    log:
+      create:
+        title: "🏰 New Kingdom Created"
+        player: "Player"
+        kingdom: "Kingdom"
+
+      disband:
+        title: "💥 Kingdom Disbanded"
+        player: "Player"
+        kingdom: "Kingdom"
+
+      join:
+        title: "➕ New Member Joined"
+        player: "Player"
+        kingdom: "Kingdom"
+
+      leave:
+        title: "➖ Member Left Kingdom"
+        player: "Player"
+        kingdom: "Kingdom"
+
+      claim:
+        title: "📦 Land Claimed"
+        player: "Player"
+        kingdom: "Kingdom"
+        location: "Location"
+
+      unclaim:
+        title: "📭 Land Unclaimed"
+        player: "Player"
+        kingdom: "Kingdom"
+        location: "Location"
+
+      relation:
+        title: "⚖️ Diplomacy Changed"
+        kingdom: "Kingdom"
+        other: "Other"
+        relation: "New Relation"
+
+      bank:
+        deposit:
+          title: "💰 Bank Deposit"
+          player: "Player"
+          kingdom: "Kingdom"
+          amount: "Amount"
+
+        withdraw:
+          title: "💸 Bank Withdrawal"
+          player: "Player"
+          kingdom: "Kingdom"
+          amount: "Amount"

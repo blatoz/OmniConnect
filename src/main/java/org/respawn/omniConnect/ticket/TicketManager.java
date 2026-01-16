@@ -233,6 +233,7 @@ public class TicketManager {
                 builder.setTitle(LangManager.get(lang, "discord.ticket.log.internal_close.title"))
                         .setColor(Color.RED)
                         .addField(LangManager.get(lang, "discord.ticket.log.internal_close.channel"), channel.getName(), true)
+                        .addField(LangManager.get(lang, "discord.ticket.log.internal_close.channel_id"), channel.getId(), true)
                         .addField(LangManager.get(lang, "discord.ticket.log.internal_close.closed_by"), closerName, false)
         );
 

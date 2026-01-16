@@ -22,15 +22,43 @@ public class DiscordLog {
         // 1) Anticheat specifikus csatorna
         String specific = cfg.getString("anticheat." + pluginKey + ".log-channel");
 
+
         // 2) Ha nincs → exploitfix
         if (specific == null || specific.isEmpty()) {
             specific = cfg.getString("exploitfix." + pluginKey + ".log-channel");
+        }
+        if (specific == null || specific.isEmpty()) {
+            specific = cfg.getString("economy." + pluginKey + ".log-channel");
+        }
+        if (specific == null || specific.isEmpty()) {
+            specific = cfg.getString("moderation." + pluginKey + ".log-channel");
+        }
+        if (specific == null || specific.isEmpty()) {
+            specific = cfg.getString("kingdoms." + pluginKey + ".log-channel");
+        }
+        if (specific == null || specific.isEmpty()) {
+            specific = cfg.getString("management." + pluginKey + ".log-channel");
         }
 
         // 3) Fallback
         String fallback = cfg.getString("anticheat.default-log-channel");
         if (fallback == null || fallback.isEmpty()) {
             fallback = cfg.getString("exploitfix.default-log-channel");
+        }
+        if (fallback == null || fallback.isEmpty()) {
+            fallback = cfg.getString("economy.default-log-channel");
+        }
+        if (fallback == null || fallback.isEmpty()) {
+            fallback = cfg.getString("moderation.default-log-channel");
+        }
+        if (fallback == null || fallback.isEmpty()) {
+            fallback = cfg.getString("kingdoms.default-log-channel");
+        }
+        if (fallback == null || fallback.isEmpty()) {
+            fallback = cfg.getString("management.default-log-channel");
+        }
+        if (fallback == null || fallback.isEmpty()) {
+            fallback = cfg.getString("moderation.default.log-channel");
         }
 
         String channelId = (specific != null && !specific.isEmpty()) ? specific : fallback;
@@ -41,10 +69,10 @@ public class DiscordLog {
 
 
     /**
-     * ÚJ RENDSZER — kategória alapú logolás.
-     * Példa:
-     *   sendCategory("discord.discordmoderation.log-channel", "Ban", "Player: X");
-     *   sendCategory("moderation.litebans.log-channel", "Ban", "Player: X");
+     * NEW SYSTEM — category-based logging.
+     * * Example:
+     * *   sendCategory("discord.discordmoderation.log-channel", "Ban", "Player: X");
+     * *   sendCategory("moderation.litebans.log-channel", "Ban", "Player: X");
      */
     public static void sendCategory(String categoryPath, String title, String description) {
         if (!DiscordManager.ready) return;
@@ -65,7 +93,7 @@ public class DiscordLog {
 
 
     // --------------------------------------------------------------------
-    // ÚJ METÓDUSOK — Egyszerű logolás csatorna ID alapján
+    // NEW METHODS — Simple logging based on channel ID
     // --------------------------------------------------------------------
 
     /**
@@ -86,7 +114,7 @@ public class DiscordLog {
     }
 
     /**
-     * Embed küldése csatorna ID alapján.
+     * Send embed based on channel ID.
      */
     public static void sendEmbed(String channelId, EmbedBuilder embed) {
         if (!DiscordManager.ready) return;
@@ -104,7 +132,7 @@ public class DiscordLog {
 
 
     // --------------------------------------------------------------------
-    // Közös metódus embed küldésére (pluginKey / category logoláshoz)
+    // Common method for sending embeds (pluginKey / category logging)
     // --------------------------------------------------------------------
     private static void sendToChannel(String channelId, String title, String description, Color color) {
         var jda = DiscordManager.getInstance().getJDA();

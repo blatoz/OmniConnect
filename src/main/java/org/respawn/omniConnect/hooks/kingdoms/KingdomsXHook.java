@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class KingdomsXHook implements Listener {
 
@@ -16,117 +17,128 @@ public class KingdomsXHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
+    private void send(String titleKey, String body) {
+        String lang = lang();
+        String title = LangManager.get(lang, titleKey);
+        DiscordLog.send(pluginKey, title, body);
+    }
+
     @EventHandler
     public void onKingdomEvent(Event event) {
         String className = event.getClass().getName();
+        String lang = lang();
 
         try {
             switch (className) {
-                // Kingdom létrehozás
+
                 case "org.kingdoms.events.general.KingdomCreateEvent": {
                     Object creator = event.getClass().getMethod("getCreator").invoke(event);
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
 
-                    String playerName = (String) creator.getClass().getMethod("getName").invoke(creator);
+                    String player = (String) creator.getClass().getMethod("getName").invoke(creator);
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
-                    DiscordLog.send(pluginKey,
-                            "🏰 Új Királyság Jött Létre",
-                            "Játékos: **" + playerName + "**\nKirályság: **" + kingdomName + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.create.player") + ": **" + player + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.create.kingdom") + ": **" + kingdomName + "**";
+
+                    send("kingdoms.log.create.title", body);
                     break;
                 }
 
-                // Kingdom disband
                 case "org.kingdoms.events.general.KingdomDisbandEvent": {
                     Object executor = event.getClass().getMethod("getExecutor").invoke(event);
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
 
-                    String playerName = (String) executor.getClass().getMethod("getName").invoke(executor);
+                    String player = (String) executor.getClass().getMethod("getName").invoke(executor);
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
-                    DiscordLog.send(pluginKey,
-                            "💥 Királyság Feloszlatva",
-                            "Játékos: **" + playerName + "**\nKirályság: **" + kingdomName + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.disband.player") + ": **" + player + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.disband.kingdom") + ": **" + kingdomName + "**";
+
+                    send("kingdoms.log.disband.title", body);
                     break;
                 }
 
-                // Join
                 case "org.kingdoms.events.members.KingdomJoinEvent": {
-                    Object player = event.getClass().getMethod("getPlayer").invoke(event);
+                    Object playerObj = event.getClass().getMethod("getPlayer").invoke(event);
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
 
-                    String playerName = (String) player.getClass().getMethod("getName").invoke(player);
+                    String player = (String) playerObj.getClass().getMethod("getName").invoke(playerObj);
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
-                    DiscordLog.send(pluginKey,
-                            "➕ Új Tag Csatlakozott",
-                            "Játékos: **" + playerName + "**\nKirályság: **" + kingdomName + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.join.player") + ": **" + player + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.join.kingdom") + ": **" + kingdomName + "**";
+
+                    send("kingdoms.log.join.title", body);
                     break;
                 }
 
-                // Leave
                 case "org.kingdoms.events.members.KingdomLeaveEvent": {
-                    Object player = event.getClass().getMethod("getPlayer").invoke(event);
+                    Object playerObj = event.getClass().getMethod("getPlayer").invoke(event);
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
 
-                    String playerName = (String) player.getClass().getMethod("getName").invoke(player);
+                    String player = (String) playerObj.getClass().getMethod("getName").invoke(playerObj);
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
-                    DiscordLog.send(pluginKey,
-                            "➖ Tag Elhagyta a Királyságot",
-                            "Játékos: **" + playerName + "**\nKirályság: **" + kingdomName + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.leave.player") + ": **" + player + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.leave.kingdom") + ": **" + kingdomName + "**";
+
+                    send("kingdoms.log.leave.title", body);
                     break;
                 }
 
-                // Claim
                 case "org.kingdoms.events.lands.LandClaimEvent": {
-                    Object player = event.getClass().getMethod("getPlayer").invoke(event);
+                    Object playerObj = event.getClass().getMethod("getPlayer").invoke(event);
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
                     Object land = event.getClass().getMethod("getLand").invoke(event);
 
-                    String playerName = (String) player.getClass().getMethod("getName").invoke(player);
+                    String player = (String) playerObj.getClass().getMethod("getName").invoke(playerObj);
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
-                    Object location = land.getClass().getMethod("getLocation").invoke(land);
-                    int x = (int) location.getClass().getMethod("getX").invoke(location);
-                    int z = (int) location.getClass().getMethod("getZ").invoke(location);
-                    String world = (String) location.getClass().getMethod("getWorld").invoke(location);
+                    Object loc = land.getClass().getMethod("getLocation").invoke(land);
+                    int x = (int) loc.getClass().getMethod("getX").invoke(loc);
+                    int z = (int) loc.getClass().getMethod("getZ").invoke(loc);
+                    String world = (String) loc.getClass().getMethod("getWorld").invoke(loc);
 
-                    DiscordLog.send(pluginKey,
-                            "📦 Terület Lefoglalva",
-                            "Királyság: **" + kingdomName + "**\nJátékos: **" + playerName + "**\n"
-                                    + "Hely: **" + world + " @ " + x + ", " + z + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.claim.kingdom") + ": **" + kingdomName + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.claim.player") + ": **" + player + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.claim.location") + ": **" + world + " @ " + x + ", " + z + "**";
+
+                    send("kingdoms.log.claim.title", body);
                     break;
                 }
 
-                // Unclaim
                 case "org.kingdoms.events.lands.LandUnclaimEvent": {
-                    Object player = event.getClass().getMethod("getPlayer").invoke(event);
+                    Object playerObj = event.getClass().getMethod("getPlayer").invoke(event);
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
                     Object land = event.getClass().getMethod("getLand").invoke(event);
 
-                    String playerName = (String) player.getClass().getMethod("getName").invoke(player);
+                    String player = (String) playerObj.getClass().getMethod("getName").invoke(playerObj);
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
-                    Object location = land.getClass().getMethod("getLocation").invoke(land);
-                    int x = (int) location.getClass().getMethod("getX").invoke(location);
-                    int z = (int) location.getClass().getMethod("getZ").invoke(location);
-                    String world = (String) location.getClass().getMethod("getWorld").invoke(location);
+                    Object loc = land.getClass().getMethod("getLocation").invoke(land);
+                    int x = (int) loc.getClass().getMethod("getX").invoke(loc);
+                    int z = (int) loc.getClass().getMethod("getZ").invoke(loc);
+                    String world = (String) loc.getClass().getMethod("getWorld").invoke(loc);
 
-                    DiscordLog.send(pluginKey,
-                            "📭 Terület Elengedve",
-                            "Királyság: **" + kingdomName + "**\nJátékos: **" + playerName + "**\n"
-                                    + "Hely: **" + world + " @ " + x + ", " + z + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.unclaim.kingdom") + ": **" + kingdomName + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.unclaim.player") + ": **" + player + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.unclaim.location") + ": **" + world + " @ " + x + ", " + z + "**";
+
+                    send("kingdoms.log.unclaim.title", body);
                     break;
                 }
 
-                // Diplomáciai változás
                 case "org.kingdoms.events.relations.RelationChangeEvent": {
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
                     Object other = event.getClass().getMethod("getOther").invoke(event);
@@ -136,52 +148,52 @@ public class KingdomsXHook implements Listener {
                     String otherName = (String) other.getClass().getMethod("getName").invoke(other);
                     String relation = newRel.toString();
 
-                    DiscordLog.send(pluginKey,
-                            "⚖️ Diplomácia Változás",
-                            "Királyság: **" + kingdomName + "**\nMásik: **" + otherName + "**\n"
-                                    + "Új kapcsolat: **" + relation + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.relation.kingdom") + ": **" + kingdomName + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.relation.other") + ": **" + otherName + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.relation.relation") + ": **" + relation + "**";
+
+                    send("kingdoms.log.relation.title", body);
                     break;
                 }
 
-                // Bank deposit
                 case "org.kingdoms.events.banks.BankDepositEvent": {
-                    Object player = event.getClass().getMethod("getPlayer").invoke(event);
+                    Object playerObj = event.getClass().getMethod("getPlayer").invoke(event);
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
                     Object amount = event.getClass().getMethod("getAmount").invoke(event);
 
-                    String playerName = (String) player.getClass().getMethod("getName").invoke(player);
+                    String player = (String) playerObj.getClass().getMethod("getName").invoke(playerObj);
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
-                    DiscordLog.send(pluginKey,
-                            "💰 Bank Befizetés",
-                            "Királyság: **" + kingdomName + "**\nJátékos: **" + playerName + "**\n"
-                                    + "Összeg: **" + amount.toString() + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.bank.deposit.kingdom") + ": **" + kingdomName + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.bank.deposit.player") + ": **" + player + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.bank.deposit.amount") + ": **" + amount.toString() + "**";
+
+                    send("kingdoms.log.bank.deposit.title", body);
                     break;
                 }
 
-                // Bank withdraw
                 case "org.kingdoms.events.banks.BankWithdrawEvent": {
-                    Object player = event.getClass().getMethod("getPlayer").invoke(event);
+                    Object playerObj = event.getClass().getMethod("getPlayer").invoke(event);
                     Object kingdom = event.getClass().getMethod("getKingdom").invoke(event);
                     Object amount = event.getClass().getMethod("getAmount").invoke(event);
 
-                    String playerName = (String) player.getClass().getMethod("getName").invoke(player);
+                    String player = (String) playerObj.getClass().getMethod("getName").invoke(playerObj);
                     String kingdomName = (String) kingdom.getClass().getMethod("getName").invoke(kingdom);
 
-                    DiscordLog.send(pluginKey,
-                            "💸 Bank Kivét",
-                            "Királyság: **" + kingdomName + "**\nJátékos: **" + playerName + "**\n"
-                                    + "Összeg: **" + amount.toString() + "**"
-                    );
+                    String body =
+                            LangManager.get(lang, "kingdoms.log.bank.withdraw.kingdom") + ": **" + kingdomName + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.bank.withdraw.player") + ": **" + player + "**\n" +
+                                    LangManager.get(lang, "kingdoms.log.bank.withdraw.amount") + ": **" + amount.toString() + "**";
+
+                    send("kingdoms.log.bank.withdraw.title", body);
                     break;
                 }
 
                 default:
                     break;
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 }

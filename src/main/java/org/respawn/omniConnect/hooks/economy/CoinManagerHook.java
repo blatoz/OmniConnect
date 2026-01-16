@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class CoinManagerHook implements Listener {
 
@@ -16,11 +17,17 @@ public class CoinManagerHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onCoinEvent(Event event) {
         String name = event.getClass().getName();
 
         try {
+            String lang = lang();
+
             switch (name) {
 
                 case "me.realized.coinmanager.api.events.CoinAddEvent": {
@@ -30,12 +37,14 @@ public class CoinManagerHook implements Listener {
 
                     String playerName = (String) player.getClass().getMethod("getName").invoke(player);
 
-                    DiscordLog.send(pluginKey,
-                            "🪙 CoinManager – Coin Hozzáadva",
-                            "Játékos: **" + playerName + "**\n"
-                                    + "Hozzáadott: **" + amount + "**\n"
-                                    + "Új Egyenleg: **" + balance + "**"
-                    );
+                    String title = LangManager.get(lang, "hooks.economy.coinmanager.log.add.title");
+
+                    String body =
+                            LangManager.get(lang, "hooks.economy.coinmanager.log.add.player") + ": **" + playerName + "**\n" +
+                                    LangManager.get(lang, "hooks.economy.coinmanager.log.add.amount") + ": **" + amount + "**\n" +
+                                    LangManager.get(lang, "hooks.economy.coinmanager.log.add.balance") + ": **" + balance + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 
@@ -46,12 +55,14 @@ public class CoinManagerHook implements Listener {
 
                     String playerName = (String) player.getClass().getMethod("getName").invoke(player);
 
-                    DiscordLog.send(pluginKey,
-                            "💸 CoinManager – Coin Levonva",
-                            "Játékos: **" + playerName + "**\n"
-                                    + "Levonva: **" + amount + "**\n"
-                                    + "Új Egyenleg: **" + balance + "**"
-                    );
+                    String title = LangManager.get(lang, "hooks.economy.coinmanager.log.remove.title");
+
+                    String body =
+                            LangManager.get(lang, "hooks.economy.coinmanager.log.remove.player") + ": **" + playerName + "**\n" +
+                                    LangManager.get(lang, "hooks.economy.coinmanager.log.remove.amount") + ": **" + amount + "**\n" +
+                                    LangManager.get(lang, "hooks.economy.coinmanager.log.remove.balance") + ": **" + balance + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 
@@ -61,11 +72,13 @@ public class CoinManagerHook implements Listener {
 
                     String playerName = (String) player.getClass().getMethod("getName").invoke(player);
 
-                    DiscordLog.send(pluginKey,
-                            "⚙️ CoinManager – Coin Beállítva",
-                            "Játékos: **" + playerName + "**\n"
-                                    + "Új Egyenleg: **" + balance + "**"
-                    );
+                    String title = LangManager.get(lang, "hooks.economy.coinmanager.log.set.title");
+
+                    String body =
+                            LangManager.get(lang, "hooks.economy.coinmanager.log.set.player") + ": **" + playerName + "**\n" +
+                                    LangManager.get(lang, "hooks.economy.coinmanager.log.set.balance") + ": **" + balance + "**";
+
+                    DiscordLog.send(pluginKey, title, body);
                     break;
                 }
 

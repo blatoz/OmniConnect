@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.respawn.omniConnect.Main;
 import org.respawn.omniConnect.hooks.DiscordLog;
+import org.respawn.omniConnect.lang.LangManager;
 
 public class DZEconomyHook implements Listener {
 
@@ -16,12 +17,18 @@ public class DZEconomyHook implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
+    private String lang() {
+        return LangManager.getDefaultLanguage();
+    }
+
     @EventHandler
     public void onDZEco(Event event) {
         if (!event.getClass().getName().equals("me.dzeconomy.api.events.BalanceUpdateEvent"))
             return;
 
         try {
+            String lang = lang();
+
             Object player = event.getClass().getMethod("getPlayer").invoke(event);
             double oldBal = (double) event.getClass().getMethod("getOldBalance").invoke(event);
             double newBal = (double) event.getClass().getMethod("getNewBalance").invoke(event);
@@ -29,12 +36,14 @@ public class DZEconomyHook implements Listener {
             String name = (String) player.getClass().getMethod("getName").invoke(player);
             double diff = newBal - oldBal;
 
-            DiscordLog.send(pluginKey,
-                    "💵 DZEconomy Változás",
-                    "Játékos: **" + name + "**\n"
-                            + "Változás: **" + diff + "**\n"
-                            + "Új Egyenleg: **" + newBal + "**"
-            );
+            String title = LangManager.get(lang, "hooks.economy.dzeconomy.log.change.title");
+
+            String body =
+                    LangManager.get(lang, "hooks.economy.dzeconomy.log.change.player") + ": **" + name + "**\n" +
+                            LangManager.get(lang, "hooks.economy.dzeconomy.log.change.diff") + ": **" + diff + "**\n" +
+                            LangManager.get(lang, "hooks.economy.dzeconomy.log.change.new_balance") + ": **" + newBal + "**";
+
+            DiscordLog.send(pluginKey, title, body);
 
         } catch (Exception ignored) {}
     }

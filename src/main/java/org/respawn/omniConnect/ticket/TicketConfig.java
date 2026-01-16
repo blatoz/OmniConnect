@@ -74,7 +74,7 @@ public class TicketConfig {
         return panelChannelId;
     }
 
-    // Setterek, ha később szerkeszteni akarod a JSON-t
+    // Setterek.
     public void setGuildId(String guildId) {
         this.guildId = guildId;
         save();

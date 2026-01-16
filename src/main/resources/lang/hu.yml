@@ -56,6 +56,7 @@ discord:
       internal_close:
         title: "Ticket Lezárva (Discord)"
         channel: "Csatorna"
+        channel_id: "Csatorna ID"
         closed_by: "Lezárta"
 
     close:
@@ -417,3 +418,160 @@ minecraft:
     success: "§aSikeresen összekötötted a Minecraft és Discord fiókodat!"
     invalid: "§cÉrvénytelen vagy lejárt kód."
     already_linked: "§eEz a Discord fiók már össze van kötve egy Minecraft fiókkal."
+
+
+
+hooks:
+  exploitfixer:
+    log:
+      blocked:
+        title: "⚠️ ExploitFixer Riasztás"
+        player: "Játékos"
+        exploit: "Exploit"
+        category: "Kategória"
+        severity: "Súlyosság"
+        description: "Leírás"
+        id: "ID"
+
+
+    anarchyexploitfixes:
+        log:
+          blocked:
+            title: "⚠️ AnarchyExploitFixes Riasztás"
+            player: "Játékos"
+            exploit: "Exploit"
+
+    lpxantipacket:
+      log:
+        blocked:
+          title: "⚠️ LPX AntiPacketExploit Riasztás"
+          player: "Játékos"
+          packet: "Packet"
+
+
+  economy:
+    coinmanager:
+      log:
+        add:
+          title: "🪙 CoinManager – Coin Hozzáadva"
+          player: "Játékos"
+          amount: "Hozzáadott"
+          balance: "Új Egyenleg"
+
+        remove:
+          title: "💸 CoinManager – Coin Levonva"
+          player: "Játékos"
+          amount: "Levonva"
+          balance: "Új Egyenleg"
+
+        set:
+          title: "⚙️ CoinManager – Coin Beállítva"
+          player: "Játékos"
+          balance: "Új Egyenleg"
+
+    azrova:
+      log:
+        change:
+          title: "💳 Azrova Economy Változás"
+          player: "Játékos"
+          diff: "Változás"
+          new_balance: "Új Egyenleg"
+
+    dzeconomy:
+      log:
+        change:
+          title: "💵 DZEconomy Változás"
+          player: "Játékos"
+          diff: "Változás"
+          new_balance: "Új Egyenleg"
+
+    essentials:
+      log:
+        change:
+          title: "💵 EssentialsX Economy Változás"
+          player: "Játékos"
+          diff: "Változás"
+          new_balance: "Új Egyenleg"
+
+    ezeconomy:
+      log:
+        change:
+          title: "💰 EzEconomy Változás"
+          player: "Játékos"
+          diff: "Változás"
+          new_balance: "Új Egyenleg"
+
+    playerpoints:
+      log:
+        change:
+          title: "💠 PlayerPoints Változás"
+          player: "Játékos"
+          diff: "Változás"
+          new_balance: "Új Egyenleg"
+
+        reset:
+          title: "♻️ PlayerPoints Visszaállítás"
+          player: "Játékos"
+          message: "pontjai nullázva lettek."
+
+    xconomy:
+      log:
+        change:
+          title: "💸 XConomy Változás"
+          player: "Játékos"
+          diff: "Változás"
+          new_balance: "Új Egyenleg"
+
+
+  kingdoms:
+    log:
+      create:
+        title: "🏰 Új Királyság Jött Létre"
+        player: "Játékos"
+        kingdom: "Királyság"
+
+      disband:
+        title: "💥 Királyság Feloszlatva"
+        player: "Játékos"
+        kingdom: "Királyság"
+
+      join:
+        title: "➕ Új Tag Csatlakozott"
+        player: "Játékos"
+        kingdom: "Királyság"
+
+      leave:
+        title: "➖ Tag Elhagyta a Királyságot"
+        player: "Játékos"
+        kingdom: "Királyság"
+
+      claim:
+        title: "📦 Terület Lefoglalva"
+        player: "Játékos"
+        kingdom: "Királyság"
+        location: "Hely"
+
+      unclaim:
+        title: "📭 Terület Elengedve"
+        player: "Játékos"
+        kingdom: "Királyság"
+        location: "Hely"
+
+      relation:
+        title: "⚖️ Diplomácia Változás"
+        kingdom: "Királyság"
+        other: "Másik"
+        relation: "Új kapcsolat"
+
+      bank:
+        deposit:
+          title: "💰 Bank Befizetés"
+          player: "Játékos"
+          kingdom: "Királyság"
+          amount: "Összeg"
+
+        withdraw:
+          title: "💸 Bank Kivét"
+          player: "Játékos"
+          kingdom: "Királyság"
+          amount: "Összeg"

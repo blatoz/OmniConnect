@@ -65,7 +65,7 @@ public class DiscordManager {
     // Internal start helper used by init(token)
     private void startWithToken(String token) {
         if (token == null || token.isEmpty()) {
-            Bukkit.getLogger().warning("[OmniConnect] startWithToken hívva, de a token üres!");
+            Bukkit.getLogger().warning("[OmniConnect] startWithToken called, but the token is empty!");
             return;
         }
 
@@ -75,7 +75,7 @@ public class DiscordManager {
                         @Override
                         public void onReady(@Nonnull ReadyEvent event) {
                             ready = true;
-                            Bukkit.getLogger().info("[OmniConnect] JDA READY – Discord kapcsolat aktív!");
+                            Bukkit.getLogger().info("[OmniConnect] JDA READY – Discord connection is ready!");
                         }
                     })
                     .build();
@@ -85,12 +85,12 @@ public class DiscordManager {
             ready = true;
 
         } catch (LoginException e) {
-            Bukkit.getLogger().severe("[OmniConnect] Nem sikerült bejelentkezni a Discord botként: " + e.getMessage());
+            Bukkit.getLogger().severe("[OmniConnect] Could not login in the discord bot: " + e.getMessage());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            Bukkit.getLogger().severe("[OmniConnect] JDA awaitReady megszakítva: " + e.getMessage());
+            Bukkit.getLogger().severe("[OmniConnect] JDA awaitReady canceled: " + e.getMessage());
         } catch (Exception e) {
-            Bukkit.getLogger().severe("[OmniConnect] Nem sikerült inicializálni a JDA-t: " + e.getMessage());
+            Bukkit.getLogger().severe("[OmniConnect] JDA Initialization failed: " + e.getMessage());
         }
     }
 
@@ -109,7 +109,7 @@ public class DiscordManager {
         }
 
         if (token == null || token.isEmpty()) {
-            Bukkit.getLogger().warning("[OmniConnect] Nincs megadva Discord bot token a config.yml-ben!");
+            Bukkit.getLogger().warning("[OmniConnect] The discord bot token is not set in the config.yml!");
             return;
         }
 
@@ -129,7 +129,7 @@ public class DiscordManager {
                             new DiscordLinkVerifyListener()
                     )
                     .build();
-            // Slash parancsok regisztrálása
+            // Slash command registration
             registerSlashCommands(jda);
 
 
@@ -193,7 +193,7 @@ public class DiscordManager {
 
     private void registerSlashCommands(JDA jda) {
         try {
-            // Globális parancsok (minden szerveren elérhetők)
+            // Global Commands (All servers can use the command)
             jda.updateCommands()
                     .addCommands(
                             // Moderation
@@ -259,10 +259,10 @@ public class DiscordManager {
                     )
                     .queue();
 
-            Bukkit.getLogger().info("[OmniConnect] Slash parancsok sikeresen regisztrálva.");
+            Bukkit.getLogger().info("[OmniConnect] Slash commands has been registered.");
 
         } catch (Exception e) {
-            Bukkit.getLogger().severe("[OmniConnect] Slash parancs regisztrációs hiba: " + e.getMessage());
+            Bukkit.getLogger().severe("[OmniConnect] Slash command register error: " + e.getMessage());
         }
     }
 
