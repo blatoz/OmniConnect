@@ -8,7 +8,8 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.Bukkit;
-import org.respawn.omniConnect.commands.DiscordModerationCommands;
+import org.respawn.omniConnect.commands.*;
+import org.respawn.omniConnect.discord.DiscordCommandListener;
 import org.respawn.omniConnect.discord.DiscordLinkVerifyListener;
 import org.respawn.omniConnect.discord.DiscordMessageListener;
 import org.respawn.omniConnect.lang.LangManager;
@@ -126,7 +127,11 @@ public class DiscordManager {
                             new TicketPanelCommand(),
                             new DiscordMessageListener(),
                             new DiscordModerationCommands(),
-                            new DiscordLinkVerifyListener()
+                            new DiscordLinkVerifyListener(),
+                            new PrefixInfoSlashCommand(),
+                            new ResetPrefixSlashCommand(),
+                            new SetPrefixSlashCommand(),
+                            new DiscordCommandListener()
                     )
                     .build();
             // Slash command registration
@@ -255,7 +260,15 @@ public class DiscordManager {
 
                             Commands.slash("lovecalc", "Love calculator")
                                     .addOption(OptionType.USER, "user1", "First user", true)
-                                    .addOption(OptionType.USER, "user2", "Second user", true)
+                                    .addOption(OptionType.USER, "user2", "Second user", true),
+                            Commands.slash("setprefix", "Set the command prefix for this server.")
+                                    .addOption(OptionType.STRING, "prefix", "New prefix", true),
+
+                            Commands.slash("resetprefix", "Reset the prefix to default."),
+
+                            Commands.slash("prefix", "Show the current prefix.")
+
+
                     )
                     .queue();
 

@@ -2,6 +2,8 @@ package org.respawn.omniConnect;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.respawn.omniConnect.commands.DiscordFunCommands;
+import org.respawn.omniConnect.database.PrefixDatabase;
+import org.respawn.omniConnect.discord.PrefixManager;
 import org.respawn.omniConnect.hooks.HookManager;
 import org.respawn.omniConnect.lang.LangManager;
 import org.respawn.omniConnect.listeners.ChatListener;
@@ -63,6 +65,10 @@ public class Main extends JavaPlugin {
         // --- Account linking database ---
         LinkDatabase.init();
 
+        // --- Prefix database ---
+        PrefixDatabase.init();
+
+
         // --- Hooks Initializing ---
         HookManager.init();
         HookManager.initExploitFixHooks();
@@ -70,6 +76,10 @@ public class Main extends JavaPlugin {
         HookManager.initModerationHooks();
         HookManager.initManagementHooks();
         HookManager.initEconomyHooks();
+
+        // --- Discord prefix load ---
+        PrefixManager.load();
+
 
         // --- Discord bot start ---
         DiscordManager.getInstance().start();
