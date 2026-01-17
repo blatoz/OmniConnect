@@ -566,6 +566,38 @@ hooks:
           diff: "Change"
           new_balance: "New Balance"
 
+    tokenmanager:
+      log:
+        add:
+          title: "💰 TokenManager – Tokens Added"
+          player: "Player"
+          amount: "Amount"
+          executor: "Executed By"
+
+        remove:
+          title: "💰 TokenManager – Tokens Removed"
+          player: "Player"
+          amount: "Amount"
+          executor: "Executed By"
+
+        set:
+          title: "💰 TokenManager – Token Value Set"
+          player: "Player"
+          amount: "New Value"
+          executor: "Executed By"
+
+        reset:
+          title: "💰 TokenManager – Tokens Reset"
+          player: "Player"
+          executor: "Executed By"
+
+        pay:
+          title: "💰 TokenManager – Tokens Transferred"
+          from: "From"
+          to: "To"
+          amount: "Amount"
+
+
     playerpoints:
       log:
         change:
@@ -756,12 +788,48 @@ hooks:
           target: "Target"
           reason: "Reason"
 
-    staffchat:
+    cleanstaffchat:
       log:
         message:
-          title: "🛡️ StaffChat"
-          player: "Staff"
+          title: "🛡️ CleanStaffChat – Message"
+          player: "Player"
           message: "Message"
+
+        toggle:
+          title: "🛡️ CleanStaffChat – Staff Chat State"
+          player: "Player"
+          state: "State"
+
+    easystaff:
+      log:
+        chat:
+          title: "🛡️ EasyStaff – Staff Chat Message"
+          player: "Player"
+          message: "Message"
+
+        mode_enable:
+          title: "🛡️ EasyStaff – Staff Mode Enabled"
+          player: "Player"
+
+        mode_disable:
+          title: "🛡️ EasyStaff – Staff Mode Disabled"
+          player: "Player"
+
+        vanish_toggle:
+          title: "🛡️ EasyStaff – Vanish State"
+          player: "Player"
+          state: "State"
+
+        freeze:
+          title: "🧊 EasyStaff – Player Frozen"
+          staff: "Staff"
+          target: "Target"
+
+        unfreeze:
+          title: "🔥 EasyStaff – Player Unfrozen"
+          staff: "Staff"
+          target: "Target"
+
 
     staffplus:
       log:
@@ -780,6 +848,40 @@ hooks:
           reason: "Reason"
 
   management:
+
+    authme:
+      log:
+        login:
+          title: "🔐 AuthMe – Login"
+          player: "Player"
+
+        register:
+          title: "📝 AuthMe – Registration"
+          player: "Player"
+
+        logout:
+          title: "🚪 AuthMe – Logout"
+          player: "Player"
+
+    authmere:
+      loaded:
+        log:
+          login:
+            title: "🔐 AuthMe Reloaded – Login"
+            player: "Player"
+
+          register:
+            title: "📝 AuthMe Reloaded – Registration"
+            player: "Player"
+
+          logout:
+            title: "🚪 AuthMe Reloaded – Logout"
+            player: "Player"
+
+          password_change:
+            title: "🔑 AuthMe Reloaded – Password Changed"
+            player: "Player"
+
     autorestart:
       log:
         restart:
@@ -809,6 +911,35 @@ hooks:
           title: "📘 EssentialsX – Command Executed (Console)"
           executor: "Executor"
           command: "Command"
+
+    griefprevention:
+      log:
+        claim_create:
+          title: "📦 GriefPrevention – Claim Created"
+          player: "Player"
+          claim: "Claim"
+
+        claim_delete:
+          title: "🗑️ GriefPrevention – Claim Deleted"
+          player: "Player"
+          claim: "Claim"
+
+        claim_resize:
+          title: "📐 GriefPrevention – Claim Resized"
+          player: "Player"
+          claim: "Claim"
+
+        trust_change:
+          title: "🤝 GriefPrevention – Trust Changed"
+          player: "Player"
+          target: "Target"
+          trust: "Trust Type"
+
+        warn:
+          title: "⚠️ GriefPrevention – Warning"
+          player: "Player"
+          reason: "Reason"
+
 
     flectonemaintenance:
       log:
@@ -853,6 +984,24 @@ hooks:
           title: "🟢 Kenzi’s Maintenance Disabled"
           executor: "Executor"
 
+    nlogin:
+      log:
+        login:
+          title: "🔐 nLogin – Login"
+          player: "Player"
+
+        register:
+          title: "📝 nLogin – Registration"
+          player: "Player"
+
+        logout:
+          title: "🚪 nLogin – Logout"
+          player: "Player"
+
+        password_change:
+          title: "🔑 nLogin – Password Changed"
+          player: "Player"
+
     linsamaintenance:
       log:
         enable:
@@ -862,6 +1011,42 @@ hooks:
         disable:
           title: "🟢 LinsaFTW Maintenance Disabled"
           executor: "Executor"
+
+    librelogin:
+      log:
+        login:
+          title: "🔐 LibreLogin – Login"
+          player: "Player"
+
+        register:
+          title: "📝 LibreLogin – Registration"
+          player: "Player"
+
+        logout:
+          title: "🚪 LibreLogin – Logout"
+          player: "Player"
+
+        session_start:
+          title: "🟢 LibreLogin – Session Started"
+          player: "Player"
+          method: "Method"
+
+        session_end:
+          title: "🔴 LibreLogin – Session Ended"
+          player: "Player"
+          reason: "Reason"
+
+        password_change:
+          title: "🔑 LibreLogin – Password Changed"
+          player: "Player"
+
+        twofactor_enable:
+          title: "🔒 LibreLogin – 2FA Enabled"
+          player: "Player"
+
+        twofactor_disable:
+          title: "🔓 LibreLogin – 2FA Disabled"
+          player: "Player"
 
     luckperms:
       log:

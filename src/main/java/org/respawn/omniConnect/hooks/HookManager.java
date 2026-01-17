@@ -106,9 +106,13 @@ public class HookManager {
         );
 
         // StaffChat plugin
-        hook("staffchat",
+        hook("cleanstaffchat",
                 "com.staffchat.api.StaffChatEvent",
-                org.respawn.omniConnect.hooks.moderation.StaffChatHook.class
+                org.respawn.omniConnect.hooks.moderation.CleanStaffChatHook.class
+        );
+        hook("easystaff",
+                "me.easystaff.api.events.StaffChatEvent",
+                org.respawn.omniConnect.hooks.moderation.EasyStaffHook.class
         );
 
         // PlayerReport plugin
@@ -203,9 +207,17 @@ public class HookManager {
                 "com.flectonemaintenance.api.events.ServerMaintenanceEvent",
                 org.respawn.omniConnect.hooks.management.FlectoneMaintenanceHook.class
         );
+        hook("griefprevention",
+                "me.ryanhamshire.GriefPrevention.event.PlayerEvent",
+                org.respawn.omniConnect.hooks.management.GriefPreventionHook.class
+        );
         hook("linsamaintenance",
                 "com.linsama.maintenance.api.events.ServerMaintenanceEvent",
                 org.respawn.omniConnect.hooks.management.LinsaMaintenanceHook.class
+        );
+        hook("librelogin",
+                "me.librelogin.api.event.PlayerLoginEvent",
+                org.respawn.omniConnect.hooks.management.LibreLoginHook.class
         );
         hook("kenzimaintenance",
                 "com.kenzimaintenance.api.events.ServerMaintenanceEvent",

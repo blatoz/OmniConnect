@@ -569,6 +569,38 @@ hooks:
           diff: "Változás"
           new_balance: "Új Egyenleg"
 
+    tokenmanager:
+      log:
+        add:
+          title: "💰 TokenManager – Token Hozzáadva"
+          player: "Játékos"
+          amount: "Mennyiség"
+          executor: "Végrehajtotta"
+
+        remove:
+          title: "💰 TokenManager – Token Eltávolítva"
+          player: "Játékos"
+          amount: "Mennyiség"
+          executor: "Végrehajtotta"
+
+        set:
+          title: "💰 TokenManager – Token Érték Beállítva"
+          player: "Játékos"
+          amount: "Új Érték"
+          executor: "Végrehajtotta"
+
+        reset:
+          title: "💰 TokenManager – Token Nullázva"
+          player: "Játékos"
+          executor: "Végrehajtotta"
+
+        pay:
+          title: "💰 TokenManager – Token Átutalva"
+          from: "Küldő"
+          to: "Fogadó"
+          amount: "Mennyiség"
+
+
     playerpoints:
       log:
         change:
@@ -727,64 +759,134 @@ hooks:
           title: "👢 EssentialsX Kirúgás"
           player: "Játékos"
 
-      libertybans:
-        log:
-          punishment:
-            title: "🧨 LibertyBans Büntetés"
-            type: "Típus"
-            player: "Játékos"
-            staff: "Staff"
-            reason: "Indok"
+  libertybans:
+      log:
+        punishment:
+          title: "🧨 LibertyBans Büntetés"
+          type: "Típus"
+          player: "Játékos"
+          staff: "Staff"
+          reason: "Indok"
 
-      litebans:
-        log:
-          punishment:
-            title: "🔨 LiteBans Büntetés"
-            type: "Típus"
-            player: "Játékos"
-            staff: "Staff"
-            reason: "Indok"
+  litebans:
+      log:
+        punishment:
+          title: "🔨 LiteBans Büntetés"
+          type: "Típus"
+          player: "Játékos"
+          staff: "Staff"
+          reason: "Indok"
 
-      matrixreport:
-        log:
-          report:
-            title: "📣 Játékos Bejelentés"
-            reporter: "Jelentő"
-            target: "Célpont"
-            reason: "Indok"
+  matrixreport:
+    log:
+      report:
+        title: "📣 Játékos Bejelentés"
+        reporter: "Jelentő"
+        target: "Célpont"
+        reason: "Indok"
 
-      playerreport:
-        log:
-          report:
-            title: "📣 Játékos Bejelentés"
-            reporter: "Jelentő"
-            target: "Célpont"
-            reason: "Indok"
+  playerreport:
+    log:
+      report:
+        title: "📣 Játékos Bejelentés"
+        reporter: "Jelentő"
+        target: "Célpont"
+        reason: "Indok"
 
-      staffchat:
-        log:
-          message:
-            title: "🛡️ StaffChat"
-            player: "Staff"
-            message: "Üzenet"
+  cleanstaffchat:
+    log:
+      message:
+        title: "🛡️ CleanStaffChat – Üzenet"
+        player: "Játékos"
+        message: "Üzenet"
 
-      staffplus:
-        log:
-          report:
-            title: "📣 StaffPlus Report"
-            reporter: "Jelentő"
-            target: "Célpont"
-            reason: "Indok"
+      toggle:
+        title: "🛡️ CleanStaffChat – Staff Chat Állapot"
+        player: "Játékos"
+        state: "Állapot"
 
-      vulcanreport:
-        log:
-          report:
-            title: "📣 Játékos Bejelentés"
-            reporter: "Jelentő"
-            target: "Célpont"
-            reason: "Indok"
+    easystaff:
+      log:
+        chat:
+          title: "🛡️ EasyStaff – Staff Chat Üzenet"
+          player: "Játékos"
+          message: "Üzenet"
+
+        mode_enable:
+          title: "🛡️ EasyStaff – Staff Mód Bekapcsolva"
+          player: "Játékos"
+
+        mode_disable:
+          title: "🛡️ EasyStaff – Staff Mód Kikapcsolva"
+          player: "Játékos"
+
+        vanish_toggle:
+          title: "🛡️ EasyStaff – Vanish Állapot"
+          player: "Játékos"
+          state: "Állapot"
+
+        freeze:
+          title: "🧊 EasyStaff – Játékos Lefagyasztva"
+          staff: "Staff"
+          target: "Célpont"
+
+        unfreeze:
+          title: "🔥 EasyStaff – Játékos Feloldva"
+          staff: "Staff"
+          target: "Célpont"
+
+
+    staffplus:
+      log:
+        report:
+          title: "📣 StaffPlus Report"
+          reporter: "Jelentő"
+          target: "Célpont"
+          reason: "Indok"
+
+    vulcanreport:
+      log:
+        report:
+          title: "📣 Játékos Bejelentés"
+          reporter: "Jelentő"
+          target: "Célpont"
+          reason: "Indok"
+
 
   management:
+    authme:
+      log:
+        login:
+          title: "🔐 AuthMe – Bejelentkezés"
+          player: "Játékos"
+
+        register:
+          title: "📝 AuthMe – Regisztráció"
+          player: "Játékos"
+
+        logout:
+          title: "🚪 AuthMe – Kijelentkezés"
+          player: "Játékos"
+
+    authmere:
+      loaded:
+        log:
+          login:
+            title: "🔐 AuthMe Reloaded – Bejelentkezés"
+            player: "Játékos"
+
+          register:
+            title: "📝 AuthMe Reloaded – Regisztráció"
+            player: "Játékos"
+
+          logout:
+            title: "🚪 AuthMe Reloaded – Kijelentkezés"
+            player: "Játékos"
+
+          password_change:
+            title: "🔑 AuthMe Reloaded – Jelszó Módosítva"
+            player: "Játékos"
+
     autorestart:
       log:
         restart:
@@ -814,6 +916,34 @@ hooks:
           title: "📘 EssentialsX – Parancs Végrehajtva (Konzol)"
           executor: "Játékos"
           command: "Parancs"
+
+    griefprevention:
+      log:
+        claim_create:
+          title: "📦 GriefPrevention – Terület Létrehozva"
+          player: "Játékos"
+          claim: "Terület"
+
+        claim_delete:
+          title: "🗑️ GriefPrevention – Terület Törölve"
+          player: "Játékos"
+          claim: "Terület"
+
+        claim_resize:
+          title: "📐 GriefPrevention – Terület Átméretezve"
+          player: "Játékos"
+          claim: "Terület"
+
+        trust_change:
+          title: "🤝 GriefPrevention – Megbizás Módosítva"
+          player: "Játékos"
+          target: "Célpont"
+          trust: "Megbizás Típus"
+
+        warn:
+          title: "⚠️ GriefPrevention – Figyelmeztetés"
+          player: "Játékos"
+          reason: "Indok"
 
     flectonemaintenance:
       log:
@@ -847,6 +977,23 @@ hooks:
           title: "🛠️ KennyTV Maintenance – Játékos Kirúgva"
           player: "Játékos"
           reason: "Indok"
+    nlogin:
+      log:
+        login:
+          title: "🔐 nLogin – Bejelentkezés"
+          player: "Játékos"
+
+        register:
+          title: "📝 nLogin – Regisztráció"
+          player: "Játékos"
+
+        logout:
+          title: "🚪 nLogin – Kijelentkezés"
+          player: "Játékos"
+
+        password_change:
+          title: "🔑 nLogin – Jelszó Módosítva"
+          player: "Játékos"
 
     kenzimaintenance:
       log:
@@ -867,6 +1014,42 @@ hooks:
         disable:
           title: "🟢 LinsaFTW Maintenance Kikapcsolva"
           executor: "Végrehajtotta"
+
+    librelogin:
+      log:
+        login:
+          title: "🔐 LibreLogin – Bejelentkezés"
+          player: "Játékos"
+
+        register:
+          title: "📝 LibreLogin – Regisztráció"
+          player: "Játékos"
+
+        logout:
+          title: "🚪 LibreLogin – Kijelentkezés"
+          player: "Játékos"
+
+        session_start:
+          title: "🟢 LibreLogin – Munkamenet Indult"
+          player: "Játékos"
+          method: "Módszer"
+
+        session_end:
+          title: "🔴 LibreLogin – Munkamenet Lejárt"
+          player: "Játékos"
+          reason: "Indok"
+
+        password_change:
+          title: "🔑 LibreLogin – Jelszó Módosítva"
+          player: "Játékos"
+
+        twofactor_enable:
+          title: "🔒 LibreLogin – 2FA Engedélyezve"
+          player: "Játékos"
+
+        twofactor_disable:
+          title: "🔓 LibreLogin – 2FA Letiltva"
+          player: "Játékos"
 
     luckperms:
       log:
