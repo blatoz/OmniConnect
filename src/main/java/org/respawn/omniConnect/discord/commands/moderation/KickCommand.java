@@ -11,12 +11,12 @@ public class KickCommand {
         String lang = LangManager.getDefaultLanguage();
 
         if (!event.getMember().hasPermission(Permission.KICK_MEMBERS)) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.no_permission")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.no_permission")).queue();
             return;
         }
 
         if (args.length < 2) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.reason_required")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.reason_required")).queue();
             return;
         }
 
@@ -25,14 +25,14 @@ public class KickCommand {
 
         var member = event.getGuild().getMemberById(userId);
         if (member == null) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.user_not_found")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.user_not_found")).queue();
             return;
         }
 
         member.kick(reason).queue();
 
         event.getChannel().sendMessage(
-                LangManager.get(lang, "discord.moderation.kick_success")
+                LangManager.get(lang, "discord.prefixmoderation.kick_success")
                         .replace("%user%", member.getUser().getAsTag())
                         .replace("%reason%", reason)
         ).queue();

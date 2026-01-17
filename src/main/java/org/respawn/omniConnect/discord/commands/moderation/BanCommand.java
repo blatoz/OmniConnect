@@ -12,12 +12,12 @@ public class BanCommand {
         String lang = LangManager.getDefaultLanguage();
 
         if (!event.getMember().hasPermission(Permission.BAN_MEMBERS)) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.no_permission")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.no_permission")).queue();
             return;
         }
 
         if (args.length < 2) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.reason_required")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.reason_required")).queue();
             return;
         }
 
@@ -29,7 +29,7 @@ public class BanCommand {
                 .queue();
 
         event.getChannel().sendMessage(
-                LangManager.get(lang, "discord.moderation.ban_success")
+                LangManager.get(lang, "discord.prefixmoderation.ban_success")
                         .replace("%user%", userId)
                         .replace("%reason%", reason)
         ).queue();

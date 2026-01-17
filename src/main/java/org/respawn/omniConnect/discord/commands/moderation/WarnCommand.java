@@ -11,12 +11,12 @@ public class WarnCommand {
         String lang = LangManager.getDefaultLanguage();
 
         if (!event.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.no_permission")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.no_permission")).queue();
             return;
         }
 
         if (args.length < 2) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.reason_required")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.reason_required")).queue();
             return;
         }
 
@@ -25,12 +25,12 @@ public class WarnCommand {
 
         var user = event.getJDA().getUserById(userId);
         if (user == null) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.user_not_found")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.user_not_found")).queue();
             return;
         }
 
         event.getChannel().sendMessage(
-                LangManager.get(lang, "discord.moderation.warn_success")
+                LangManager.get(lang, "discord.prefixmoderation.warn_success")
                         .replace("%user%", user.getAsTag())
                         .replace("%reason%", reason)
         ).queue();

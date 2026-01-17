@@ -12,12 +12,12 @@ public class UnbanCommand {
         String lang = LangManager.getDefaultLanguage();
 
         if (!event.getMember().hasPermission(Permission.BAN_MEMBERS)) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.no_permission")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.no_permission")).queue();
             return;
         }
 
         if (args.length < 1) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.user_not_found")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.user_not_found")).queue();
             return;
         }
 
@@ -28,7 +28,7 @@ public class UnbanCommand {
                 .queue();
 
         event.getChannel().sendMessage(
-                LangManager.get(lang, "discord.moderation.unban_success")
+                LangManager.get(lang, "discord.prefixmoderation.unban_success")
                         .replace("%user%", userId)
         ).queue();
     }

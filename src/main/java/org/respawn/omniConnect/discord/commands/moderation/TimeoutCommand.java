@@ -13,12 +13,12 @@ public class TimeoutCommand {
         String lang = LangManager.getDefaultLanguage();
 
         if (!event.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.no_permission")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.no_permission")).queue();
             return;
         }
 
         if (args.length < 3) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.duration_required")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.duration_required")).queue();
             return;
         }
 
@@ -28,7 +28,7 @@ public class TimeoutCommand {
 
         var member = event.getGuild().getMemberById(userId);
         if (member == null) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.user_not_found")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.user_not_found")).queue();
             return;
         }
 
@@ -37,7 +37,7 @@ public class TimeoutCommand {
         member.timeoutFor(duration).queue();
 
         event.getChannel().sendMessage(
-                LangManager.get(lang, "discord.moderation.timeout_success")
+                LangManager.get(lang, "discord.prefixmoderation.timeout_success")
                         .replace("%user%", member.getUser().getAsTag())
                         .replace("%duration%", durationStr)
                         .replace("%reason%", reason)

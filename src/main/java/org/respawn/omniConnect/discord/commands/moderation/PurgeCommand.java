@@ -11,12 +11,12 @@ public class PurgeCommand {
         String lang = LangManager.getDefaultLanguage();
 
         if (!event.getMember().hasPermission(Permission.MESSAGE_MANAGE)) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.no_permission")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.no_permission")).queue();
             return;
         }
 
         if (args.length < 1) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.invalid_amount")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.invalid_amount")).queue();
             return;
         }
 
@@ -24,7 +24,7 @@ public class PurgeCommand {
         try {
             amount = Integer.parseInt(args[0]);
         } catch (Exception e) {
-            event.getChannel().sendMessage(LangManager.get(lang, "discord.moderation.invalid_amount")).queue();
+            event.getChannel().sendMessage(LangManager.get(lang, "discord.prefixmoderation.invalid_amount")).queue();
             return;
         }
 
@@ -32,7 +32,7 @@ public class PurgeCommand {
             event.getChannel().purgeMessages(messages);
 
             event.getChannel().sendMessage(
-                    LangManager.get(lang, "discord.moderation.purge_success")
+                    LangManager.get(lang, "discord.prefixmoderation.purge_success")
                             .replace("%amount%", String.valueOf(amount))
             ).queue();
         });
