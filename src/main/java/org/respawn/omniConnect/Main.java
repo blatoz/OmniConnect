@@ -43,6 +43,7 @@ public class Main extends JavaPlugin {
         instance = this;
 
         saveDefaultConfig();
+        LangManager.load();
         getLogger().info("OmniConnect plugin has been started!");
 
         // Commands, Listeners

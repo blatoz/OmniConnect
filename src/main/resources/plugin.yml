@@ -1,5 +1,5 @@
 name: OmniConnect
-version: '1.0-SNAPSHOT'
+version: '1.0.2'
 main: org.respawn.omniConnect.Main
 api-version: '1.16'
 author: Daniyt_th
