@@ -39,7 +39,9 @@ public class DiscordLog {
         if (specific == null || specific.isEmpty()) {
             specific = cfg.getString("management." + pluginKey + ".log-channel");
         }
-
+        if (specific == null || specific.isEmpty()) {
+            specific = cfg.getString("minigames." + pluginKey + ".log-channel");
+        }
         // 3) Fallback
         String fallback = cfg.getString("anticheat.default-log-channel");
         if (fallback == null || fallback.isEmpty()) {
@@ -60,7 +62,9 @@ public class DiscordLog {
         if (fallback == null || fallback.isEmpty()) {
             fallback = cfg.getString("moderation.default.log-channel");
         }
-
+        if (fallback == null || fallback.isEmpty()) {
+            fallback = cfg.getString("minigames." + pluginKey + ".log-channel");
+        }
         String channelId = (specific != null && !specific.isEmpty()) ? specific : fallback;
         if (channelId == null || channelId.isEmpty()) return;
 

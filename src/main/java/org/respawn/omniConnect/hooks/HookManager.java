@@ -250,6 +250,15 @@ public class HookManager {
 
     }
 
+    public static void initMinigamesHooks() {
+        FileConfiguration cfg = Main.getInstance().getConfig();
+
+        if (!cfg.getBoolean("minigames.enabled")) {
+            Bukkit.getLogger().info("[OmniConnect] Minigames hooks is disabled.");
+            return;
+        }
+    }
+
 
     private static void hook(String key, String className, Class<?> hookClass) {
         FileConfiguration cfg = Main.getInstance().getConfig();

@@ -1209,3 +1209,32 @@ hooks:
           old_value: "Old Value"
           new_value: "New Value"
           executor: "Changed By"
+
+  minigames:
+    bedwars:
+      title: "🏆 BedWars Match Ended"
+      game_end: "Arena: %arena%\nWinners: %winners%"
+
+    skywars:
+      title: "🏆 SkyWars Match Ended"
+      game_end: "Winner: %winner%"
+
+    duels:
+      title: "⚔ Duel Ended"
+      game_end: "Winner: %winner%\nLoser: %loser%"
+      
+    tntrun:
+      title: "💥 TNTRun Match Ended"
+      game_end: "Arena: %arena%\nWinner: %winner%"
+
+    murdermystery:
+      title: "🔪 MurderMystery Match Ended"
+      game_end: "Arena: %arena%\nWinner: %winners%"
+
+    hideandseek:
+      title: "👁 HideAndSeek Match Ended"
+      game_end: "Arena: %arena%\nWinner: %winners%"
+
+    thebridge:
+      title: "🌉 TheBridge Match Ended"
+      game_end: "Arena: %arena%\nWinner: %winner%"

@@ -1213,3 +1213,32 @@ hooks:
           old_value: "Régi Érték"
           new_value: "Új Érték"
           executor: "Módosította"
+
+  minigames:
+    bedwars:
+      title: "🏆 BedWars meccs vége"
+      game_end: "Aréna: %arena%\nGyőztesek: %winners%"
+
+    skywars:
+      title: "🏆 SkyWars meccs vége"
+      game_end: "Győztes: %winner%"
+
+    duels:
+      title: "⚔ Duel vége"
+      game_end: "Győztes: %winner%\nVesztes: %loser%"
+
+    tntrun:
+      title: "💥 TNTRun meccs vége"
+      game_end: "Aréna: %arena%\nGyőztes: %winner%"
+
+    murdermystery:
+      title: "🔪 MurderMystery meccs vége"
+      game_end: "Aréna: %arena%\nGyőztesek: %winners%"
+
+    hideandseek:
+      title: "👁 HideAndSeek meccs vége"
+      game_end: "Aréna: %arena%\nGyőztesek: %winners%"
+
+    thebridge:
+      title: "🌉 TheBridge meccs vége"
+      game_end: "Aréna: %arena%\nGyőztes: %winner%"
