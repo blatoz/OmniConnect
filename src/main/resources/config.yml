@@ -384,38 +384,3 @@ management:
   nlogin:
     enabled: False
     log-channel: ""
-
-# ──────────────────────────────────────────────────────────────
-# MINIGAMES PLUGINS
-# ──────────────────────────────────────────────────────────────
-minigames:
-  enabled: False # Enable or disable minigames plugin logging
-  default-log-channel: ""
-
-  bedwars:
-    enabled: False
-    log-channel: ""
-
-  skywars:
-    enabled: False
-    log-channel: ""
-
-  duels:
-    enabled: False
-    log-channel: ""
-
-  hideandseek:
-    enabled: False
-    log-channel: ""
-
-  murdermystery:
-    enabled: False
-    log-channel: ""
-
-  tntrun:
-    enabled: False
-    log-channel: ""
-
-  bridge:
-    enabled: False
-    log-channel: ""
