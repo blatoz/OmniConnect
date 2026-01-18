@@ -128,9 +128,6 @@ public class DiscordManager {
                             new DiscordMessageListener(),
                             new DiscordModerationCommands(),
                             new DiscordLinkVerifyListener(),
-                            new PrefixInfoSlashCommand(),
-                            new ResetPrefixSlashCommand(),
-                            new SetPrefixSlashCommand(),
                             new DiscordCommandListener()
                     )
                     .build();
