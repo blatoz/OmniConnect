@@ -340,25 +340,31 @@ discord:
     player: "Player"
     message: "Message"
 
+
   moderation:
-    warn_title: "Warning"
-    warn_description: "%user% has been warned."
-    warn_reason: "Reason"
-    warn_no_reason: "No reason provided."
+    warn:
+      title: "⚠ Warning"
+      description: "%user% has been warned."
+      reason: "Reason"
+      no_reason: "No reason provided."
 
-    kick_title: "Kick"
-    kick_description: "%user% has been kicked."
-    kick_reason: "Reason"
-    kick_no_reason: "No reason provided."
+    kick:
+      title: "👢 Kick"
+      description: "%user% has been kicked."
+      reason: "Reason"
+      no_reason: "No reason provided."
 
-    ban_title: "Ban"
-    ban_description: "%user% has been banned."
-    ban_reason: "Reason"
-    ban_no_reason: "No reason provided."
+    ban:
+      title: "🔨 Ban"
+      description: "%user% has been banned."
+      reason: "Reason"
+      no_reason: "No reason provided."
 
-    timeout_title: "Timeout"
-    timeout_description: "%user% has been timed out."
-    timeout_duration: "Duration"
+    timeout:
+      title: "⏳ Timeout"
+      description: "%user% has been timed out."
+      duration: "Duration"
+
 
   utils:
     ping: "🏓 Pong! Latency: %ms% ms"

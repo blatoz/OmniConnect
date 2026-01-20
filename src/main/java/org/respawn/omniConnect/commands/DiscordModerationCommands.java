@@ -33,7 +33,7 @@ public class DiscordModerationCommands extends ListenerAdapter {
     }
 
     // ---------------------------------------------------------
-    // Helper metódusok
+    // Helper methods
     // ---------------------------------------------------------
 
     private boolean isModerationEnabled() {

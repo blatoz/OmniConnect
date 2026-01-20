@@ -342,25 +342,31 @@ discord:
     player: "Játékos"
     message: "Üzenet"
 
+
   moderation:
-    warn_title: "Figyelmeztetés"
-    warn_description: "%user% figyelmeztetve lett."
-    warn_reason: "Indok"
-    warn_no_reason: "Nincs megadva indok."
+    warn:
+      title: "⚠ Figyelmeztetés"
+      description: "%user% figyelmeztetve lett."
+      reason: "Indok"
+      no_reason: "Nincs megadva indok."
 
-    kick_title: "Kirúgás"
-    kick_description: "%user% ki lett rúgva."
-    kick_reason: "Indok"
-    kick_no_reason: "Nincs megadva indok."
+    kick:
+      title: "👢 Kirúgás"
+      description: "%user% ki lett rúgva."
+      reason: "Indok"
+      no_reason: "Nincs megadva indok."
 
-    ban_title: "Kitiltás"
-    ban_description: "%user% ki lett tiltva."
-    ban_reason: "Indok"
-    ban_no_reason: "Nincs megadva indok."
+    ban:
+      title: "🔨 Kitiltás"
+      description: "%user% ki lett tiltva."
+      reason: "Indok"
+      no_reason: "Nincs megadva indok."
 
-    timeout_title: "Időkorlát"
-    timeout_description: "%user% időkorlátra került."
-    timeout_duration: "Időtartam"
+    timeout:
+      title: "⏳ Időkorlát"
+      description: "%user% időkorlátra került."
+      duration: "Időtartam"
+
 
   utils:
     ping: "🏓 Pong! Késleltetés: %ms% ms"
