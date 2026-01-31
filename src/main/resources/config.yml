@@ -47,9 +47,12 @@ discord:
     enabled: true
     log-channel: "DISCORD_MOD_LOG_CHANNEL_ID"
 
-  # Csatornák
+  # Channels
   channels:
     discord-moderation: "DISCORD_MOD_LOG_CHANNEL_ID"
+    log: "DISCORD_LOG_CHANNEL_ID"
+    chat: "DISCORD_CHAT_CHANNEL_ID"
+    ticket: "DISCORD_TICKET_CHANNEL_ID"
     links: "LINK_COMMAND_LOG_CHANNEL_ID"
 
   # ──────────────────────────────────────────────────────────

@@ -1,7 +1,8 @@
 package org.respawn.omniConnect;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.respawn.omniConnect.commands.DiscordFunCommands;
+import org.respawn.omniConnect.commands.*;
+import org.respawn.omniConnect.config.OmniConfig;
 import org.respawn.omniConnect.database.PrefixDatabase;
 import org.respawn.omniConnect.discord.PrefixManager;
 import org.respawn.omniConnect.hooks.HookManager;
@@ -9,9 +10,6 @@ import org.respawn.omniConnect.lang.LangManager;
 import org.respawn.omniConnect.listeners.ChatListener;
 import org.respawn.omniConnect.ticket.TicketManager;
 
-import org.respawn.omniConnect.commands.LinkCommand;
-import org.respawn.omniConnect.commands.LinkCommands;
-import org.respawn.omniConnect.commands.DiscordModerationCommands;
 import org.respawn.omniConnect.discord.DiscordLinkVerifyListener;
 import org.respawn.omniConnect.link.LinkDatabase;
 
@@ -44,6 +42,7 @@ public class Main extends JavaPlugin {
 
         saveDefaultConfig();
         LangManager.load();
+        OmniConfig.load();
         getLogger().info("OmniConnect plugin has been started!");
 
         // Commands, Listeners
@@ -176,6 +175,18 @@ public class Main extends JavaPlugin {
         }
         if (getCommand("wiki") != null) {
             getCommand("wiki").setExecutor(new LinkCommands());
+        }
+        if (getCommand("omnireload") != null) {
+            getCommand("omnireload").setExecutor(new OmniReloadCommand());
+        }
+        if (getCommand("omnirestartbot") != null) {
+            getCommand("omnirestartbot").setExecutor(new OmniRestartBotCommand());
+        }
+        if (getCommand("discordstatus") != null) {
+            getCommand("discordstatus").setExecutor(new DiscordStatusCommand());
+        }
+        if (getCommand("omniconnect") != null) {
+            getCommand("omnicomnect").setExecutor(new OmniConnectHelpCommand());
         }
     }
 

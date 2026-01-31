@@ -13,7 +13,25 @@ public class LangManager {
     private static final Map<String, YamlConfiguration> LANGUAGES = new HashMap<>();
     private static String defaultLanguage = "en";
 
+    /**
+     * First load on plugin start
+     */
     public static void load() {
+        loadLanguages();
+    }
+
+    /**
+     * Reload with /omnireload command
+     */
+    public static void reload() {
+        LANGUAGES.clear();
+        loadLanguages();
+    }
+
+    /**
+     * Languages load
+     */
+    private static void loadLanguages() {
         Main plugin = Main.getInstance();
 
         defaultLanguage = plugin.getConfig().getString("language", "en");
@@ -21,11 +39,11 @@ public class LangManager {
         File langFolder = new File(plugin.getDataFolder(), "lang");
         if (!langFolder.exists()) langFolder.mkdirs();
 
-        // Automatikus nyelvi fájl másolás, ha hiányzik
+        // Auto-extract default language files
         copyLangFile("en.yml");
         copyLangFile("hu.yml");
 
-        // Betöltjük az összes .yml nyelvi fájlt
+        // Load the language files
         File[] files = langFolder.listFiles();
         if (files != null) {
             for (File file : files) {
@@ -62,7 +80,7 @@ public class LangManager {
             return cfg.getString(key);
         }
 
-        // fallback angolra
+        // fallback to english
         FileConfiguration en = LANGUAGES.get("en");
         return en.getString(key, "§cMissing lang key: " + key);
     }

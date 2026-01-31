@@ -1,12 +1,34 @@
 errors:
   moderation_disabled: "❌ A moderációs modul le van tiltva."
-  utils_disabled: "❌ A segédparancsok modul le van tiltva."
+  utils_disabled: "❌ A utils modul le van tiltva."
   fun_disabled: "❌ A szórakoztató parancsok modul le van tiltva."
   missing_option: "❌ Hiányzó opció: %option%"
   no_user: "❌ Nem adtál meg felhasználót."
 
 
+commands:
+  help:
+    description: "OmniConnect admin parancsok listája."
+    reload: "A plugin és a Discord bot újratöltése."
+    restartbot: "A Discord bot újraindítása."
+    status: "A Discord bot állapotának ellenőrzése."
+
+  reload:
+    success: "OmniConnect sikeresen újratöltve."
+
+  bot:
+    restart: "A Discord bot újraindult."
+
 discord:
+  reload:
+    title: "🔄 OmniConnect Újratöltés"
+    description: "A plugin és a Discord bot újratöltve."
+
+  bot:
+    restart_title: "🔁 Discord Bot Újraindítás"
+    restart_description: "A Discord bot sikeresen újraindult."
+
+
   prefixmoderation:
     no_permission: "Nincs jogosultságod ehhez a parancshoz."
     user_not_found: "A felhasználó nem található."

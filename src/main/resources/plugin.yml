@@ -36,3 +36,30 @@ commands:
     description: Wiki / Documention link showcase
     usage: /wiki
 
+  omnireload:
+    description: Reload OmniConnect
+    usage: /omnireload
+    permission: omniconnect.reload
+
+  omnirestartbot:
+    description: Restart the Discord bot
+    usage: /omnirestartbot
+    permission: omniconnect.restartbot
+
+  discordstatus:
+    description: Check Discord bot status
+    usage: /discordstatus
+    permission: omniconnect.status
+
+  omniconnect:
+    description: OmniConnect help menu
+    usage: /omniconnect
+    permission: omniconnect.help
+
+permissions:
+  omniconnect.reload:
+    default: op
+  omniconnect.restartbot:
+    default: op
+  omniconnect.status:
+    default: op

@@ -5,7 +5,28 @@ errors:
   missing_option: "❌ Missing option: %option%"
   no_user: "❌ No user provided."
 
+commands:
+  help:
+    description: "OmniConnect admin command list."
+    reload: "The plugin and discord bot reload."
+    restartbot: "Discord bot restart."
+    status: "Discord bot status check command."
+
+  reload:
+    success: "OmniConnect successfully reloaded."
+
+  bot:
+    restart: "The discord bot has been restarted."
+
 discord:
+  reload:
+    title: "🔄 OmniConnect Reload"
+    description: "The plugin and the Discord bot has been reloaded."
+
+  bot:
+    restart_title: "🔁 Discord Bot Restart"
+    restart_description: "The Discord bot has been restarted."
+
   prefixmoderation:
     no_permission: "You do not have permission to use this command."
     user_not_found: "User not found."
