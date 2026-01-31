@@ -5,7 +5,11 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.respawn.omniConnect.api.events.TicketCloseEvent;
+import org.respawn.omniConnect.api.events.TicketOpenEvent;
+import org.respawn.omniConnect.api.ticket.TicketData;
 import org.respawn.omniConnect.lang.LangManager;
 
 import java.awt.*;
@@ -53,7 +57,6 @@ public class TicketManager {
     }
 
 
-
     // PANEL ONE TYPES
     public void sendTicketPanel(JDA jda, TicketType type) {
         TextChannel channel = getPanelChannel(jda, type);
@@ -73,7 +76,6 @@ public class TicketManager {
                 .queue();
     }
 
-    // TICKET LÉTREHOZÁS
     public void createTicketChannel(JDA jda, Member member, TicketType type) {
         Category category = getCategory(jda, type);
         Role staffRole = getStaffRole(jda, type);
@@ -88,6 +90,7 @@ public class TicketManager {
 
         category.createTextChannel(channelName).queue(channel -> {
 
+            // Topic
             String topic = LangManager.get(lang, "discord.ticket.open.topic_prefix")
                     .replace("%type%", type.name())
                     .replace("%user%", member.getUser().getAsTag());
@@ -96,6 +99,7 @@ public class TicketManager {
 
             Guild guild = category.getGuild();
 
+            // Permissions
             channel.upsertPermissionOverride(guild.getPublicRole())
                     .deny(Permission.VIEW_CHANNEL)
                     .queue();
@@ -108,6 +112,7 @@ public class TicketManager {
                     .grant(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND, Permission.MESSAGE_HISTORY, Permission.MESSAGE_MANAGE)
                     .queue();
 
+            // Open embed
             String title = LangManager.get(lang, "discord.ticket.open.title")
                     .replace("%type_label%", type.getButtonLabel());
 
@@ -130,6 +135,7 @@ public class TicketManager {
                     .setActionRow(Button.danger("ticket:close", closeLabel))
                     .queue();
 
+            // LOG
             TextChannel log = getLogChannel(jda, type);
             if (log != null) {
                 EmbedBuilder logEmbed = new EmbedBuilder()
@@ -142,10 +148,19 @@ public class TicketManager {
 
                 log.sendMessageEmbeds(logEmbed.build()).queue();
             }
+
+            // ⭐ BUKKIT EVENT: TicketOpenEvent
+            TicketData data = new TicketData(
+                    channel.getId(),
+                    type,
+                    member.getUser().getAsTag()
+            );
+
+            Bukkit.getPluginManager().callEvent(new TicketOpenEvent(data));
         });
     }
 
-    // TICKET LEZÁRÁS + TRANSCRIPT
+
     public void closeTicketChannel(TextChannel channel, Member closer) {
         if (channel == null) return;
 
@@ -155,14 +170,15 @@ public class TicketManager {
                 ? closer.getUser().getAsTag()
                 : LangManager.get(lang, "discord.ticket.close.unknown_closer");
 
-        // Típus felismerése csatornanévből
+        // Típus felismerése
         TicketType type = TicketTypeResolver.resolve(channel.getName());
 
-        // Transcript, ha engedélyezve
+        // Transcript generálás
         if (type != null && TicketConfig.isTranscriptEnabled(type)) {
             TranscriptGenerator.generateAndUpload(channel, type);
         }
 
+        // Close embed
         String desc = LangManager.get(lang, "discord.ticket.close.description")
                 .replace("%closer%", closerName);
 
@@ -173,6 +189,17 @@ public class TicketManager {
 
         channel.sendMessageEmbeds(embed.build()).queue();
 
+        // ⭐ BUKKIT EVENT: TicketCloseEvent
+        TicketData data = new TicketData(
+                channel.getId(),
+                type,
+                closerName
+
+        );
+
+        Bukkit.getPluginManager().callEvent(new TicketCloseEvent(data));
+
+        // Csatorna törlése
         channel.delete().queueAfter(5, TimeUnit.SECONDS);
     }
 }

@@ -4,20 +4,17 @@ import org.respawn.omniConnect.ticket.TicketType;
 
 public class TicketData {
 
-    private final String openerName;
-    private final String openerId;
+    private final String channelId;
     private final TicketType type;
-    private final long openedAt;
+    private final String user;
 
-    public TicketData(String openerName, String openerId, TicketType type, long openedAt) {
-        this.openerName = openerName;
-        this.openerId = openerId;
+    public TicketData(String channelId, TicketType type, String user) {
+        this.channelId = channelId;
         this.type = type;
-        this.openedAt = openedAt;
+        this.user = user;
     }
 
-    public String getOpenerName() { return openerName; }
-    public String getOpenerId() { return openerId; }
+    public String getChannelId() { return channelId; }
     public TicketType getType() { return type; }
-    public long getOpenedAt() { return openedAt; }
+    public String getUser() { return user; }
 }
