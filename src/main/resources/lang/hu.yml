@@ -57,15 +57,15 @@ discord:
 
 
   system:
+    field_status: "Státusz"
     stop:
       title: "Szerver Leáll"
       status: "A Minecraft szerver leállt vagy újraindul.\nVagy a plugint újratöltik."
-      field_status: "Státusz"
 
     start:
       title: "Szerver Indul"
       status: "A Minecraft szerver elindult és az OmniConnect aktív.\nA plugin sikeresen újratöltött."
-      field_status: "Státusz"
+
 
 
   ticket:

@@ -54,15 +54,15 @@ discord:
 
 
   system:
+    field_status: "Status"
     stop:
       title: "Server Stopped"
       status: "The Minecraft server has stopped or is restarting.\nOr the plugin has been reloaded."
-      field_status: "Status"
+
 
     start:
       title: "Server Started"
       status: "The Minecraft server has started and OmniConnect is active.\nThe plugin has successfully reloaded."
-      field_status: "Status"
 
 
   ticket:
