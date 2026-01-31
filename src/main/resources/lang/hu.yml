@@ -20,6 +20,10 @@ commands:
     restart: "A Discord bot újraindult."
 
 discord:
+  status:
+    online: "A Discord bot ONLINE."
+    offline: "A Discord bot OFFLINE."
+
   reload:
     title: "🔄 OmniConnect Újratöltés"
     description: "A plugin és a Discord bot újratöltve."
@@ -63,10 +67,28 @@ discord:
       status: "A Minecraft szerver elindult és az OmniConnect aktív.\nA plugin sikeresen újratöltött."
       field_status: "Státusz"
 
+
   ticket:
+
+    create:
+      error:
+        no_member: "❌ Nem sikerült létrehozni a ticketet: a felhasználó nem található."
+        unknown_type: "❌ Ismeretlen ticket típus."
+      success: "✅ A ticket sikeresen létrehozva!"
+
+    close:
+      error:
+        not_ticket_channel: "❌ Ez a csatorna nem ticket csatorna."
+      success: "🔒 A ticket sikeresen lezárva!"
+
     panel:
       title: "Support Ticket Rendszer"
       description: "Válaszd ki, milyen típusú ticketet szeretnél nyitni az alábbi gombok közül."
+      only_guild: "❌ Ezt a parancsot csak szerveren lehet használni."
+      no_permission: "❌ Nincs jogosultságod a ticket panel küldéséhez."
+      sent: "✅ A ticket panelek sikeresen elküldve!"
+      missing_channel: "⚠ A(z) %type% típushoz nincs panel csatorna beállítva."
+
 
     open:
       topic_prefix: "Ticket típusa: %type% | Nyitotta: %user%"
@@ -76,6 +98,11 @@ discord:
         body: "%type_description%"
         footer: "Kérjük, részletesen írd le, miben tudunk segíteni."
       button_close: "🔒 Ticket Lezárása"
+
+    closedmessage:
+      title: "Ticket Lezárása"
+      description: "A ticketet lezárta: %closer%"
+      unknown_closer: "Ismeretlen"
 
     log:
       open:
@@ -104,46 +131,54 @@ discord:
         channel_id: "Csatorna ID"
         closed_by: "Lezárta"
 
-    close:
-      title: "Ticket Lezárása"
-      description: "A ticketet lezárta: %closer%"
-      unknown_closer: "Ismeretlen"
+    transcript:
+      title: "📄 Ticket Transcript"
+      description: "A ticket beszélgetésének transcriptje elkészült."
+      file_name: "transcript-%ticket_id%.%format%"
+      uploaded_to: "A transcript feltöltve a kijelölt csatornába."
 
     type:
       support:
         button: "🎫 Support"
         description: "Általános segítségkérés."
         prefix: "help"
+        label: "Support"
 
       report:
         button: "🚨 Jelentés"
         description: "Szabálysértés, játékos vagy üzenet jelentése."
         prefix: "report"
+        label: "Jelentés"
 
       bug:
         button: "🐞 Bug Report"
         description: "Hibák jelentése (szerver, plugin, Discord, stb.)."
         prefix: "bug"
+        label: "Bug Report"
 
       tgf:
         button: "📝 TGF"
         description: "Jelentkezés staff / csapat pozícióra."
         prefix: "tgf"
+        label: "TGF"
 
       partner:
         button: "🤝 Partnerség"
         description: "Partnerségi megkeresések és együttműködések."
         prefix: "partner"
+        label: "Partnerség"
 
       reward:
         button: "🎁 Nyeremény átvétele"
         description: "Nyereményjáték jutalom átvétele."
         prefix: "reward"
+        label: "Nyeremény"
 
       lost:
         button: "📦 Elveszett cuccok"
         description: "Elveszett tárgyak visszaigénylése."
         prefix: "lost"
+        label: "Elveszett tárgy"
 
 
   log:

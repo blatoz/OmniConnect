@@ -36,6 +36,7 @@ commands:
     description: Wiki / Documention link showcase
     usage: /wiki
 
+
   omnireload:
     description: Reload OmniConnect
     usage: /omnireload
@@ -55,6 +56,7 @@ commands:
     description: OmniConnect help menu
     usage: /omniconnect
     permission: omniconnect.help
+
 
 permissions:
   omniconnect.reload:

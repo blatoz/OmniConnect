@@ -3,43 +3,21 @@ package org.respawn.omniConnect.ticket;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Category;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import org.respawn.omniConnect.LogManager;
+import org.bukkit.entity.Player;
 import org.respawn.omniConnect.lang.LangManager;
 
 import java.awt.*;
 import java.util.EnumSet;
+import java.util.concurrent.TimeUnit;
 
 public class TicketManager {
 
     private static TicketManager instance;
 
-    private final String guildId;
-    private final String ticketCategoryId;
-    private final String logChannelId;
-    private final String panelChannelId;
-
-    private TicketManager(String guildId,
-                          String ticketCategoryId,
-                          String logChannelId,
-                          String panelChannelId) {
-        this.guildId = guildId;
-        this.ticketCategoryId = ticketCategoryId;
-        this.logChannelId = logChannelId;
-        this.panelChannelId = panelChannelId;
-    }
-
-    public static void init(String guildId,
-                            String ticketCategoryId,
-                            String logChannelId,
-                            String panelChannelId) {
-        instance = new TicketManager(guildId, ticketCategoryId, logChannelId, panelChannelId);
+    public static void init() {
+        instance = new TicketManager();
     }
 
     public static TicketManager getInstance() {
@@ -47,77 +25,70 @@ public class TicketManager {
     }
 
     private Guild getGuild(JDA jda) {
-        return jda.getGuildById(guildId);
+        return jda.getGuildById(TicketConfig.getGuildId());
     }
 
-    private Category getTicketCategory(JDA jda) {
+    public TextChannel getPanelChannel(JDA jda, TicketType type) {
         Guild guild = getGuild(jda);
-        return guild != null ? guild.getCategoryById(ticketCategoryId) : null;
+        return guild != null ? guild.getTextChannelById(TicketConfig.getPanelChannel(type)) : null;
     }
 
-    private Role getSupportRole(JDA jda) {
+    private Category getCategory(JDA jda, TicketType type) {
         Guild guild = getGuild(jda);
-        if (guild == null) return null;
-
-        String roleId = TicketConfig.getInstance().getStaffRoleId();
-        return guild.getRoleById(roleId);
+        return guild != null ? guild.getCategoryById(TicketConfig.getCategory(type)) : null;
     }
 
-    private TextChannel getLogChannel(JDA jda) {
+    private Role getStaffRole(JDA jda, TicketType type) {
         Guild guild = getGuild(jda);
-        return guild != null ? guild.getTextChannelById(logChannelId) : null;
+        return guild != null ? guild.getRoleById(TicketConfig.getStaffRole(type)) : null;
     }
 
-    private TextChannel getPanelChannel(JDA jda) {
+    private TextChannel getLogChannel(JDA jda, TicketType type) {
         Guild guild = getGuild(jda);
-        return guild != null ? guild.getTextChannelById(panelChannelId) : null;
+        return guild != null ? guild.getTextChannelById(TicketConfig.getLogChannel(type)) : null;
     }
 
     private String lang() {
         return LangManager.getDefaultLanguage();
     }
 
-    public void sendTicketPanel(JDA jda) {
-        TextChannel channel = getPanelChannel(jda);
+
+
+    // PANEL ONE TYPES
+    public void sendTicketPanel(JDA jda, TicketType type) {
+        TextChannel channel = getPanelChannel(jda, type);
         if (channel == null) return;
 
         String lang = lang();
 
-        EmbedBuilder builder = new EmbedBuilder()
+        EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(LangManager.get(lang, "discord.ticket.panel.title"))
                 .setDescription(LangManager.get(lang, "discord.ticket.panel.description"))
                 .setColor(Color.GREEN);
 
-        Button supportBtn = Button.primary(TicketType.SUPPORT.getCreateButtonId(), TicketType.SUPPORT.getButtonLabel());
-        Button reportBtn = Button.danger(TicketType.REPORT.getCreateButtonId(), TicketType.REPORT.getButtonLabel());
-        Button bugBtn = Button.primary(TicketType.BUG.getCreateButtonId(), TicketType.BUG.getButtonLabel());
-        Button tgfBtn = Button.primary(TicketType.TGF.getCreateButtonId(), TicketType.TGF.getButtonLabel());
-        Button partnerBtn = Button.primary(TicketType.PARTNER.getCreateButtonId(), TicketType.PARTNER.getButtonLabel());
-        Button rewardBtn = Button.success(TicketType.REWARD.getCreateButtonId(), TicketType.REWARD.getButtonLabel());
-        Button lostBtn = Button.secondary(TicketType.LOST.getCreateButtonId(), TicketType.LOST.getButtonLabel());
+        Button btn = Button.primary(type.getCreateButtonId(), type.getButtonLabel());
 
-        channel.sendMessageEmbeds(builder.build())
-                .setActionRows(
-                        ActionRow.of(supportBtn, reportBtn, bugBtn, tgfBtn, partnerBtn),
-                        ActionRow.of(rewardBtn, lostBtn)
-                )
+        channel.sendMessageEmbeds(embed.build())
+                .setActionRow(btn)
                 .queue();
     }
 
+    // TICKET LÉTREHOZÁS
     public void createTicketChannel(JDA jda, Member member, TicketType type) {
-        Category category = getTicketCategory(jda);
-        Role supportRole = getSupportRole(jda);
-        if (category == null || supportRole == null || member == null) return;
+        Category category = getCategory(jda, type);
+        Role staffRole = getStaffRole(jda, type);
+
+        if (category == null || staffRole == null || member == null) return;
 
         String lang = lang();
 
         String baseName = member.getUser().getName().toLowerCase().replace(" ", "-");
-        String channelName = type.getChannelPrefix() + "-" + baseName;
+        String channelName = TicketConfig.getTicketNameFormat(type)
+                .replace("%player%", baseName);
 
         category.createTextChannel(channelName).queue(channel -> {
 
-            String topicTemplate = LangManager.get(lang, "discord.ticket.open.topic_prefix");
-            String topic = topicTemplate
+            String topic = LangManager.get(lang, "discord.ticket.open.topic_prefix")
                     .replace("%type%", type.name())
                     .replace("%user%", member.getUser().getAsTag());
 
@@ -126,40 +97,27 @@ public class TicketManager {
             Guild guild = category.getGuild();
 
             channel.upsertPermissionOverride(guild.getPublicRole())
-                    .deny(EnumSet.of(
-                            Permission.VIEW_CHANNEL,
-                            Permission.MESSAGE_SEND
-                    ))
+                    .deny(Permission.VIEW_CHANNEL)
                     .queue();
 
             channel.upsertPermissionOverride(member)
-                    .grant(EnumSet.of(
-                            Permission.VIEW_CHANNEL,
-                            Permission.MESSAGE_SEND,
-                            Permission.MESSAGE_HISTORY
-                    ))
+                    .grant(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND, Permission.MESSAGE_HISTORY)
                     .queue();
 
-            channel.upsertPermissionOverride(supportRole)
-                    .grant(EnumSet.of(
-                            Permission.VIEW_CHANNEL,
-                            Permission.MESSAGE_SEND,
-                            Permission.MESSAGE_HISTORY,
-                            Permission.MESSAGE_MANAGE
-                    ))
+            channel.upsertPermissionOverride(staffRole)
+                    .grant(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND, Permission.MESSAGE_HISTORY, Permission.MESSAGE_MANAGE)
                     .queue();
 
-            String titleTemplate = LangManager.get(lang, "discord.ticket.open.title");
-            String header = LangManager.get(lang, "discord.ticket.open.description.header");
-            String body = LangManager.get(lang, "discord.ticket.open.description.body");
-            String footer = LangManager.get(lang, "discord.ticket.open.description.footer");
+            String title = LangManager.get(lang, "discord.ticket.open.title")
+                    .replace("%type_label%", type.getButtonLabel());
 
-            String title = titleTemplate.replace("%type_label%", type.getButtonLabel());
-            String desc = header.replace("%user_mention%", member.getAsMention())
+            String desc = LangManager.get(lang, "discord.ticket.open.description.header")
+                    .replace("%user_mention%", member.getAsMention())
                     + "\n\n"
-                    + body.replace("%type_description%", type.getDescription())
+                    + LangManager.get(lang, "discord.ticket.open.description.body")
+                    .replace("%type_description%", type.getDescription())
                     + "\n\n"
-                    + footer;
+                    + LangManager.get(lang, "discord.ticket.open.description.footer");
 
             EmbedBuilder openEmbed = new EmbedBuilder()
                     .setTitle(title)
@@ -169,14 +127,12 @@ public class TicketManager {
             String closeLabel = LangManager.get(lang, "discord.ticket.open.button_close");
 
             channel.sendMessageEmbeds(openEmbed.build())
-                    .setActionRow(
-                            Button.danger("ticket:close", closeLabel)
-                    )
+                    .setActionRow(Button.danger("ticket:close", closeLabel))
                     .queue();
 
-            TextChannel logChannel = getLogChannel(jda);
-            if (logChannel != null) {
-                EmbedBuilder log = new EmbedBuilder()
+            TextChannel log = getLogChannel(jda, type);
+            if (log != null) {
+                EmbedBuilder logEmbed = new EmbedBuilder()
                         .setTitle(LangManager.get(lang, "discord.ticket.log.open.title"))
                         .setColor(Color.GREEN)
                         .addField(LangManager.get(lang, "discord.ticket.log.open.type"), type.name(), true)
@@ -184,20 +140,12 @@ public class TicketManager {
                         .addField(LangManager.get(lang, "discord.ticket.log.open.channel"), channel.getAsMention(), false)
                         .addField(LangManager.get(lang, "discord.ticket.log.open.channel_id"), channel.getId(), true);
 
-                logChannel.sendMessageEmbeds(log.build()).queue();
+                log.sendMessageEmbeds(logEmbed.build()).queue();
             }
-
-            LogManager.getInstance().sendEmbed(builder ->
-                    builder.setTitle(LangManager.get(lang, "discord.ticket.log.internal_open.title"))
-                            .setColor(Color.GREEN)
-                            .addField(LangManager.get(lang, "discord.ticket.log.internal_open.type"), type.name(), true)
-                            .addField(LangManager.get(lang, "discord.ticket.log.internal_open.user"), member.getUser().getAsTag(), true)
-                            .addField(LangManager.get(lang, "discord.ticket.log.internal_open.user_id"), member.getId(), true)
-                            .addField(LangManager.get(lang, "discord.ticket.log.internal_open.channel"), channel.getName(), true)
-            );
         });
     }
 
+    // TICKET LEZÁRÁS + TRANSCRIPT
     public void closeTicketChannel(TextChannel channel, Member closer) {
         if (channel == null) return;
 
@@ -207,36 +155,24 @@ public class TicketManager {
                 ? closer.getUser().getAsTag()
                 : LangManager.get(lang, "discord.ticket.close.unknown_closer");
 
-        String closingDescTemplate = LangManager.get(lang, "discord.ticket.close.description");
-        String closingDesc = closingDescTemplate.replace("%closer%", closerName);
+        // Típus felismerése csatornanévből
+        TicketType type = TicketTypeResolver.resolve(channel.getName());
 
-        EmbedBuilder closing = new EmbedBuilder()
-                .setTitle(LangManager.get(lang, "discord.ticket.close.title"))
-                .setDescription(closingDesc)
-                .setColor(Color.ORANGE);
-
-        channel.sendMessageEmbeds(closing.build()).queue();
-
-        Guild guild = channel.getGuild();
-        TextChannel logChannel = getLogChannel(guild.getJDA());
-        if (logChannel != null) {
-            EmbedBuilder log = new EmbedBuilder()
-                    .setTitle(LangManager.get(lang, "discord.ticket.log.close.title"))
-                    .setColor(Color.RED)
-                    .addField(LangManager.get(lang, "discord.ticket.log.close.channel"), channel.getName(), true)
-                    .addField(LangManager.get(lang, "discord.ticket.log.close.channel_id"), channel.getId(), true)
-                    .addField(LangManager.get(lang, "discord.ticket.log.close.closed_by"), closerName, false);
-            logChannel.sendMessageEmbeds(log.build()).queue();
+        // Transcript, ha engedélyezve
+        if (type != null && TicketConfig.isTranscriptEnabled(type)) {
+            TranscriptGenerator.generateAndUpload(channel, type);
         }
 
-        LogManager.getInstance().sendEmbed(builder ->
-                builder.setTitle(LangManager.get(lang, "discord.ticket.log.internal_close.title"))
-                        .setColor(Color.RED)
-                        .addField(LangManager.get(lang, "discord.ticket.log.internal_close.channel"), channel.getName(), true)
-                        .addField(LangManager.get(lang, "discord.ticket.log.internal_close.channel_id"), channel.getId(), true)
-                        .addField(LangManager.get(lang, "discord.ticket.log.internal_close.closed_by"), closerName, false)
-        );
+        String desc = LangManager.get(lang, "discord.ticket.close.description")
+                .replace("%closer%", closerName);
 
-        channel.delete().queueAfter(5, java.util.concurrent.TimeUnit.SECONDS);
+        EmbedBuilder embed = new EmbedBuilder()
+                .setTitle(LangManager.get(lang, "discord.ticket.close.title"))
+                .setDescription(desc)
+                .setColor(Color.ORANGE);
+
+        channel.sendMessageEmbeds(embed.build()).queue();
+
+        channel.delete().queueAfter(5, TimeUnit.SECONDS);
     }
 }

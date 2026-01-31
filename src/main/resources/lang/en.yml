@@ -19,6 +19,10 @@ commands:
     restart: "The discord bot has been restarted."
 
 discord:
+  status:
+    online: "The Discord bot is ONLINE."
+    offline: "The Discord bot is OFFLINE."
+
   reload:
     title: "🔄 OmniConnect Reload"
     description: "The plugin and the Discord bot has been reloaded."
@@ -60,10 +64,27 @@ discord:
       status: "The Minecraft server has started and OmniConnect is active.\nThe plugin has successfully reloaded."
       field_status: "Status"
 
+
   ticket:
+
+    create:
+      error:
+        no_member: "❌ Failed to create the ticket: member not found."
+        unknown_type: "❌ Unknown ticket type."
+      success: "✅ Ticket successfully created!"
+
+    close:
+      error:
+        not_ticket_channel: "❌ This channel is not a ticket channel."
+      success: "🔒 Ticket successfully closed!"
+
     panel:
       title: "Support Ticket System"
-      description: "Choose what type of ticket you want to open using the buttons below."
+      description: "Choose the type of ticket you want to open using the buttons below."
+      only_guild: "❌ This command can only be used inside a server."
+      no_permission: "❌ You do not have permission to send the ticket panel."
+      sent: "✅ Ticket panels have been successfully sent!"
+      missing_channel: "⚠ No panel channel is configured for ticket type: %type%"
 
     open:
       topic_prefix: "Ticket type: %type% | Opened by: %user%"
@@ -71,8 +92,13 @@ discord:
       description:
         header: "Hello, %user_mention%!"
         body: "%type_description%"
-        footer: "Please describe in detail how we can help you."
+        footer: "Please describe your issue in detail so we can assist you."
       button_close: "🔒 Close Ticket"
+
+    closedmessage:
+      title: "Ticket Closed"
+      description: "This ticket was closed by: %closer%"
+      unknown_closer: "Unknown"
 
     log:
       open:
@@ -87,7 +113,7 @@ discord:
         title: "Ticket Closed"
         channel: "Channel"
         channel_id: "Channel ID"
-        closed_by: "Closed By"
+        closed_by: "Closed by"
 
       internal_open:
         title: "Ticket Opened (Discord)"
@@ -99,48 +125,57 @@ discord:
         title: "Ticket Closed (Discord)"
         channel: "Channel"
         channel_id: "Channel ID"
-        closed_by: "Closed By"
+        closed_by: "Closed by"
 
-    close:
-      title: "Ticket Closing"
-      description: "The ticket was closed by: %closer%"
-      unknown_closer: "Unknown"
+    transcript:
+      title: "📄 Ticket Transcript"
+      description: "The transcript of this ticket has been generated."
+      file_name: "transcript-%ticket_id%.%format%"
+      uploaded_to: "The transcript has been uploaded to the designated channel."
 
     type:
       support:
         button: "🎫 Support"
-        description: "General support request."
+        description: "General help and assistance."
         prefix: "help"
+        label: "Support"
 
       report:
         button: "🚨 Report"
-        description: "Report a rule violation, player or message."
+        description: "Report a rule violation, player, or message."
         prefix: "report"
+        label: "Report"
 
       bug:
         button: "🐞 Bug Report"
-        description: "Report server, plugin or Discord bugs."
+        description: "Report bugs related to the server, plugins, Discord, etc."
         prefix: "bug"
+        label: "Bug Report"
 
       tgf:
         button: "📝 Staff Application"
         description: "Apply for a staff or team position."
         prefix: "tgf"
+        label: "Staff Application"
 
       partner:
         button: "🤝 Partnership"
-        description: "Partnership inquiries and collaborations."
+        description: "Partnership requests and collaborations."
         prefix: "partner"
+        label: "Partnership"
 
       reward:
-        button: "🎁 Claim Reward"
-        description: "Claim your giveaway reward."
+        button: "🎁 Reward Claim"
+        description: "Claim your giveaway or event reward."
         prefix: "reward"
+        label: "Reward"
 
       lost:
         button: "📦 Lost Items"
-        description: "Recover lost items."
+        description: "Request recovery of lost items."
         prefix: "lost"
+        label: "Lost Items"
+
 
 
   log:

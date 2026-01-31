@@ -8,6 +8,7 @@ import org.respawn.omniConnect.discord.PrefixManager;
 import org.respawn.omniConnect.hooks.HookManager;
 import org.respawn.omniConnect.lang.LangManager;
 import org.respawn.omniConnect.listeners.ChatListener;
+import org.respawn.omniConnect.ticket.TicketConfig;
 import org.respawn.omniConnect.ticket.TicketManager;
 
 import org.respawn.omniConnect.discord.DiscordLinkVerifyListener;
@@ -55,12 +56,8 @@ public class Main extends JavaPlugin {
         String logChannelId = getConfig().getString("discord.ticket.log-channel-id");
         String panelChannelId = getConfig().getString("discord.ticket.panel-channel-id");
 
-        TicketManager.init(
-                guildId,
-                ticketCategoryId,
-                logChannelId,
-                panelChannelId
-        );
+        TicketManager.init();
+        TicketConfig.load();
 
         // --- Account linking database ---
         LinkDatabase.init();
@@ -186,7 +183,7 @@ public class Main extends JavaPlugin {
             getCommand("discordstatus").setExecutor(new DiscordStatusCommand());
         }
         if (getCommand("omniconnect") != null) {
-            getCommand("omnicomnect").setExecutor(new OmniConnectHelpCommand());
+            getCommand("omniconnect").setExecutor(new OmniConnectHelpCommand());
         }
     }
 

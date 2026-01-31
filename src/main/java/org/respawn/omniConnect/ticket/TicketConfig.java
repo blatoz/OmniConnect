@@ -1,102 +1,55 @@
 package org.respawn.omniConnect.ticket;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.respawn.omniConnect.Main;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.Set;
 
 public class TicketConfig {
 
-    private static TicketConfig instance;
-
-    private String guildId = "";
-    private String ticketCategoryId = "";
-    private String staffRoleId = "";
-    private String logChannelId = "";
-    private String panelChannelId = "";
-
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private static File file;
+    private static FileConfiguration cfg;
 
     public static void load() {
-        file = new File(Main.getInstance().getDataFolder(), "ticketconfig.json");
-
-        if (!file.exists()) {
-            saveDefault();
-        }
-
-        try (FileReader reader = new FileReader(file)) {
-            instance = gson.fromJson(reader, TicketConfig.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-            saveDefault();
-        }
+        cfg = Main.getInstance().getConfig();
     }
 
-    private static void saveDefault() {
-        instance = new TicketConfig();
-        instance.save();
+    public static String getGuildId() {
+        return cfg.getString("discord.ticket.guild-id", "");
     }
 
-    public void save() {
-        try (FileWriter writer = new FileWriter(file)) {
-            gson.toJson(this, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static Set<String> getTypes() {
+        return cfg.getConfigurationSection("discord.ticket.types").getKeys(false);
     }
 
-    public static TicketConfig getInstance() {
-        return instance;
+    public static String getCategory(TicketType type) {
+        return cfg.getString("discord.ticket.types." + type.name().toLowerCase() + ".category-id", "");
     }
 
-    public String getGuildId() {
-        return guildId;
+    public static String getPanelChannel(TicketType type) {
+        return cfg.getString("discord.ticket.types." + type.name().toLowerCase() + ".panel-channel-id", "");
     }
 
-    public String getTicketCategoryId() {
-        return ticketCategoryId;
+    public static String getLogChannel(TicketType type) {
+        return cfg.getString("discord.ticket.types." + type.name().toLowerCase() + ".log-channel-id", "");
     }
 
-    public String getStaffRoleId() {
-        return staffRoleId;
+    public static String getTranscriptChannel(TicketType type) {
+        return cfg.getString("discord.ticket.types." + type.name().toLowerCase() + ".transcript-channel-id", "");
     }
 
-    public String getLogChannelId() {
-        return logChannelId;
+    public static String getStaffRole(TicketType type) {
+        return cfg.getString("discord.ticket.types." + type.name().toLowerCase() + ".staff-role-id", "");
     }
 
-    public String getPanelChannelId() {
-        return panelChannelId;
+    public static String getTicketNameFormat(TicketType type) {
+        return cfg.getString("discord.ticket.types." + type.name().toLowerCase() + ".ticket-name-format", "ticket-%player%");
     }
 
-    // Setterek.
-    public void setGuildId(String guildId) {
-        this.guildId = guildId;
-        save();
+    public static boolean isTranscriptEnabled(TicketType type) {
+        return cfg.getBoolean("discord.ticket.types." + type.name().toLowerCase() + ".transcript.enabled", true);
     }
 
-    public void setTicketCategoryId(String ticketCategoryId) {
-        this.ticketCategoryId = ticketCategoryId;
-        save();
-    }
-
-    public void setStaffRoleId(String staffRoleId) {
-        this.staffRoleId = staffRoleId;
-        save();
-    }
-
-    public void setLogChannelId(String logChannelId) {
-        this.logChannelId = logChannelId;
-        save();
-    }
-
-    public void setPanelChannelId(String panelChannelId) {
-        this.panelChannelId = panelChannelId;
-        save();
+    public static String getTranscriptFormat(TicketType type) {
+        return cfg.getString("discord.ticket.types." + type.name().toLowerCase() + ".transcript.format", "html");
     }
 }

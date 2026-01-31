@@ -63,6 +63,94 @@ discord:
     enabled: true
 
   # ──────────────────────────────────────────────────────────
+  # TICKET SYSTEM SETTINGS
+  # ──────────────────────────────────────────────────────────
+  ticket:
+    enabled: true
+    guild-id: "DISCORD_GUILD_ID"
+
+    types:
+
+      support:
+        category-id: "CATEGORY_ID_SUPPORT"
+        panel-channel-id: "PANEL_CHANNEL_SUPPORT"
+        log-channel-id: "LOG_CHANNEL_SUPPORT"
+        transcript-channel-id: "TRANSCRIPT_CHANNEL_SUPPORT"
+        staff-role-id: "STAFF_ROLE_SUPPORT"
+        ticket-name-format: "support-%player%"
+        transcript:
+          enabled: true
+          format: "html"
+
+      report:
+        category-id: "CATEGORY_ID_REPORT"
+        panel-channel-id: "PANEL_CHANNEL_REPORT"
+        log-channel-id: "LOG_CHANNEL_REPORT"
+        transcript-channel-id: "TRANSCRIPT_CHANNEL_REPORT"
+        staff-role-id: "STAFF_ROLE_REPORT"
+        ticket-name-format: "report-%player%"
+        transcript:
+          enabled: true
+          format: "html"
+
+      bug:
+        category-id: "CATEGORY_ID_BUG"
+        panel-channel-id: "PANEL_CHANNEL_BUG"
+        log-channel-id: "LOG_CHANNEL_BUG"
+        transcript-channel-id: "TRANSCRIPT_CHANNEL_BUG"
+        staff-role-id: "STAFF_ROLE_BUG"
+        ticket-name-format: "bug-%player%"
+        transcript:
+          enabled: true
+          format: "txt"
+
+      tgf:
+        category-id: "CATEGORY_ID_TGF"
+        panel-channel-id: "PANEL_CHANNEL_TGF"
+        log-channel-id: "LOG_CHANNEL_TGF"
+        transcript-channel-id: "TRANSCRIPT_CHANNEL_TGF"
+        staff-role-id: "STAFF_ROLE_TGF"
+        ticket-name-format: "tgf-%player%"
+        transcript:
+          enabled: true
+          format: "html"
+
+      partner:
+        category-id: "CATEGORY_ID_PARTNER"
+        panel-channel-id: "PANEL_CHANNEL_PARTNER"
+        log-channel-id: "LOG_CHANNEL_PARTNER"
+        transcript-channel-id: "TRANSCRIPT_CHANNEL_PARTNER"
+        staff-role-id: "STAFF_ROLE_PARTNER"
+        ticket-name-format: "partner-%player%"
+        transcript:
+          enabled: true
+          format: "html"
+
+      reward:
+        category-id: "CATEGORY_ID_REWARD"
+        panel-channel-id: "PANEL_CHANNEL_REWARD"
+        log-channel-id: "LOG_CHANNEL_REWARD"
+        transcript-channel-id: "TRANSCRIPT_CHANNEL_REWARD"
+        staff-role-id: "STAFF_ROLE_REWARD"
+        ticket-name-format: "reward-%player%"
+        transcript:
+          enabled: true
+          format: "html"
+
+      lost:
+        category-id: "CATEGORY_ID_LOST"
+        panel-channel-id: "PANEL_CHANNEL_LOST"
+        log-channel-id: "LOG_CHANNEL_LOST"
+        transcript-channel-id: "TRANSCRIPT_CHANNEL_LOST"
+        staff-role-id: "STAFF_ROLE_LOST"
+        ticket-name-format: "lost-%player%"
+        transcript:
+          enabled: true
+          format: "html"
+
+
+
+  # ──────────────────────────────────────────────────────────
   # Discord Fun comamnds
   # (/roll, /coinflip, /8ball, /joke, /cat, /dog, /hug, /slap,
   #  /meme, /gif, /quote, /ship, /lovecalc)
@@ -90,7 +178,7 @@ discord:
 # LINKING (Discord ↔ Minecraft Linking)
 # ──────────────────────────────────────────────────────────────
 linking:
-  enabled: true # Enable or disable the linking feature
+  enabled: false # Enable or disable the linking feature
   storage: "yaml" # Options: "yaml", "mysql"
 
 
@@ -108,7 +196,7 @@ linking:
 # LINK COMMANDS ( /discord, /store, /rules, stb. )
 # ──────────────────────────────────────────────────────────────
 links:
-  enabled: true
+  enabled: false
 
   discord: "Your discord invite link here"
   store: "Your web store link"
@@ -154,7 +242,7 @@ anticheat:
     log-channel: ""
 
   aac:
-    enabled: False # Enable or disable aac(Advanced Anti Cheat) anticheat logging
+    enabled: False # Enable or disable Aac(Advanced Anti Cheat) anticheat logging
     log-channel: ""
 
   lightanticheat:
@@ -166,7 +254,7 @@ anticheat:
       log-channel: ""
 
   ncp:
-    enabled: False # Enable or disable nocheatplus logging
+    enabled: False # Enable or disable Nocheatplus logging
     log-channel: ""
 
 
