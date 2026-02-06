@@ -3,6 +3,7 @@ version: '1.0.3'
 main: org.respawn.omniConnect.Main
 api-version: '1.16'
 author: Daniyt_th
+softdepend: [AAC, GrimAc, LightAntiCheat, Matrix, NCP, Spartan, Negativity, Vulcan, AzrovaEconomy, CoinManager, DZEoconomy, EsssentialsX, PlayerPoints, TokenManager, XConomy, AnarchyExploitFixes, ExploitFixer, LPX, KingdomsX, AuthMe, AuthMeReloaded, AutoRestart, CoreProtect, Maintenance, LibreLogin, LoginSystem, LuckPerms, NametagEdit, NLogin, PlugmanX, ServerRestorer, TAB, WorldEdit, WorldGuard, AdvancedBan, ChatControl, ChatControlRed, CleanStaffChat, CMI, EasyStaff, LibertyBans, StaffPlus]
 commands:
   link:
     description: Minecraft ↔ Discord account link
