@@ -15,7 +15,7 @@ public class RankUtil {
      * @return A rang neve vagy üres string, ha nincs
      */
     public static String getRank(Player player) {
-        // LuckPerms támogatás (reflection-on keresztül, hogy ne kelljen a teljes API)
+        // LuckPerms support (through reflection, so that the entire API is not required)
         if (Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) {
             try {
                 return getLuckPermsRank(player);
@@ -41,17 +41,17 @@ public class RankUtil {
     }
 
     private static String getLuckPermsRank(Player player) throws Exception {
-        // LuckPerms API lekérése reflection-on keresztül
+        // LuckPerms API Frist group fetch with reflection
         Class<?> providerClass = Class.forName("net.luckperms.api.LuckPermsProvider");
         Object lpInstance = providerClass.getMethod("get").invoke(null);
 
-        // UserManager lekérése
+        // UserManager Frist group fetch
         Object userManager = lpInstance.getClass().getMethod("getUserManager").invoke(lpInstance);
         Object user = userManager.getClass().getMethod("getUser", java.util.UUID.class)
                 .invoke(userManager, player.getUniqueId());
 
         if (user != null) {
-            // Elsődleges csoport lekérése
+            // Frist group fetch
             Object primaryGroup = user.getClass().getMethod("getPrimaryGroup").invoke(user);
             if (primaryGroup != null) {
                 String groupName = primaryGroup.toString();
